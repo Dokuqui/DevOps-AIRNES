@@ -1,0 +1,122 @@
+.row-footer {
+  padding: 20px 10px 10px 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-radius: 4px;
+  background-color: #323334;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+.icons {
+  flex: 0 0 25%;
+  max-width: 25%;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+}
+.icons button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.icons button svg {
+  fill: #ffffff;
+  transition: fill 0.3s;
+  width: 70px;
+  height: 20px;
+}
+.icons button svg:hover {
+  fill: #007bff;
+}
+
+.section {
+  max-width: 25%;
+  margin-bottom: 30px;
+  margin-right: 10px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+.section h5 {
+  color: #007bff;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+.section ul li {
+  margin-bottom: 10px;
+}
+.section ul li a {
+  text-decoration: none;
+  color: #ffffff;
+  transition: color 0.3s;
+}
+.section ul li a:hover {
+  color: #007bff;
+}
+
+.contact {
+  flex: 0 0 25%;
+  max-width: 25%;
+  margin-bottom: 30px;
+}
+.contact h5 {
+  color: #007bff;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.contact address {
+  color: #ffffff;
+}
+.contact address span {
+  display: block;
+  margin-top: 5px;
+}
+
+.subscribe {
+  flex: 0 0 25%;
+  max-width: 25%;
+  margin-bottom: 30px;
+  margin-right: 20px;
+}
+.subscribe form h5 {
+  color: #007bff;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.subscribe form p {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+.subscribe form .newsletter {
+  display: flex;
+}
+.subscribe form .newsletter input {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+.subscribe form .newsletter button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copiright {
+  text-align: center;
+  padding: 20px 10px 10px 10px;
+  background-color: #323334;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+.copiright p {
+  color: #ffffff;
+}
+
+/*# sourceMappingURL=footer.css.map */
