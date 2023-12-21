@@ -1,24 +1,31 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
 .row-footer {
   padding: 20px 10px 10px 10px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-radius: 4px;
   background-color: #323334;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 }
 
 .icons {
-  flex: 0 0 25%;
+  flex: 0 0 100%;
   max-width: 25%;
   margin-top: 50px;
   margin-bottom: 30px;
   margin-left: 10px;
+  text-align: center;
 }
 .icons button {
   border: none;
   background: none;
   cursor: pointer;
+  margin-bottom: 15px;
 }
 .icons button svg {
   fill: #ffffff;
@@ -27,17 +34,15 @@
   height: 20px;
 }
 .icons button svg:hover {
-  fill: #007bff;
+  fill: #7A7350;
 }
 
 .section {
-  max-width: 25%;
-  margin-bottom: 30px;
-  margin-right: 10px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  max-width: 100%;
+  text-align: center;
 }
 .section h5 {
-  color: #007bff;
+  color: #7A7350;
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -54,16 +59,24 @@
   transition: color 0.3s;
 }
 .section ul li a:hover {
-  color: #007bff;
+  color: #7A7350;
+}
+@media (max-width: 768px) {
+  .section {
+    flex: 0 0 25%;
+    max-width: 25%;
+    text-align: left;
+  }
 }
 
 .contact {
   flex: 0 0 25%;
-  max-width: 25%;
+  max-width: 100%;
   margin-bottom: 30px;
+  text-align: center;
 }
 .contact h5 {
-  color: #007bff;
+  color: #7A7350;
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -74,15 +87,23 @@
   display: block;
   margin-top: 5px;
 }
+@media (max-width: 768px) {
+  .contact {
+    flex: 0 0 25%;
+    max-width: 25%;
+    text-align: left;
+  }
+}
 
 .subscribe {
   flex: 0 0 25%;
-  max-width: 25%;
+  max-width: 100%;
   margin-bottom: 30px;
-  margin-right: 20px;
+  margin-right: 10px;
+  text-align: center;
 }
 .subscribe form h5 {
-  color: #007bff;
+  color: #7A7350;
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -101,22 +122,38 @@
   border-radius: 4px;
 }
 .subscribe form .newsletter button {
-  background-color: #007bff;
+  background-color: #7A7350;
   color: #ffffff;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .subscribe {
+    flex: 0 0 25%;
+    max-width: 25%;
+    text-align: left;
+  }
+  .subscribe .newsletter {
+    flex-direction: column;
+  }
+}
 
 .copiright {
   text-align: center;
   padding: 20px 10px 10px 10px;
-  background-color: #323334;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  background-color: #323334;
 }
 .copiright p {
   color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .footer .row-footer {
+    flex-wrap: nowrap;
+  }
 }
 
 /*# sourceMappingURL=footer.css.map */
