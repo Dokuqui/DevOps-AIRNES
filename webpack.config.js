@@ -1,10 +1,10 @@
 const path = require("path");
 
 module.exports = {
-    entry: "./src/index.js", // Adjust the entry point based on your project structure
+    entry: "./src/index.js",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, "dist"), // Adjust the output directory as needed
+        path: path.resolve(__dirname, "dist"),
     },
     module: {
         rules: [
@@ -13,7 +13,14 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env", "@babel/preset-react"]
+                    }
                 },
+            },
+            {
+                test: /\.scss$/,
+                use: ["style-loader", "css-loader", "sass-loader"],
             },
         ],
     },
