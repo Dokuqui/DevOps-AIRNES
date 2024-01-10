@@ -1,15 +1,15 @@
-import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CategoryPage from "./CategoryPage";
 
 const App = () => {
-    return (
-        <div>
-            {/* Other components or content */}
-            <Header />
-            <Footer />
-        </div>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<CategoryPage />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
