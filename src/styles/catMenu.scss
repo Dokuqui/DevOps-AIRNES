@@ -1,0 +1,99 @@
+.category-menu {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ccc;
+  padding-right: 20px;
+  padding-left: 10px;
+  z-index: 1;
+  position: absolute;
+  pointer-events: auto;
+
+  .section {
+    margin-bottom: 20px;
+    padding-right: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    // Additional styles for each section in the category menu
+
+    &.active {
+      background-color: #f0f0f0; // Highlight color for active section
+    }
+
+    &:hover {
+      background-color: #f8f8f8; // Highlight color for hover
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      width: 3px; 
+      background-color: #007bff;
+      opacity: 0; // Initially invisible
+      transition: opacity 0.3s;
+    }
+
+    &.active:before {
+      opacity: 1; // Make the vertical line visible for active section
+    }
+
+    .title {
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      // Additional styles for the title of the section
+    }
+
+    .category {
+      color: #323334;
+      text-transform: capitalize;
+      margin-top: 5px;
+      font-weight: 700;
+      // Additional styles for individual categories within the section
+    }
+
+    .sub-categories {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+
+      div {
+        color: #323334;
+        text-transform: capitalize;
+        margin-top: 5px;
+        // Additional styles for the sub-categories within the section
+      }
+    }
+
+    .color-categories {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+
+      // Customize individual color options
+      div {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        border-radius: 50%;
+        // Add additional styles for color options
+      }
+    }
+
+    .price-ranges {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+
+      // Customize individual price range options
+      .price-range {
+        margin-top: 5px;
+        // Add additional styles for price range options
+      }
+    }
+  }
+}
