@@ -1,27 +1,63 @@
 .category-menu {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #ccc;
   padding-right: 20px;
   padding-left: 10px;
   z-index: 1;
-  position: absolute;
+  position: relative;
   pointer-events: auto;
+  width: 180px;
+  left: -160px;
+  transition: left 0.5s;
+  overflow-x: hidden;
+
+  &.open {
+    left: 0;
+  }
+
+  .burger-menu {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #7a7350;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #ada933;
+    }
+
+    span {
+      height: 3px;
+      width: 25px;
+      background-color: #ffffff;
+      margin-bottom: 6px;
+      display: block;
+      transition: background-color 0.3s;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 
   .section {
+    padding-top: 10px;
     margin-bottom: 20px;
     padding-right: 10px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.3s;
-    // Additional styles for each section in the category menu
 
     &.active {
-      background-color: #f0f0f0; // Highlight color for active section
+      background-color: #f0f0f0;
     }
 
     &:hover {
-      background-color: #f8f8f8; // Highlight color for hover
+      background-color: #ada933;
     }
 
     &:before {
@@ -31,21 +67,20 @@
       top: 0;
       bottom: 0;
       height: 100%;
-      width: 3px; 
-      background-color: #007bff;
-      opacity: 0; // Initially invisible
+      width: 3px;
+      background-color: #e0d6a8;
+      opacity: 0;
       transition: opacity 0.3s;
     }
 
     &.active:before {
-      opacity: 1; // Make the vertical line visible for active section
+      opacity: 1;
     }
 
     .title {
       font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 10px;
-      // Additional styles for the title of the section
     }
 
     .category {
@@ -53,47 +88,95 @@
       text-transform: capitalize;
       margin-top: 5px;
       font-weight: 700;
-      // Additional styles for individual categories within the section
+      display: none;
     }
 
     .sub-categories {
       margin-top: 10px;
-      display: flex;
+      display: none;
       flex-direction: column;
 
       div {
         color: #323334;
         text-transform: capitalize;
         margin-top: 5px;
-        // Additional styles for the sub-categories within the section
       }
     }
 
-    .color-categories {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 10px;
+    &.active {
+      .category {
+        display: block;
+      }
+    }
 
-      // Customize individual color options
-      div {
+    &.active .category.active + .sub-categories {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .color-categories {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 5px;
+
+      &.visible {
+        display: flex;
+      }
+
+      .color-option {
         width: 20px;
         height: 20px;
         margin-right: 5px;
         border-radius: 50%;
-        // Add additional styles for color options
+        cursor: pointer;
       }
     }
 
     .price-ranges {
-      display: flex;
+      display: none;
       flex-direction: column;
       margin-top: 10px;
+      margin-left: 5px;
+      margin-bottom: 5px;
 
-      // Customize individual price range options
-      .price-range {
-        margin-top: 5px;
-        // Add additional styles for price range options
+      &.visible {
+        display: flex;
+
+        .price-range {
+          margin-top: 5px;
+
+          .price-input-container {
+            display: flex;
+            align-items: center;
+
+            label {
+              margin-right: 8px;
+            }
+
+            .input {
+              width: 20px;
+            }
+          }
+        }
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .category-menu {
+      width: 100%; /* Full width on smaller screens */
+      left: -100%; /* Start off-screen on the left */
+    }
+  
+    .category-menu.open {
+      left: 0; /* Move to the visible position */
+    }
+  
+    .category-list {
+      padding-left: 0; /* Adjust padding for smaller screens */
     }
   }
 }
