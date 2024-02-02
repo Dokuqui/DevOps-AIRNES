@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../styles/cat_item.scss";
+import "../../styles/cat_item.scss";
 
 const CategoryBox = ({ subcategory, filtered }) => {
   if (filtered) {

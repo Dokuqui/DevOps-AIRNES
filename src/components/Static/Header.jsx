@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/header.scss";
+import "../../styles/header.scss";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
