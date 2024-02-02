@@ -137,6 +137,10 @@ html {
                 flex: 1;
                 padding: 8px;
                 margin-right: 10px;
+
+                @media (max-width: 768px) {
+                    margin-right: 0px;
+                }
                 border: 1px solid #ced4da;
                 border-radius: 4px;
             }

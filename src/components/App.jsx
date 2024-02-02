@@ -1,15 +1,15 @@
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './Home';
 
 const App = () => {
-    return (
-        <div>
-            {/* Other components or content */}
-            <Header />
-            <Footer />
-        </div>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default App;
