@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Header from "./Header";
+import Header from "../Static/Header";
 import Box from "./Banner";
-import FilterButton from "./FilterButton";
-import FilterModal from "./FilterModal";
+import FilterButton from "../Filter/FilterButton";
+import FilterModal from "../Filter/FilterModal";
 import { CategoryList, categories } from "./CategoryList";
-import Footer from "./Footer";
-import "../styles/category.scss";
+import Footer from "../Static/Footer";
+import "../../styles/category.scss";
 
 const CategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/category.scss";
+import "../../styles/category.scss";
 
 const FilterButton = ({ onClick }) => {
   return (

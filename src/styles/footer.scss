@@ -17,7 +17,7 @@ body, html {
 }
 
 .icons {
-  flex: 0 0 100%;
+  text-align: center;
   max-width: 100%;
   margin-top: 50px;
   margin-bottom: 30px;
@@ -41,11 +41,15 @@ body, html {
       }
     }
   }
+
+  @media (max-width: 768px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .section {
   max-width: 100%;
-  text-align: center;
 
   h5 {
     color: $primary-color;
@@ -55,7 +59,7 @@ body, html {
 
   ul {
     list-style: none;
-    padding: 0;
+    padding: 10;
 
     li {
       margin-bottom: 10px;
@@ -64,6 +68,7 @@ body, html {
         text-decoration: none;
         color: $text-color;
         transition: color 0.3s;
+        padding: 20;
 
         &:hover {
           color: $primary-color;
@@ -80,10 +85,8 @@ body, html {
 }
 
 .contact {
-  flex: 0 0 100%;
   max-width: 100%;
   margin-bottom: 30px;
-  text-align: center;
 
   h5 {
     color: $primary-color;
@@ -95,15 +98,8 @@ body, html {
     color: $text-color;
 
     span {
-      display: block;
       margin-top: 5px;
     }
-  }
-
-  @media (max-width: 768px) {
-    flex: 0 0 100%;
-    max-width: 100%;
-    text-align: left;
   }
 }
 
@@ -112,7 +108,6 @@ body, html {
   max-width: 100%;
   margin-bottom: 30px;
   margin-right: 10px;
-  text-align: center;
 
   form {
     h5 {
@@ -132,6 +127,7 @@ body, html {
       input {
         flex: 1;
         padding: 8px;
+        margin-top: 0;
         margin-right: 10px;
 
         @media (max-width: 768px) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CategoryBox from "./Category";
-import Pagination from "./Pagination";
-import "../styles/category.scss";
+import Pagination from "../Pagination";
+import "../../styles/category.scss";
 
 const categories = [
   {
