@@ -3,7 +3,6 @@ import Header from "./Header";
 import Box from "./Banner";
 import FilterButton from "./FilterButton";
 import FilterModal from "./FilterModal";
-import CategoryMenu from "./CategoryMenu";
 import { CategoryList, categories } from "./CategoryList";
 import Footer from "./Footer";
 import "../styles/category.scss";
@@ -25,18 +24,6 @@ const CategoryPage = () => {
     setCurrentPage(newPage);
   };
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    setSelectedSubcategory(null);
-    setCurrentPage(1);
-  };
-
-  const handleSubcategoryChange = (subcategory) => {
-    setSelectedSubcategory(subcategory);
-    setCurrentPage(1);
-  };
-
-
   const handleApplyFilter = useCallback(() => {
     let filteredCategories = categories;
 
@@ -47,16 +34,16 @@ const CategoryPage = () => {
     }
 
     if (selectedSubcategory) {
-      filteredCategories = filteredCategories.filter((category) =>
-        category.subcategories.some(
+      filteredCategories = filteredCategories.map((category) => ({
+        ...category,
+        subcategories: category.subcategories.filter(
           (subcategory) => subcategory.name === selectedSubcategory
-        )
-      );
+        ),
+      }));
     }
 
-    // Update the displayed categories based on the filters
     setDisplayedCategories(filteredCategories);
-  }, [selectedCategory, selectedSubcategory, setDisplayedCategories]);
+  }, [selectedCategory, selectedSubcategory]);
 
   const handleOpenFilterModal = () => {
     setFilterModalOpen(true);
@@ -67,7 +54,6 @@ const CategoryPage = () => {
   };
 
   useEffect(() => {
-    // Update displayed categories whenever filters change
     handleApplyFilter();
   }, [selectedCategory, selectedSubcategory, handleApplyFilter]);
 
@@ -77,21 +63,15 @@ const CategoryPage = () => {
       <Box />
       <h2 className="category-title">Category Page</h2>
       <FilterButton onClick={handleOpenFilterModal} />
-      <CategoryMenu
-          onCategoryChange={handleCategoryChange}
-          onSubcategoryChange={handleSubcategoryChange}
-          selectedCategory={selectedCategory}
-          selectedSubcategory={selectedSubcategory}
-        />
       <div className="category-sub">
-          <CategoryList
-            categories={displayedCategories}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            filterCriteria={selectedCategory}
-          />
-        </div>
+        <CategoryList
+          categories={displayedCategories}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          filterCriteria={selectedCategory}
+        />
+      </div>
       {isFilterModalOpen && (
         <FilterModal
           onClose={handleCloseFilterModal}

@@ -75,10 +75,11 @@ const CategoryList = ({
   const [filteredCategories, setFilteredCategories] = useState([]);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedCategories = categories.slice(startIndex, endIndex);
+  const displayedCategories = filterCriteria
+    ? filteredCategories.slice(startIndex, endIndex)
+    : categories.slice(startIndex, endIndex);
 
   useEffect(() => {
-    // Apply filtering logic based on the provided filterCriteria
     const filtered = filterCriteria
       ? categories.filter((category) => category.name === filterCriteria)
       : categories;
@@ -99,7 +100,7 @@ const CategoryList = ({
         </div>
       ))}
       <Pagination
-        totalPages={Math.ceil(categories.length / itemsPerPage)}
+        totalPages={Math.ceil(filteredCategories.length / itemsPerPage)}
         currentPage={currentPage}
         onPageChange={onPageChange}
       />

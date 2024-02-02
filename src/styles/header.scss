@@ -13,10 +13,10 @@
     .title {
         flex: auto;
       display: flex;
-      margin-left: 10px; /* Adjusted margin for smaller screens */
+      margin-left: 10px;
       align-items: center;
       text-transform: uppercase;
-      font-size: 24px; /* Adjusted font size for smaller screens */
+      font-size: 24px;
       font-weight: bold;
       font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
@@ -73,7 +73,7 @@
 
   @media (max-width: 1024px) {
     .header {
-      padding: 20px; /* Adjust padding for smaller screens */
+      padding: 20px;
     }
 
     .burger-menu {
@@ -87,18 +87,18 @@
     }
 
     .title {
-      font-size: 18px; /* Adjust font size for smaller screens */
-      margin-left: 10px; /* Adjust margin for smaller screens */
+      font-size: 18px;
+      margin-left: 10px;
     }
 
     .icons {
-      display: none; /* Hide icons for smaller screens */
+      display: none;
     }
 
     .navbar {
       display: none;
       flex-direction: column;
-      width: 90%; /* Adjust width for full width */
+      width: 90%;
       z-index: 1;
       right: 0;
 
@@ -108,7 +108,7 @@
       }
 
       li {
-        width: 100%; /* Make each li full width */
+        width: 100%;
         box-sizing: border-box;
         border-bottom: 1px solid #555;
       }
@@ -120,7 +120,7 @@
 
     button {
       svg {
-        width: 30px; /* Adjust the burger menu icon size for smaller screens */
+        width: 30px;
       }
     }
   }

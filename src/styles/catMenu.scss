@@ -167,16 +167,16 @@
 
   @media (max-width: 768px) {
     .category-menu {
-      width: 100%; /* Full width on smaller screens */
-      left: -100%; /* Start off-screen on the left */
+      width: 100%;
+      left: -100%;
     }
   
     .category-menu.open {
-      left: 0; /* Move to the visible position */
+      left: 0;
     }
   
     .category-list {
-      padding-left: 0; /* Adjust padding for smaller screens */
+      padding-left: 0;
     }
   }
 }
