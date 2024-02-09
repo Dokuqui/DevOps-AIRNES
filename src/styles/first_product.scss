@@ -310,7 +310,8 @@ $breakpoint-small: 480px;
 
   h2 {
     font-size: 24px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     margin-left: 25px;
   }
 
@@ -446,7 +447,7 @@ $breakpoint-small: 480px;
   @media only screen and (max-width: $breakpoint-tablet) {
     .navigation-buttons{
       button {
-        top: 80%;
+        top: 150%;
         margin: 0;
 
         &.next {
@@ -484,7 +485,7 @@ $breakpoint-small: 480px;
 
     .navigation-buttons{
       button {
-        top: 220%
+        top: 170%
       }
     }
   }
