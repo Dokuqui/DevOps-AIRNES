@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
 .subcategory-card {
   position: relative;
   width: 200px;
@@ -10,6 +12,7 @@
   color: #fff;
   transition: transform 0.3s;
   font-size: 20px;
+  font-family: 'Lato', sans-serif;
 
   .curtain-overlay {
     display: flex;

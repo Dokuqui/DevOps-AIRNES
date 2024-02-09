@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
 .category-menu {
   display: flex;
   flex-direction: column;
@@ -10,6 +12,7 @@
   left: -160px;
   transition: left 0.5s;
   overflow-x: hidden;
+  font-family: 'Lato', sans-serif;
 
   &.open {
     left: 0;
