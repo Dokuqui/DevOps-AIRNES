@@ -5,7 +5,6 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 
 const SimilarProductItem = ({ product }) => {
   const handleProductClick = (productId) => {
-    // Handle navigation to the product details page for the clicked product
     console.log(`Navigating to product details for product ${productId}`);
   };
 
@@ -41,7 +40,7 @@ const SimilarProducts = ({ products }) => {
     if (nextIndex < products.length) {
       setStartIndex(nextIndex);
     } else {
-      setStartIndex(0); // Wrap around to the beginning
+      setStartIndex(0);
     }
   };
 
@@ -50,13 +49,13 @@ const SimilarProducts = ({ products }) => {
     if (prevIndex >= 0) {
       setStartIndex(prevIndex);
     } else {
-      setStartIndex(products.length - itemsPerPage); // Wrap around to the end
+      setStartIndex(products.length - itemsPerPage);
     }
   };
 
   return (
     <div className="similar-products">
-      <h2>Similar Products:</h2>
+      <h2>You may also like:</h2>
       <div className="product-list">
         {products
           .slice(startIndex, startIndex + itemsPerPage)
@@ -126,7 +125,6 @@ const dummyProducts = [
     image: "https://via.placeholder.com/150",
     price: 29.99,
   },
-  // Add more dummy products as needed
 ];
 
 const SimilarProductsContainer = () => {
