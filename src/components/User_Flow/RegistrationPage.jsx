@@ -1,18 +1,18 @@
 import React from "react";
 import Header from "../Static/Header";
 import Footer from "../Static/Footer";
-import Login from "./Login";
+import Registration from "./Registration";
 
-const LoginPage = () => {
+const RegistrationPage = () => {
   return (
     <div>
       <Header />
-      <div className="login">
-        <Login />
+      <div className="registration">
+        <Registration />
       </div>
       <Footer />
     </div>
   );
 };
 
-export default LoginPage;
+export default RegistrationPage;
