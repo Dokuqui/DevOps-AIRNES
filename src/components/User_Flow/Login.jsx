@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import SuccessPopup from "./SuccessPopUp";
 import "../../styles/login.scss";
 
 const Login = () => {
@@ -7,11 +8,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
+    setShowSuccessPopup(false);
 
     if (!email) {
       setEmailError("Email is required");
@@ -25,7 +28,8 @@ const Login = () => {
       setPasswordError("Password must be at least 6 characters long");
     }
 
-    if (!emailError && !passwordError) {
+    if (!emailError && !passwordError && password.length >= 6) {
+      setShowSuccessPopup(true);
       console.log("Login successful");
     }
   };
@@ -58,14 +62,26 @@ const Login = () => {
           />
           {passwordError && <p className="error-message">{passwordError}</p>}
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-button">
+          Login
+        </button>
       </form>
+      <p className="forget">
+        <Link to="/reinstall">Forgot Password?</Link>
+      </p>
       <p className="GoTo">
         Still no account? <Link to="/registration">Go to registration</Link>
       </p>
+
+      {showSuccessPopup && (
+        <SuccessPopup
+          message="Login successful!"
+          buttonText="Home Page"
+          onClose={() => setShowSuccessPopup(false)}
+        />
+      )}
     </div>
   );
 };
 
 export default Login;
-
