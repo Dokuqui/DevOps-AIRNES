@@ -3,27 +3,18 @@ import { Link } from "react-router-dom";
 import SuccessPopup from "./SuccessPopUp";
 import "../../styles/login.scss";
 
-const Registration = () => {
-  const [email, setEmail] = useState("");
+const NewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setEmailError("");
     setPasswordError("");
     setConfirmPasswordError("");
     setShowSuccessPopup(false);
-
-    if (!email) {
-      setEmailError("Email is required");
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Invalid email address");
-    }
 
     if (!password) {
       setPasswordError("Password is required");
@@ -37,30 +28,23 @@ const Registration = () => {
       setConfirmPasswordError("Passwords do not match");
     }
 
-    if (!emailError && !passwordError && !confirmPasswordError && password.length >= 6) {
+    if (!passwordError && !confirmPasswordError && password.length >= 6) {
       setShowSuccessPopup(true);
-      console.log("Registration successful");
+      console.log(
+        "Reinstallisation passed successful, you have set new password!"
+      );
     }
   };
 
   return (
-    <div className="registration-container">
-      <h2>Registration</h2>
+    <div className="new_password-container">
+      <h2>Forgot Password</h2>
+      <p>
+        <b>Please create new password to access to your account</b>
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          {emailError && <p className="error-message">{emailError}</p>}
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Create Password:</label>
+          <label htmlFor="password">Create New Password:</label>
           <input
             type="password"
             id="password"
@@ -85,23 +69,23 @@ const Registration = () => {
             <p className="error-message">{confirmPasswordError}</p>
           )}
         </div>
-        <button type="submit" className="register-button">
-          Register
+
+        <button type="submit" className="new_password-button">
+          Create Password
         </button>
       </form>
-      <p className="GoTo">
-        Already have an account? <Link to="/login">Go to login</Link>
-      </p>
 
-      {showSuccessPopup && (
-        <SuccessPopup
-          message="Registration passed successful!"
-          buttonText="Login Page"
-          onClose={() => setShowSuccessPopup(false)}
-        />
-      )}
+      <Link to="/login" className="button-link">
+        {showSuccessPopup && (
+          <SuccessPopup
+            message="Reinstallisation passed successful, you have set new password!"
+            buttonText="Login Page"
+            onClose={() => setShowSuccessPopup(false)}
+          />
+        )}
+      </Link>
     </div>
   );
 };
 
-export default Registration;
+export default NewPassword;

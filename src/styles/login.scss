@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
 
 .login-container,
-.registration-container {
+.registration-container,
+.reinstal-container,
+.new_password-container {
   background-color: #f5f5f5;
   box-shadow: inset;
   padding: 20px;
@@ -39,7 +41,15 @@
     }
   }
 
-  button {
+  .button-link {
+    text-decoration: none;
+    color: inherit; 
+  }
+
+  .login-button,
+  .register-button,
+  .new_password-button,
+  .reinstal-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,14 +58,19 @@
     color: #333333;
     font-size: 18px;
     border-radius: 0px;
-    width: 150px;
-    height: 30px;
+    width: 200px;
+    height: 50px;
     font-weight: bold;
     border: 2px solid #333333;
     transition: 0.3s;
     box-shadow: 5px 5px 0px 0px rgba(51, 51, 51, 1);
     background-color: #ffffff;
-    margin-left: 75px;
+    margin-left: 50px;
+
+    .Link{
+        text-decoration: none;
+        color: inherit;
+    }
 
     &:hover {
       box-shadow: 0 0 #333;
