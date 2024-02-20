@@ -36,10 +36,14 @@ const Carroussel = ({ images }) => {
 
     let leftArrowClicked = () => {
         console.log("left");
+        timer = Date.now();
+        setCurrentSlide(currentSlide - 1 < 0 ? images.length - 1 : currentSlide - 1);
     };
 
     let rightArrowClicked = () => {
         console.log("right");
+        timer = Date.now();
+        setCurrentSlide(prevSlide => (prevSlide + 1) % images.length)
     };
 
 
@@ -54,7 +58,7 @@ const Carroussel = ({ images }) => {
         setTimeout(async () => {
             while (true) {
                 if (carrousselId == carroussels[0]) {
-                    console.log(carrousselId, timer);
+                    // console.log(carrousselId, timer);
                 }
                 const currentTime = Date.now();
                 if (currentTime - timer > 2000) {
@@ -69,6 +73,17 @@ const Carroussel = ({ images }) => {
 
     return (
         <div className="carroussel" id={carrousselId} >
+            <div className="images">
+                <div style={{
+                    transform: `translateX(-${currentSlide * 100}%)`
+                }}>
+                    {images && images.map((image, index) => (
+                        <img src={image.image}/>
+                    ))}
+                </div>
+            </div>
+            
+
             <div className="overlay">
                 <button className="left" onClick={leftArrowClicked}>&#10094;</button>
                 <button className="right" onClick={rightArrowClicked}>&#10095;</button>
@@ -82,6 +97,7 @@ const Carroussel = ({ images }) => {
                     ))}
                 </div>
             </div>
+            
         </div>
     );
 };
