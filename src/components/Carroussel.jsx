@@ -61,7 +61,7 @@ const Carroussel = ({ images }) => {
                     // console.log(carrousselId, timer);
                 }
                 const currentTime = Date.now();
-                if (currentTime - timer > 2000) {
+                if (currentTime - timer > 3000) {
                     setCurrentSlide(prevSlide => (prevSlide + 1) % images.length)
                     timer = currentTime;
                 }
@@ -71,11 +71,13 @@ const Carroussel = ({ images }) => {
 
     }, [images.length]);
 
+
     return (
         <div className="carroussel" id={carrousselId} >
             <div className="images">
                 <div style={{
-                    transform: `translateX(-${currentSlide * 100}%)`
+                    transform: `translateX(-${(currentSlide / images.length) * 100}%)`,
+                    width: (images.length * 100) + "%"
                 }}>
                     {images && images.map((image, index) => (
                         <img src={image.image}/>
