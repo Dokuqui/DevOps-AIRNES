@@ -3,6 +3,7 @@ import Header from './Static/Header';
 import Caroussel from './Home/Carroussel';
 import ProductCards from './Home/ProductCards'
 import Footer from './Static/Footer';
+import CategorySection from './Home/CategorySection';
 
 const HomePage = () => {
     return (
@@ -32,6 +33,57 @@ const HomePage = () => {
                     redirection: "product/2"
                 }
             ]}/>
+            <CategorySection sections={[
+                [{
+                    title: "Decor",
+                    description: "Texte de lorem ipsum",
+                    image: "https://i.imgur.com/84bXXOY.png",
+                    isHeader: true
+                },
+                {
+                    title: "Towel", 
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30),
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg"
+                },
+                {
+                    title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30)
+                },
+                {
+                    title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30)
+                }],
+                [{
+                    title: "Decor",
+                    description: "Texte de lorem ipsum",
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    isHeader: true
+                },
+                {
+                    title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30)
+                },
+                {
+                    title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30)
+                },
+                {
+                    title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    rate: Math.floor(Math.random() * 6),
+                    price: Math.floor(Math.random() * 30)
+                }]
+            ]}
+            />
             <Footer />
         </div>
     );

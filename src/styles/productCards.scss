@@ -62,7 +62,7 @@
 
                 & > button {
                     background-color: transparent;
-                    border: solid 1px #323334;
+                    border: solid 1px #000000;
                     padding: 10px;
                     font-family: 'Roboto', sans-serif;
                     font-weight: 700;
@@ -73,7 +73,6 @@
                         cursor: pointer;
                         color: #FFFFFF;
                         background-color: #000000;
-                        border: none;    
                         transition: background-color 200ms;
 
                     }
