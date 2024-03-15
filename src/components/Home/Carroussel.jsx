@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/carroussel.scss";
+import "../../styles/carroussel.scss";
 
 const carroussels = [];
 
