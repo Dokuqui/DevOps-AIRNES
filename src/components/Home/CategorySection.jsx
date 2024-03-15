@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { BsBasket3, BsHeart } from "react-icons/bs";
+import { BsBasket3, BsHeart, BsHeartFill } from "react-icons/bs";
 import "../../styles/categorySection.scss";
 import Rate from "./Rate";
 
 const CategorySection = ({ sections }) => {
+    const [sectionsList, setSectionsList] = useState(sections);
+
+    const handleFavoriteClick = (item) => {
+        const updatedFavorites = sectionsList.map(section =>
+            section.map(sectionItem =>
+                sectionItem.id === item.id ? { ...sectionItem, isFavorite: !sectionItem.isFavorite } : sectionItem
+            )
+        );
+        setSectionsList(updatedFavorites);
+        // Add to favorite callback ...
+
+    };
+
+    const handleAddToCart = (item) => {
+        // Add to cart callback ...
+    };
+
     return (
         <div className="categorySection">
-            {sections && sections.map((section) => (
+            {sectionsList && sectionsList.map((section) => (
                 <div className="section">
                     {section.map((item, index) => {
                         return (
@@ -20,9 +37,11 @@ const CategorySection = ({ sections }) => {
                                             <p className="price">{item.price}€</p>
                                         </div>
                                         <div className="item-tooltip">
-                                            <BsBasket3/>
+                                            <button className="item-tooltip-button" onClick={() => handleAddToCart(item)}><BsBasket3 /></button>
                                             <div className="separator"></div>
-                                            <BsHeart/>
+                                            <button className="item-tooltip-button" onClick={() => handleFavoriteClick(item)}>
+                                                {item.isFavorite ? <BsHeartFill color="red" /> : <BsHeart />}
+                                            </button>
                                         </div>
                                     </>
                                 )}

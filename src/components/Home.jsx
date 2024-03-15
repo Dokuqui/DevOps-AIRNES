@@ -36,27 +36,33 @@ const HomePage = () => {
             <CategorySection sections={[
                 [{
                     title: "Decor",
-                    description: "Texte de lorem ipsum",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     image: "https://i.imgur.com/84bXXOY.png",
                     isHeader: true
                 },
                 {
+                    id: 1,
                     title: "Towel", 
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
                     price: Math.floor(Math.random() * 30),
-                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg"
+                    isFavorite: Math.round(Math.random() * 0.9)
                 },
                 {
+                    id: 2,
                     title: "Towel", 
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
-                    price: Math.floor(Math.random() * 30)
+                    price: Math.floor(Math.random() * 30),
+                    isFavorite: Math.round(Math.random() * 0.9)
                 },
                 {
+                    id: 3,
                     title: "Towel", 
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
-                    price: Math.floor(Math.random() * 30)
+                    price: Math.floor(Math.random() * 30),
+                    isFavorite: Math.round(Math.random() * 0.9)
                 }],
                 [{
                     title: "Decor",
@@ -65,22 +71,28 @@ const HomePage = () => {
                     isHeader: true
                 },
                 {
+                    id: 4,
                     title: "Towel", 
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
-                    price: Math.floor(Math.random() * 30)
+                    price: Math.floor(Math.random() * 30),
+                    isFavorite: Math.round(Math.random() * 0.9)
                 },
                 {
+                    id: 5,
                     title: "Towel", 
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
-                    price: Math.floor(Math.random() * 30)
+                    price: Math.floor(Math.random() * 30),
+                    isFavorite: Math.round(Math.random() * 0.9)
                 },
                 {
+                    id: 6,
                     title: "Towel", 
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     rate: Math.floor(Math.random() * 6),
-                    price: Math.floor(Math.random() * 30)
+                    price: Math.floor(Math.random() * 30),
+                    isFavorite: Math.round(Math.random() * 0.9)
                 }]
             ]}
             />

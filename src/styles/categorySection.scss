@@ -42,12 +42,11 @@
                 text-transform: uppercase;
                 font-size: 28px;
                 font-weight: 700;
+                margin-bottom: 0px;
             }
 
             &>.description {
-                text-transform: uppercase;
                 font-size: 16px;
-                font-weight: 700;
             }
 
             &>.viewAll {
@@ -157,6 +156,21 @@
                     height: 26px;
                     width: 1px;
                     background-color: #00000055;
+                }
+                &>.item-tooltip-button{
+                    background-color: transparent;
+                    border: none;
+                    font-size: 20px;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                    align-items: center;
+                    margin: 0;
+                    padding: 0;
+
+                    &:hover{
+                        cursor: pointer;
+                    }
                 }
 
                 & > * {
