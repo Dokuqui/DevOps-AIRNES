@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+$text-color: #fff;
+
+.nav {
+  background: #c69774;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  position: relative;
+  font-family: "Lato", sans-serif;
+}
+
+.nav-icon {
+  margin-left: 2rem;
+  font-size: 2rem;
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: $text-color;
+  text-decoration: none;
+}
+
+.nav-title {
+  text-align: center;
+  margin-left: 20px;
+  color: $text-color;
+  font-family: "Lato", sans-serif;
+}
+
+.username {
+  font-family: "Lato", serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 24px;
+  margin-right: 8rem;
+  color: $text-color;
+  text-decoration: none;
+  cursor: none;
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: $text-color;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  top: 53%;
+  right: 1rem;
+  transform: translateY(-50%);
+
+  svg {
+    font-size: 2rem;
+
+    &:hover {
+        transform: scale(-1.1);
+        fill: #191717;
+    }
+  }
+}
+
+.user-info {
+  position: relative;
+}
+
+.sidebar-nav {
+  background: #333;
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  transition: 350ms;
+  z-index: 10;
+  font-family: "Lato", sans-serif;
+
+  &.active {
+    left: 0;
+  }
+}
+
+.sidebar-wrap {
+  width: 100%;
+
+  .nav-icon {
+    font-size: 2rem;
+    color: $text-color;
+    text-decoration: none;
+  }
+}
+
+.sidebar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  .nav-icon-home {
+    display: flex;
+    align-items: center;
+    color: $text-color;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+  }
+
+  .nav-icon-home svg {
+    margin-right: 20px;
+  }
+}
+
+.sidebar-list li {
+  padding: 10px 0;
+}
+
+.sidebar-list li a {
+  color: $text-color;
+  text-decoration: none;
+  font-size: 24px;
+  display: block;
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+  font-family: "Lato", sans-serif;
+}
+
+.sidebar-list li a:hover {
+  background-color: #555;
+}
