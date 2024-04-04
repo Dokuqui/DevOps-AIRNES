@@ -62,6 +62,7 @@
                 transition: background-color 200ms;
 
                 &:hover {
+                    cursor: pointer;
                     color: black;
                     mix-blend-mode: lighten;
                     background-color: #FFFFFF;

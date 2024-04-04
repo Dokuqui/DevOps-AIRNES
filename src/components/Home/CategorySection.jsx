@@ -9,7 +9,7 @@ const CategorySection = ({ sections }) => {
     const handleFavoriteClick = (item) => {
         const updatedFavorites = sectionsList.map(section =>
             section.map(sectionItem =>
-                sectionItem.id === item.id ? { ...sectionItem, isFavorite: !sectionItem.isFavorite } : sectionItem
+                sectionItem.id === item.id && !item.isHeader ? { ...sectionItem, isFavorite: !sectionItem.isFavorite } : sectionItem
             )
         );
         setSectionsList(updatedFavorites);
@@ -20,6 +20,10 @@ const CategorySection = ({ sections }) => {
     const handleAddToCart = (item) => {
         // Add to cart callback ...
     };
+
+    const handleViewAllCategory = (category) => {
+        // Go to category by id...
+    }
 
     return (
         <div className="categorySection">
@@ -49,7 +53,7 @@ const CategorySection = ({ sections }) => {
                                     <>
                                         <h3 className="title">{item.title}</h3>
                                         <p className="description">{item.description}</p>
-                                        <button className="viewAll">View all</button>
+                                        <button className="viewAll" onClick={() => handleViewAllCategory(item)}>View all</button>
                                     </>
                                 )}
                             </div>
