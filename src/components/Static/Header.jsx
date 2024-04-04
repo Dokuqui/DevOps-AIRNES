@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../../styles/header.scss";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../../styles/header.scss';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -10,9 +10,11 @@ const Header = () => {
   };
 
   return (
-    <div className={`header ${showMenu ? "show-menu" : ""}`}>
+    <div className={`header ${showMenu ? 'show-menu' : ''}`}>
       <div className="top">
-        <div className="title">Aìrnes</div>
+        <div className="title">
+          <a className='name' href="/">Aìrnes</a>
+        </div>
         <Link to="/login">
           <button className="icon-button">
             <svg
@@ -72,7 +74,7 @@ const Header = () => {
         </button>
       </div>
 
-      <ul className={`navbar ${showMenu ? "show-menu" : ""}`}>
+      <ul className={`navbar ${showMenu ? 'show-menu' : ''}`}>
         <li>
           <a href="/">Home</a>
         </li>
@@ -84,9 +86,6 @@ const Header = () => {
         </li>
         <li>
           <a href="/">About us</a>
-        </li>
-        <li>
-          <a href="/">News</a>
         </li>
         <li>
           <a href="/">Contact us</a>

@@ -11,15 +11,20 @@
     justify-content: flex-end;
 
     .title {
-        flex: auto;
+      flex: auto;
       display: flex;
       margin-left: 10px;
       align-items: center;
-      text-transform: uppercase;
-      font-size: 24px;
-      font-weight: bold;
-      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-        "Lucida Sans", Arial, sans-serif;
+
+      .name {
+        text-decoration: none;
+        color: #555;
+        font-size: 28px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial,
+        sans-serif;
+      }
     }
 
     .icons {
@@ -49,14 +54,15 @@
     border-bottom: solid 2px;
     font-weight: bold;
     text-transform: uppercase;
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-      "Lucida Sans", Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial,
+      sans-serif;
 
     li {
       display: block;
       margin: 10px 15px;
       padding: 30px 40px;
-      transition: all 0.1s;
+      transition: height 0.1s;
+      width: 90%;
 
       a {
         color: black;
@@ -72,10 +78,6 @@
   }
 
   @media (max-width: 1024px) {
-    .header {
-      padding: 20px;
-    }
-
     .burger-menu {
       display: flex;
     }
@@ -88,22 +90,20 @@
 
     .title {
       font-size: 18px;
-      margin-left: 10px;
     }
 
     .icons {
       display: none;
     }
 
-        .navbar {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            width: 100%;
-            z-index: 1;
-            right: 0;
+    .navbar {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      right: 0;
 
       &.show-menu {
         display: flex;

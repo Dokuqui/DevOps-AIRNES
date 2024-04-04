@@ -113,7 +113,7 @@ const UserPage = () => {
   return (
     <div>
       <Header />
-      <h2>Welcome Back, {regularUser.name}</h2>
+      <h2>Welcome Back, {userData.name}</h2>
       <div className="box_back" style={{ display: 'flex' }}>
         <div className="personal_info" style={{ flex: 1 }}>
           <h3>Personal Information</h3>
@@ -132,9 +132,9 @@ const UserPage = () => {
               </label>
             )}
           </div>
-          <p>Name: {regularUser.name}</p>
-          <p>Last Name: {regularUser.lastname}</p>
-          <p>Email: {regularUser.email}</p>
+          <p>Name: {userData.name}</p>
+          <p>Last Name: {userData.lastname}</p>
+          <p>Email: {userData.email}</p>
           {/* Button to open modal for updating personal info */}
           <div className="button-cont">
             <button onClick={() => setShowModal(true)}>Update Info</button>
