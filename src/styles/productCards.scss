@@ -1,7 +1,7 @@
 .productCards {
     // background-color: red;
     margin-top: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     min-height: 100px;
     width: 100%;
     
@@ -18,7 +18,7 @@
         
 
         & > div {
-            background-color: #EEEEEE;
+            background-color: #F9F9F9;
             width: calc(50% - 45px);
             // flex: 1;
 

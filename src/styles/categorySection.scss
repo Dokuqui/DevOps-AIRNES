@@ -1,5 +1,5 @@
 .categorySection {
-    padding: 20px;
+    padding: 0px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -181,7 +181,8 @@
                 {
                     content: "";
                     position: absolute;
-                    width: 232px;
+                    width: 50%;
+                    min-width: 100px;
                     height: 56px;
                     color: #000000;
                     background-color: white;
@@ -212,6 +213,8 @@
         font-size: 14px;
         transition: background-color 200ms;
         text-transform: uppercase;
+
+        margin-bottom: 20px;
 
         width: 400px;
 

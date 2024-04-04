@@ -9,34 +9,30 @@ const HomePage = () => {
     return (
         <div>
             <Header />
-            <Caroussel images={[{
-                image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.marketsmedia.com%2Fwp-content%2Fuploads%2F2020%2F09%2FDepositphotos_71600303_l-2015.jpg&f=1&nofb=1&ipt=aa8bf1fed52fd667d493b556bbaadb58fc0c9bb300d524e837443b2772be0275&ipo=images"
-            },
-            {
-                image: "https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/TOEwt0C/videoblocks-stock-market-trading-graphic-background-animation-of-chart_bgbdx8ktl_thumbnail-1080_01.png"
-            },
-            {
-                image: "https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/TOEwt0C/videoblocks-stock-market-trading-graphic-background-animation-of-chart_bgbdx8ktl_thumbnail-1080_01.png"
-            },
-            {
-                image: "https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/TOEwt0C/videoblocks-stock-market-trading-graphic-background-animation-of-chart_bgbdx8ktl_thumbnail-1080_01.png"
-            }]} />
+            <Caroussel images={[
+                {
+                    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.gravouille.fr%2Fwp-content%2Fuploads%2F2019%2F11%2Fcuisine-bois-et-blanc-creations-gravouille-2.jpg&f=1&nofb=1&ipt=3f20ef0c5774fb5c25b39d8cb0d403058b75d868cc4c589cba1b8a38af5f77c5&ipo=images"
+                },
+                {
+                    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.static-rmg.be%2Fa%2Fview%2Fq75%2Fw%2Fh%2F2429827%2Ftouch-noir-jpg.jpg&f=1&nofb=1&ipt=b9888f93e9c7d2d73582f9b2d7a0d279fb8a97f1671e91b9ad3825373dd43525&ipo=images"
+                }
+            ]} />
             <ProductCards products={[
                 {
                     image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",
                     name: "INY VINTAGE CHAIR",
-                    redirection: "product/1"
+                    redirection: "first_product"
                 },
                 {
                     image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
                     name: "LARGE TERRACOTA VASE",
-                    redirection: "product/2"
+                    redirection: "first_product"
                 }
             ]}/>
             <CategorySection sections={[
                 [{
                     title: "Decor",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    description: "Lorem ipsum dolor sit amet.",
                     image: "https://i.imgur.com/84bXXOY.png",
                     isHeader: true
                 },

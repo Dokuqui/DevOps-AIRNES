@@ -2,7 +2,7 @@
     background-color: grey;
     width: calc(100% - 20px);
     padding: 10px;
-    height: 200px;
+    height: 400px;
     min-height: 200px;
     position: relative;
 
@@ -26,6 +26,8 @@
                 object-fit: cover;
             }
         }
+
+        filter: brightness(75%);
         
     }
 
