@@ -1,7 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SuccessPopup from "./SuccessPopUp";
 import "../../styles/login.scss";
+
+export const adminUser = {
+  email: "admin@example.com",
+  password: "adminPassword",
+  role: "admin",
+  name: "Admin"
+};
+
+export const regularUser = {
+  email: "user@example.com",
+  password: "userPassword",
+  role: "user",
+  name: "Bob",
+  lastname: "Doe"
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +24,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +44,30 @@ const Login = () => {
       setPasswordError("Password must be at least 6 characters long");
     }
 
-    if (!emailError && !passwordError && password.length >= 6) {
+    // Check if the provided email and password match the admin user data
+    if (
+      (email === adminUser.email &&
+        password === adminUser.password &&
+        adminUser.role === "admin") ||
+      (email === regularUser.email &&
+        password === regularUser.password &&
+        regularUser.role === "user")
+    ) {
+      // Perform actions for successful login
+      const userData = {
+        email: email,
+        isLoggedIn: true,
+        role: email === adminUser.email ? "admin" : "user",
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
+
+      // Redirect based on user role
+      if (userData.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/my-cabinet");
+      }
+
       setShowSuccessPopup(true);
       console.log("Login successful");
     }
