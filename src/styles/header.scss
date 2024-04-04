@@ -95,12 +95,15 @@
       display: none;
     }
 
-    .navbar {
-      display: none;
-      flex-direction: column;
-      width: 90%;
-      z-index: 1;
-      right: 0;
+        .navbar {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            width: 100%;
+            z-index: 1;
+            right: 0;
 
       &.show-menu {
         display: flex;

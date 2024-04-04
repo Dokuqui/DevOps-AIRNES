@@ -1,0 +1,107 @@
+.carroussel {
+    background-color: grey;
+    width: calc(100% - 20px);
+    padding: 10px;
+    height: 400px;
+    min-height: 200px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    & .images {
+        position: relative;
+        flex: 1;
+        // background-color: blue;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        & div {
+            display: flex;
+            height: 100%;
+            // width: 400%;
+            transition: all 1s;
+            & img {
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+
+        filter: brightness(75%);
+        
+    }
+
+    & .overlay {
+        position: absolute;
+        flex: 1;
+        // background-color: red;
+        height: calc(100% - 20px);
+        width: calc(100% - 20px);
+        display: flex;
+        
+        align-items: center;
+
+        & > button {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border: none;
+            // background-color: #FFFFFF44;
+            background-color: #FFFFFF00;
+            color: #FFF;
+
+            font-size: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: #FFFFFF44;
+                transition: all 0.2s;
+            }
+        }
+
+        & > button.right {
+            position: absolute;
+            right: 0;
+        }
+
+        & .navigation {
+            position: absolute;
+            // background-color: red;
+            width: 100%;
+            height: 20px;
+            bottom: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & > button {
+                margin: 0px 5px;
+                border: none;
+                width: 10px;
+                height: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+
+                background-color: rgba(#FFF, 0.75);
+                transition: all 0.25s;
+
+                &.active {
+                    background-color: #FFF;
+                    width: 20px;
+                    transition: all 0.25s;
+                }
+
+                &:hover {
+                    background-color: rgba(#FFF, 0.90);
+                    transition: all 0.25s;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,109 @@
+.productCards {
+    // background-color: red;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    min-height: 100px;
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    & > div {
+        width: calc(100% - 60px);
+        display: flex;
+        // flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 15px;
+        
+
+        & > div {
+            background-color: #F9F9F9;
+            width: calc(50% - 45px);
+            // flex: 1;
+
+            padding: 15px;
+            border-radius: 5px;
+
+            display: flex;
+            
+            & > img {
+                height: 100%;
+                width: 30%;
+                border-radius: 5px;
+                margin-right: 10px;
+                object-fit: cover;
+                // background-color: red;
+            }
+
+            
+            & > .productCards-content
+            {
+                width: 70%;
+                padding: 15px 20px;
+                
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                
+
+                & > h3
+                {
+                    font-family: 'Roboto', sans-serif;
+                    font-size: 28px;
+                    font-weight: 700;
+                    line-height: 33px;
+                    letter-spacing: 0em;
+                    white-space: normal;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width: 80%;
+                }
+
+                & > button {
+                    background-color: transparent;
+                    border: solid 1px #000000;
+                    padding: 10px;
+                    font-family: 'Roboto', sans-serif;
+                    font-weight: 700;
+                    font-size: 14px;
+                    transition: background-color 200ms;
+
+                    &:hover {
+                        cursor: pointer;
+                        color: #FFFFFF;
+                        background-color: #000000;
+                        transition: background-color 200ms;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .productCards {
+        & > div {
+            flex-direction: column;
+
+            & > div
+            {
+                & > img {
+                    width: 100%;
+                }
+
+                width: calc(100% - 40px);
+                
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                & > .productCards-content
+                {
+                    width: calc(100% - 40px);
+                }    
+            }
+        }
+    }
+}
