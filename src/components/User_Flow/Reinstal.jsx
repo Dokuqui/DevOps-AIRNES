@@ -57,15 +57,14 @@ const Reinstal = () => {
         Return to <Link to="/login">Login page</Link>
       </p>
 
-      <Link to="/login" className="button-link">
         {showSuccessPopup && (
           <SuccessPopup
             message="You have send email successfully, please check your email inbox!"
             buttonText="Login Page"
             onClose={() => setShowSuccessPopup(false)}
+            buttonLink="/login"
           />
         )}
-      </Link>
     </div>
   );
 };

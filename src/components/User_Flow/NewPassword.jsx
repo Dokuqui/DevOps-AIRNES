@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import SuccessPopup from "./SuccessPopUp";
 import "../../styles/login.scss";
 
@@ -75,15 +74,14 @@ const NewPassword = () => {
         </button>
       </form>
 
-      <Link to="/login" className="button-link">
         {showSuccessPopup && (
           <SuccessPopup
             message="Reinstallisation passed successful, you have set new password!"
             buttonText="Login Page"
             onClose={() => setShowSuccessPopup(false)}
+            buttonLink="/login"
           />
         )}
-      </Link>
     </div>
   );
 };
