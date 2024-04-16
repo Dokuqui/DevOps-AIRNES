@@ -14,7 +14,7 @@ const generateId = (size) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
-    while (result == '' || carroussels.findIndex(id => id === result) !== -1) {
+    while (result === '' || carroussels.findIndex(id => id === result) !== -1) {
         result = '';
         for (let i = 0; i < size; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -57,7 +57,7 @@ const Carroussel = ({ images }) => {
 
         setTimeout(async () => {
             while (true) {
-                if (carrousselId == carroussels[0]) {
+                if (carrousselId === carroussels[0]) {
                     // console.log(carrousselId, timer);
                 }
                 const currentTime = Date.now();
@@ -80,7 +80,7 @@ const Carroussel = ({ images }) => {
                     width: (images.length * 100) + "%"
                 }}>
                     {images && images.map((image, index) => (
-                        <img src={image.image}/>
+                        <img src={image.image} alt="carroussel"/>
                     ))}
                 </div>
             </div>

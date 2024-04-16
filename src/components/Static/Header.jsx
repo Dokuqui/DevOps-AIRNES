@@ -79,7 +79,7 @@ const Header = () => {
           <a href="/">Home</a>
         </li>
         <li>
-          <a href="/Category">Category</a>
+          <a href="/category">Category</a>
         </li>
         <li>
           <a href="/">Product</a>
@@ -88,7 +88,7 @@ const Header = () => {
           <a href="/">About us</a>
         </li>
         <li>
-          <a href="/">Contact us</a>
+          <a href="/contact">Contact us</a>
         </li>
       </ul>
     </div>
