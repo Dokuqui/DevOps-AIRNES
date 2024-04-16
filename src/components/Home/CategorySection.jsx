@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BsBasket3, BsHeart, BsHeartFill } from "react-icons/bs";
 import "../../styles/categorySection.scss";
 import Rate from "./Rate";
@@ -32,7 +32,7 @@ const CategorySection = ({ sections }) => {
                     {section.map((item, index) => {
                         return (
                             <div key={index} className={item.isHeader ? "item section-header" : "item section-item"}>
-                                <img src={item.image} />
+                                <img src={item.image} alt="section" />
                                 {!item.isHeader && (
                                     <>
                                         <div className="item-content">

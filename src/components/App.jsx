@@ -10,6 +10,7 @@ import NewPasswordPage from "./User_Flow/NewPasswordPage";
 import AdminPage from "./BackOffice/Admin/AdminPage";
 import UserPage from "./BackOffice/User/UserPage";
 import UpdatePassword from "./BackOffice/User/ChangePassword";
+import ContactPage from "./Static/Contact";
 
 const App = () => {
   return (
@@ -29,6 +30,9 @@ const App = () => {
         <Route path="/admin/*" element={<AdminPage />} />
         <Route path="/my-cabinet" element={<UserPage />} />
         <Route path="/my-cabinet/update-password" element={<UpdatePassword />} />
+      </Routes>
+      <Routes id="static-pages">
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </Router>
   );

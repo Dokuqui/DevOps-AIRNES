@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+$primary-color: #7A7350;
+
+.contact-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-bottom: 40px;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        height: 250px;
+    }
+
+    button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-family: 'Lato', sans-serif;
+        font-size: 1rem;
+
+        &:hover {
+            background-color: #b36b00;
+        }
+
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+
+    p.error-message {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.8rem;
+        font-family: 'Lato', sans-serif;
+    }
+}
