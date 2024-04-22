@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CategoryPage from "./Category/CategoryPage";
-import HomePage from './Home';
+import HomePage from './Home/Home';
 import Product1page from "./Product 1/Product1Page";
 import LoginPage from "./User_Flow/LoginPage";
 import RegistrationPage from "./User_Flow/RegistrationPage";
@@ -11,6 +11,7 @@ import AdminPage from "./BackOffice/Admin/AdminPage";
 import UserPage from "./BackOffice/User/UserPage";
 import UpdatePassword from "./BackOffice/User/ChangePassword";
 import ContactPage from "./Static/Contact";
+import AboutPage from "./Static/About";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
       </Routes>
       <Routes id="static-pages">
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about-us" element={<AboutPage />} />
       </Routes>
     </Router>
   );
