@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from './Static/Header';
-import Caroussel from './Home/Carroussel';
-import ProductCards from './Home/ProductCards'
-import Footer from './Static/Footer';
-import CategorySection from './Home/CategorySection';
+import Header from '../Static/Header';
+import Caroussel from './Carroussel';
+import ProductCards from './ProductCards'
+import Footer from '../Static/Footer';
+import CategorySection from './CategorySection';
 
 const HomePage = () => {
     return (

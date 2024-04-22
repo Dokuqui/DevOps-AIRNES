@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CategoryBox from "./Category";
-import Pagination from "../Pagination";
+import Pagination from "../Static/Pagination"
 import "../../styles/category.scss";
 
 const categories = [

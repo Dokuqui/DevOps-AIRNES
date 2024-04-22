@@ -1,4 +1,7 @@
+# Folder unused
 node_modules
 fontawesome
 /build
+
+# Environement
 .env

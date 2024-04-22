@@ -1,5 +1,4 @@
-import React from "react";
-import "../styles/pagination.scss";
+import "../../styles/pagination.scss"
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
