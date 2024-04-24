@@ -8,24 +8,30 @@ body, html {
 }
 
 .row-footer {
-  padding: 20px 10px 10px 10px;
+  padding: 20px 20px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   position: relative;
   background-color: $background-color;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .icons {
+  display: flex;
+  flex-direction: row;
   text-align: center;
   max-width: 100%;
   margin-top: 50px;
   margin-bottom: 30px;
   margin-left: 10px;
-  text-align: center;
 
-  button {
+  .icon-button {
     border: none;
     background: none;
     cursor: pointer;
@@ -46,6 +52,8 @@ body, html {
   @media (max-width: 768px) {
     flex: 0 0 100%;
     max-width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
@@ -81,7 +89,7 @@ body, html {
   @media (max-width: 768px) {
     flex: 0 0 100%;
     max-width: 100%;
-    text-align: left;
+    text-align: center;
   }
 }
 
@@ -101,6 +109,12 @@ body, html {
     span {
       margin-top: 5px;
     }
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
   }
 }
 
@@ -154,11 +168,7 @@ body, html {
   @media (max-width: 768px) {
     flex: 0 0 100%;
     max-width: 100%;
-    text-align: left;
-
-    .newsletter {
-      flex-direction: column;
-    }
+    margin-bottom: 20px;
   }
 }
 
