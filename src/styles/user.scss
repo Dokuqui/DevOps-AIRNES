@@ -121,23 +121,21 @@ $font-family: 'Lato', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-button {
-  display: flex;
-  padding: 10px 20px;
-  width: 120px;
-  background-color: #007bff;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    background-color: #0056b3;
+  button {
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 500px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
   }
 }
 
@@ -155,5 +153,21 @@ button {
 
   &:hover {
     background-color: #218838;
+  }
+}
+
+@media (max-width: 768px) {
+  .button-cont {
+    button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  .button-link {
+    button {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 }
