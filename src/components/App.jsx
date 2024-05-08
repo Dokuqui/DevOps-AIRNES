@@ -12,6 +12,7 @@ import UserPage from "./BackOffice/User/UserPage";
 import UpdatePassword from "./BackOffice/User/ChangePassword";
 import ContactPage from "./Static/Contact";
 import AboutPage from "./Static/About";
+import CartPage from "./User_Flow/CartPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/first_product" element={<Product1page />} />
       </Routes>
       <Routes id="user_flow">
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />
