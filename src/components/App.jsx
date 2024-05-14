@@ -13,6 +13,7 @@ import UpdatePassword from "./BackOffice/User/ChangePassword";
 import ContactPage from "./Static/Contact";
 import AboutPage from "./Static/About";
 import CartPage from "./User_Flow/CartPage";
+import Error404Page from "./Static/Error404";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
       <Routes id="static-pages">
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about-us" element={<AboutPage />} />
+        <Route path="*" element={<Error404Page />} />
       </Routes>
     </Router>
   );
