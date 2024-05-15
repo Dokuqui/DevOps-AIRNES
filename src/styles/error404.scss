@@ -1,0 +1,31 @@
+.error404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+
+    font-family: 'Roboto', sans-serif;
+
+    & .btn {
+        background-color: #000000;
+        border: solid 1px #000000;
+        color: #FFFFFF;
+        padding: 10px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        transition: background-color 200ms;
+        text-transform: uppercase;
+
+        margin-top: 20px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: transparent;
+            color: black;
+            transition: background-color 200ms;
+        }
+    }
+    
+}
