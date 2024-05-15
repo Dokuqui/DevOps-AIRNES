@@ -21,12 +21,12 @@ import Checkout_Completed from "./User_Flow/Checkout_Completed";
 const App = () => {
   return (
     <Router>
-      <Routes id="base_product">
+      <Routes>
+        {/* base_product */}
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/first_product" element={<Product1page />} />
-      </Routes>
-      <Routes id="user_flow">
+        {/* user_flow */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/*" element={<Checkout_Delivery />} />
         <Route path="/checkout/payment" element={<Checkout_Payment />} />
@@ -35,19 +35,17 @@ const App = () => {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />
         <Route path="/new_password" element={<NewPasswordPage />} />
-      </Routes>
-      <Routes id="back_office">
+        {/* back_office */}
         <Route path="/admin/*" element={<AdminPage />} />
         <Route path="/my-cabinet" element={<UserPage />} />
         <Route path="/my-cabinet/update-password" element={<UpdatePassword />} />
-      </Routes>
-      <Routes id="static-pages">
+        {/* static-pages */}
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about-us" element={<AboutPage />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
