@@ -14,6 +14,9 @@ import ContactPage from "./Static/Contact";
 import AboutPage from "./Static/About";
 import CartPage from "./User_Flow/CartPage";
 import Error404Page from "./Static/Error404";
+import Checkout_Delivery from "./User_Flow/Checkout_Delivery";
+import Checkout_Payment from "./User_Flow/Checkout_Payment";
+import Checkout_Completed from "./User_Flow/Checkout_Completed";
 
 const App = () => {
   return (
@@ -25,6 +28,9 @@ const App = () => {
       </Routes>
       <Routes id="user_flow">
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout/*" element={<Checkout_Delivery />} />
+        <Route path="/checkout/payment" element={<Checkout_Payment />} />
+        <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />

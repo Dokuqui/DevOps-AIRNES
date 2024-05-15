@@ -1,0 +1,164 @@
+.checkoutsection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+
+    margin-bottom: 50px;
+
+    & > .checkout {
+        display: flex;
+        width: 90%;
+        
+        gap: 20px;
+
+        & > .info {
+            // border: 1px solid #ddd;
+            // border-radius: 5px;
+            // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 0.6;
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+
+
+            & > .input {
+                padding: 10px;
+                border: 1px solid #000;
+                border-radius: 0;
+                width: 100%;
+
+                margin-bottom: 20px;
+
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            & > label {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 10px;
+
+            }
+            
+            
+        }
+
+        & > .checkout-total {
+            // border: 1px solid #ddd;
+            // border-radius: 5px;
+            // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 0.4;
+            padding: 20px;
+            background: rgba($color: #ECEBE9, $alpha: 0.7);
+
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            height: fit-content;
+
+            & > .price-section {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            & > button {
+                background-color: #000000;
+                border: solid 1px #000000;
+                color: #FFFFFF;
+                padding: 10px;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 700;
+                font-size: 14px;
+                transition: background-color 200ms;
+                text-transform: uppercase;
+
+                margin-bottom: 20px;
+
+                width: 400px;
+
+                // disable button
+                &:disabled {
+                    background-color: #00000033;
+                    border: solid 1px #00000033;
+                    color: #FFFFFF;
+                    padding: 10px;
+                    font-family: 'Roboto', sans-serif;
+                    font-weight: 700;
+                    font-size: 14px;
+                    transition: background-color 200ms;
+                    text-transform: uppercase;
+                    
+                    &:hover {
+                        cursor: not-allowed;
+                        background-color: #00000033;
+                        color: #FFFFFF;
+                        transition: background-color 200ms;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: transparent;
+                    color: black;
+                    transition: background-color 200ms;
+
+                }
+
+                @media (max-width: 768px) {
+                    width: 100%;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+
+    & > .order-completed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & > h3 {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 0px;
+        }
+
+        & > p {
+            font-family: 'Roboto', sans-serif;
+
+            & > .order-number {
+                font-weight: 700;
+            }
+        }
+
+        & > .btn {
+            background-color: #000000;
+            border: solid 1px #000000;
+            color: #FFFFFF;
+            padding: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            transition: background-color 200ms;
+            text-transform: uppercase;
+
+            margin-top: 20px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: transparent;
+                color: black;
+                transition: background-color 200ms;
+            }
+        }
+    }
+}
