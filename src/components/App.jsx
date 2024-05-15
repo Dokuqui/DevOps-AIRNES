@@ -7,12 +7,15 @@ import LoginPage from "./User_Flow/LoginPage";
 import RegistrationPage from "./User_Flow/RegistrationPage";
 import ReinstalPage from "./User_Flow/ReinstalPage";
 import NewPasswordPage from "./User_Flow/NewPasswordPage";
-import AdminPage from "./BackOffice/Admin/AdminPage";
-import UserPage from "./BackOffice/User/UserPage";
+// import AdminPage from "./BackOffice/Admin/AdminPage";
+// import UserPage from "./BackOffice/User/UserPage";
 import UpdatePassword from "./BackOffice/User/ChangePassword";
 import ContactPage from "./Static/Contact";
 import AboutPage from "./Static/About";
 import CartPage from "./User_Flow/CartPage";
+import Checkout_Delivery from "./User_Flow/Checkout_Delivery";
+import Checkout_Payment from "./User_Flow/Checkout_Payment";
+import Checkout_Completed from "./User_Flow/Checkout_Completed";
 
 const App = () => {
   return (
@@ -24,14 +27,17 @@ const App = () => {
       </Routes>
       <Routes id="user_flow">
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout/*" element={<Checkout_Delivery />} />
+        <Route path="/checkout/payment" element={<Checkout_Payment />} />
+        <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />
         <Route path="/new_password" element={<NewPasswordPage />} />
       </Routes>
       <Routes id="back_office">
-        <Route path="/admin/*" element={<AdminPage />} />
-        <Route path="/my-cabinet" element={<UserPage />} />
+        {/* <Route path="/admin/*" element={<AdminPage />} /> */}
+        {/* <Route path="/my-cabinet" element={<UserPage />} /> */}
         <Route path="/my-cabinet/update-password" element={<UpdatePassword />} />
       </Routes>
       <Routes id="static-pages">
