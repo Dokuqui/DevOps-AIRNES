@@ -17,6 +17,7 @@ import Error404Page from "./Static/Error404";
 import Checkout_Delivery from "./User_Flow/Checkout_Delivery";
 import Checkout_Payment from "./User_Flow/Checkout_Payment";
 import Checkout_Completed from "./User_Flow/Checkout_Completed";
+import CategoryProductPage from "./Category/CategoryProductPage";
 
 const App = () => {
   return (
@@ -25,7 +26,9 @@ const App = () => {
         {/* base_product */}
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
+        <Route path="/category/:id" element={<CategoryProductPage />} />
         <Route path="/first_product" element={<Product1page />} />
+        <Route path="/product/:id" element={<Product1page />} />
         {/* user_flow */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout/*" element={<Checkout_Delivery />} />
