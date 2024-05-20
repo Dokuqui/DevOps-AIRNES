@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MdFirstPage, MdLastPage, MdChevronRight, MdChevronLeft } from "react-icons/md";
 import Rate from "../Home/Rate";
+import { APIRequest } from "../../helper";
 
 const CategoryProductPage = () => {
     const { id } = useParams();
@@ -18,19 +19,37 @@ const CategoryProductPage = () => {
 
     useEffect(() => {
         var newProducts = [];
-        for (let i = 0; i < 250; i++) {
+        // for (let i = 0; i < 250; i++) {
 
-            newProducts.push({
-                id: i,
-                title: `Product ${i}`,
+        //     newProducts.push({
+        //         id: i,
+        //         title: `Product ${i}`,
+        //         image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+        //         rate: Math.floor(Math.random() * 6),
+        //         price: Math.floor(Math.random() * 30),
+        //         isFavorite: Math.round(Math.random() * 0.9)
+        //     });
+        // }
+
+        async function fetchData() {
+            let result = await APIRequest("get", `ProductCategory?CategoryId=${id}`);
+
+            newProducts = result.return.Products.map((product) => ({
+                id: product.ProductId,
+                title: product.Name,
                 image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
-                rate: Math.floor(Math.random() * 6),
-                price: Math.floor(Math.random() * 30),
-                isFavorite: Math.round(Math.random() * 0.9)
-            });
+                rate: product.Rate,
+                price: product.Price,
+            }));
+
+            console.log(newProducts);
+
+            setProducts(newProducts);
         }
+
+        fetchData();
         
-        setProducts(newProducts);
+        // setProducts(newProducts);
     }, []);
 
     var handleNextPage = () => {

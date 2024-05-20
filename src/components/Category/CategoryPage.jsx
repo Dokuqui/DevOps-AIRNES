@@ -3,21 +3,40 @@ import Header from "../Static/Header";
 import Box from "./Banner";
 import FilterButton from "../Filter/FilterButton";
 import FilterModal from "../Filter/FilterModal";
-import { CategoryList, categories } from "./CategoryList";
+import { CategoryList } from "./CategoryList";
 import Footer from "../Static/Footer";
 import "../../styles/category.scss";
+import { APIRequest } from "../../helper";
 
 const CategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
   const itemsPerPage = 3;
 
   const [displayedCategories, setDisplayedCategories] = useState(categories);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDisplayedCategories(categories);
+
+    async function fetchData() {
+      let result = await APIRequest("get", "CategorieRoom");
+
+      let newCategories = result.return.map((room) => ({
+        id: room.RoomId,
+        name: room.Name,
+        subcategories: room.Categories.map((category) => ({
+          id: category.CategoryId,
+          name: category.Name,
+        })),
+      }));
+
+      setCategories(newCategories);
+    }
+
+    fetchData();
   }, []);
 
   const handlePageChange = (newPage) => {
@@ -65,17 +84,18 @@ const CategoryPage = () => {
       <FilterButton onClick={handleOpenFilterModal} />
       <div className="category-sub">
         <CategoryList
-          categories={displayedCategories}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           onPageChange={handlePageChange}
           filterCriteria={selectedCategory}
+          categories={categories}
         />
       </div>
       {isFilterModalOpen && (
         <FilterModal
           onClose={handleCloseFilterModal}
           onApplyFilter={handleApplyFilter}
+          categories={categories}
         />
       )}
       <Footer />

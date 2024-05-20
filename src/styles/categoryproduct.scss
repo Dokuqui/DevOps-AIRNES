@@ -23,12 +23,13 @@
         & > .products {
             // background-color: green;
             width: 80%;
-            padding: 20px 0;
+            padding: 20px 20px;
 
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(175px, 185px));
             gap: 20px;
-            justify-content: center;
+            
+            // justify-content: center;
 
             & > .product {
                 // background-color: #EEEEEE55;

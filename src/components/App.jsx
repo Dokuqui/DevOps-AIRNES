@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CategoryPage from "./Category/CategoryPage";
 import HomePage from './Home/Home';
@@ -18,8 +18,17 @@ import Checkout_Delivery from "./User_Flow/Checkout_Delivery";
 import Checkout_Payment from "./User_Flow/Checkout_Payment";
 import Checkout_Completed from "./User_Flow/Checkout_Completed";
 import CategoryProductPage from "./Category/CategoryProductPage";
+import { getUserInfo } from "../helper";
 
 const App = () => {
+  useState(async () => {
+    var user = await getUserInfo();
+
+    if (!user) {
+      localStorage.removeItem("token");
+    }
+  });
+
   return (
     <Router>
       <Routes>

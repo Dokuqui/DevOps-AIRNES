@@ -6,13 +6,18 @@ const CategoryBox = ({ subcategory, filtered }) => {
   if (filtered) {
     return null;
   }
+
+  const handleExplore = () => {
+    window.location.href = `/category/${subcategory.id}`;
+  }
+
   return (
     <div className="subcategory-card">
       {/* <img src={subcategory.image} alt={subcategory.name} /> */}
       <div className="curtain-overlay">
         <h4>{subcategory.name}</h4>
         <div className="category-info">
-          <button>Explore</button>
+          <button onClick={handleExplore}>Explore</button>
         </div>
       </div>
     </div>

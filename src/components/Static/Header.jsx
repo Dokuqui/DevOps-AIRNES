@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import "../../helper.js"
 import '../../styles/header.scss';
+import { getUserInfo } from '../../helper.js';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [user, setUser] = useState(null);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  useState(async () => {
+    var user = await getUserInfo();
+    setUser(user);
+  });
 
   return (
     <div className={`header ${showMenu ? 'show-menu' : ''}`}>
@@ -15,7 +23,7 @@ const Header = () => {
         <div className="title">
           <a className='name' href="/">Aìrnes</a>
         </div>
-        <Link to="/login">
+        <Link to={user ? '/my-cabinet' : '/login'}>
           <button className="icon-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"

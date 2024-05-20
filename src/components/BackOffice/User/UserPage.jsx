@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../Static/Header';
 import Footer from '../../Static/Footer';
 import { regularUser } from '../../User_Flow/Login';
 import '../../../styles/user.scss';
+import { getUserInfo } from '../../../helper';
 
 const commandHistory = [
   {
@@ -40,6 +41,13 @@ const UserPage = () => {
     field: '',
     value: '',
   });
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      setUserData(await getUserInfo());
+    };
+    fetchData();
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -113,7 +121,7 @@ const UserPage = () => {
   return (
     <div>
       <Header />
-      <h2>Welcome Back, {userData.name}</h2>
+      <h2>Welcome Back, {userData?.FirstName} {userData?.LastName}</h2>
       <div className="box_back" style={{ display: 'flex' }}>
         <div className="personal_info" style={{ flex: 1 }}>
           <h3>Personal Information</h3>
@@ -132,9 +140,9 @@ const UserPage = () => {
               </label>
             )}
           </div>
-          <p>Name: {userData.name}</p>
-          <p>Last Name: {userData.lastname}</p>
-          <p>Email: {userData.email}</p>
+          <p>Name: {userData?.FirstName}</p>
+          <p>Last Name: {userData?.LastName}</p>
+          <p>Email: {userData?.Mail}</p>
           {/* Button to open modal for updating personal info */}
           <div className="button-cont">
             <button onClick={() => setShowModal(true)}>Update Info</button>
