@@ -41,7 +41,7 @@ const App = () => {
         <Route path="/product/:id" element={<Product1page />} />
         {/* user_flow */}
         {user ? <Route path="/cart" element={<CartPage />} /> : <Route path="/cart" element={<LoginPage />} />}
-        <Route path="/checkout/delivery" element={<Checkout_Delivery />} />
+        <Route path="/checkout" element={<Checkout_Delivery />} />
         <Route path="/checkout/payment" element={<Checkout_Payment />} />
         <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />

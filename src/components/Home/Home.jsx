@@ -60,6 +60,18 @@ const HomePage = () => {
                     image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.static-rmg.be%2Fa%2Fview%2Fq75%2Fw%2Fh%2F2429827%2Ftouch-noir-jpg.jpg&f=1&nofb=1&ipt=b9888f93e9c7d2d73582f9b2d7a0d279fb8a97f1671e91b9ad3825373dd43525&ipo=images"
                 }
             ]} />
+            {/* <ProductCards products={[
+                {
+                    image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",
+                    name: "INY VINTAGE CHAIR",
+                    redirection: "first_product"
+                },
+                {
+                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    name: "LARGE TERRACOTA VASE",
+                    redirection: "first_product"
+                }
+            ]}/> */}
             <ProductCards products={products} />
             {/* <CategorySection sections={[
                 [{

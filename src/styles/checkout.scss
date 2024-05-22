@@ -3,34 +3,25 @@
     flex-direction: column;
     align-items: center;
     font-family: 'Roboto', sans-serif;
-
     margin-bottom: 50px;
 
     & > .checkout {
         display: flex;
         width: 90%;
-        
         gap: 20px;
 
         & > .info {
-            // border: 1px solid #ddd;
-            // border-radius: 5px;
-            // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             flex: 0.6;
             padding: 20px;
-
             display: flex;
             flex-direction: column;
-
 
             & > .input {
                 padding: 10px;
                 border: 1px solid #000;
                 border-radius: 0;
-                width: 100%;
-
+                width: 90%;
                 margin-bottom: 20px;
-
 
                 &:focus {
                     outline: none;
@@ -41,25 +32,45 @@
                 font-size: 14px;
                 font-weight: 700;
                 margin-bottom: 10px;
+            }
+
+            & > select {
+                padding: 10px;
+                border: 1px solid #000;
+                border-radius: 0;
+                width: 90%;
+                margin-bottom: 20px;
+                font-size: 14px;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            & > .checkbox-container {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+
+                & > input {
+                    margin-right: 10px;
+                }
+
+                & > label {
+                    font-size: 14px;
+                    font-weight: 400;
+                }
 
             }
-            
-            
         }
 
         & > .checkout-total {
-            // border: 1px solid #ddd;
-            // border-radius: 5px;
-            // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             flex: 0.4;
             padding: 20px;
-            background: rgba($color: #ECEBE9, $alpha: 0.7);
-
-
+            background: rgba(#ECEBE9, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
-
             height: fit-content;
 
             & > .price-section {
@@ -69,37 +80,27 @@
             }
 
             & > button {
-                background-color: #000000;
-                border: solid 1px #000000;
-                color: #FFFFFF;
+                background-color: #000;
+                border: solid 1px #000;
+                color: #FFF;
                 padding: 10px;
                 font-family: 'Roboto', sans-serif;
                 font-weight: 700;
                 font-size: 14px;
                 transition: background-color 200ms;
                 text-transform: uppercase;
-
                 margin-bottom: 20px;
-
                 width: 400px;
 
-                // disable button
                 &:disabled {
                     background-color: #00000033;
                     border: solid 1px #00000033;
-                    color: #FFFFFF;
-                    padding: 10px;
-                    font-family: 'Roboto', sans-serif;
-                    font-weight: 700;
-                    font-size: 14px;
-                    transition: background-color 200ms;
-                    text-transform: uppercase;
-                    
+                    color: #FFF;
+                    cursor: not-allowed;
+
                     &:hover {
-                        cursor: not-allowed;
                         background-color: #00000033;
-                        color: #FFFFFF;
-                        transition: background-color 200ms;
+                        color: #FFF;
                     }
                 }
 
@@ -107,8 +108,6 @@
                     cursor: pointer;
                     background-color: transparent;
                     color: black;
-                    transition: background-color 200ms;
-
                 }
 
                 @media (max-width: 768px) {
@@ -129,7 +128,7 @@
 
         & > h3 {
             font-family: 'Roboto', sans-serif;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
 
         & > p {
@@ -141,23 +140,21 @@
         }
 
         & > .btn {
-            background-color: #000000;
-            border: solid 1px #000000;
-            color: #FFFFFF;
+            background-color: #000;
+            border: solid 1px #000;
+            color: #FFF;
             padding: 10px;
             font-family: 'Roboto', sans-serif;
             font-weight: 700;
             font-size: 14px;
             transition: background-color 200ms;
             text-transform: uppercase;
-
             margin-top: 20px;
 
             &:hover {
                 cursor: pointer;
                 background-color: transparent;
                 color: black;
-                transition: background-color 200ms;
             }
         }
     }
