@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CategoryPage from "./Category/CategoryPage";
 import HomePage from './Home/Home';
@@ -21,13 +21,15 @@ import CategoryProductPage from "./Category/CategoryProductPage";
 import { getUserInfo } from "../helper";
 
 const App = () => {
-  useState(async () => {
-    var user = await getUserInfo();
+  const [user, setUser] = useState(null);
 
-    if (!user) {
-      localStorage.removeItem("Token");
-    }
-  });
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      var userInfo = await getUserInfo();
+      setUser(userInfo);
+    };
+    fetchUserInfo();
+  }, []);
 
   return (
     <Router>
@@ -36,11 +38,10 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/category/:id" element={<CategoryProductPage />} />
-        <Route path="/first_product" element={<Product1page />} />
         <Route path="/product/:id" element={<Product1page />} />
         {/* user_flow */}
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout/*" element={<Checkout_Delivery />} />
+        {user ? <Route path="/cart" element={<CartPage />} /> : <Route path="/cart" element={<LoginPage />} />}
+        <Route path="/checkout/delivery" element={<Checkout_Delivery />} />
         <Route path="/checkout/payment" element={<Checkout_Payment />} />
         <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />
@@ -48,9 +49,9 @@ const App = () => {
         <Route path="/reinstall" element={<ReinstalPage />} />
         <Route path="/new_password" element={<NewPasswordPage />} />
         {/* back_office */}
-        <Route path="/admin/*" element={<AdminPage />} />
-        <Route path="/my-cabinet" element={<UserPage />} />
-        <Route path="/my-cabinet/update-password" element={<UpdatePassword />} />
+        {user ? <Route path="/admin/*" element={<AdminPage />} /> : <Route path="/admin/*" element={<LoginPage />} />}
+        {user ? <Route path="/my-cabinet" element={<UserPage />} /> : <Route path="/my-cabinet" element={<LoginPage />} />}
+        {user ? <Route path="/my-cabinet/update-password" element={<UpdatePassword />} /> : <Route path="/my-cabinet/update-password" element={<LoginPage />} />}
         {/* static-pages */}
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about-us" element={<AboutPage />} />
