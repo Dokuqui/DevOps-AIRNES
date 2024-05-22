@@ -22,7 +22,7 @@ export const regularUser = {
 
 const Login = () => {
   const [email, setEmail] = useState("a@a.com");
-  const [password, setPassword] = useState("EzarCLPB.1");
+  const [password, setPassword] = useState("Root@123456");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -61,14 +61,14 @@ const Login = () => {
       return;
     }
 
-    if (!loginInfo.succes) {
+    if (!loginInfo.success) {
       setError(loginInfo.return);
       setShowErrorPopup(true);
       return;
     }
 
 
-    localStorage.setItem("token", loginInfo.return.token);
+    localStorage.setItem("Token", loginInfo.return.Token);
     window.location.href = "/";
 
 

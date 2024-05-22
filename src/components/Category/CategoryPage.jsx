@@ -18,25 +18,25 @@ const CategoryPage = () => {
 
   const [displayedCategories, setDisplayedCategories] = useState(categories);
 
+  const fetchCategories = async () => {
+    let result = await APIRequest("get", "CategorieRoom");
+
+    let newCategories = result.return.map((room) => ({
+      id: room.RoomId,
+      name: room.Name,
+      subcategories: room.Categories.map((category) => ({
+        id: category.CategoryId,
+        name: category.Name,
+      })),
+    }));
+
+    setCategories(newCategories);
+  }
+
   useEffect(() => {
     setDisplayedCategories(categories);
 
-    async function fetchData() {
-      let result = await APIRequest("get", "CategorieRoom");
-
-      let newCategories = result.return.map((room) => ({
-        id: room.RoomId,
-        name: room.Name,
-        subcategories: room.Categories.map((category) => ({
-          id: category.CategoryId,
-          name: category.Name,
-        })),
-      }));
-
-      setCategories(newCategories);
-    }
-
-    fetchData();
+    fetchCategories();
   }, []);
 
   const handlePageChange = (newPage) => {

@@ -3,18 +3,18 @@ import axios from "axios";
 const API_URL = "http://localhost:667";
 
 const getUserInfo = async () => {
-    if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("Token")) {
         return null;
     }
 
     try {
         const response = await axios.get(`${API_URL}/Users/me`, {
             headers: {
-                authorization: localStorage.getItem("token"),
+                authorization: localStorage.getItem("Token"),
             },
         });
 
-        if (!response.data.succes) {
+        if (!response.data.success) {
             return null;
         }
 
@@ -43,11 +43,38 @@ const login = async (email, password) => {
 
 const APIRequest = async (method, url, data) => {
     try {
-        const response = await axios[method.toLowerCase()](`${API_URL}/${url}`, data, {
-            headers: {
-                authorization: localStorage.getItem("token"),
-            },
-        });
+        let response;
+        if (method.toLowerCase() === "delete") {
+            response = await axios.delete(`${API_URL}/${url}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("Token"),
+                },
+            });
+
+            return response.data;
+        }
+        else if (method.toLowerCase() === "put") {
+            response = await axios.put(`${API_URL}/${url}`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("Token"),
+                },
+            });
+        } else if (method.toLowerCase() === "get") {
+            response = await axios.get(`${API_URL}/${url}`, {
+                headers: {
+                    Authorization: localStorage.getItem("Token"),
+                },
+            });
+        } else {
+            response = await axios[method.toLowerCase()](`${API_URL}/${url}`, data, {
+                headers: {
+                    Authorization: localStorage.getItem("Token"),
+                },
+            });
+        }
+        
 
         return response.data;
     } catch (error) {
@@ -60,4 +87,4 @@ const APIRequest = async (method, url, data) => {
 }
 
 
-export { getUserInfo, login, APIRequest };
+export { getUserInfo, login, APIRequest, API_URL};

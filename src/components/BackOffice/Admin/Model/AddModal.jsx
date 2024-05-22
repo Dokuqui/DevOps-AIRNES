@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const AddUserModal = ({ addUser, onClose }) => {
   const [formData, setFormData] = useState({
     id: "",
-    name: "",
+    Name: "",
     lastname: "",
     email: "",
     role: "",

@@ -25,7 +25,7 @@ const App = () => {
     var user = await getUserInfo();
 
     if (!user) {
-      localStorage.removeItem("token");
+      localStorage.removeItem("Token");
     }
   });
 

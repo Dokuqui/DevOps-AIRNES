@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Static/Header";
 import Footer from "../Static/Footer";
 import ProductDetails from "./Product1Details";
@@ -6,22 +6,22 @@ import ProductImageGallery from "./ProductImageGallery_1";
 import SimilarProductsContainer from "./Similar";
 
 import "../../styles/first_product.scss";
+import { useParams } from "react-router-dom";
+import { APIRequest } from "../../helper";
 
 const ProductPage = () => {
+  const { id } = useParams();
   const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedQuantity, setQuantity] = useState(1);
 
   // This part will be replaced with your data fetching logic
-  const productData = {
-    id: 1,
+  const [productData, setProductData] = useState({
+    id,
     name: "Danish Styled Sofa",
     availability: true,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 49.99,
-    brand: "apex",
     colors: ["Red", "Blue", "Green"],
-    sizes: ["S", "M", "L"],
     images: [
       "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
       "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
@@ -37,36 +37,63 @@ const ProductPage = () => {
       },
       { id: 3, name: "Similar Product 2" },
     ],
-  };
+  });
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      const result = await APIRequest("get", `Products?ProductId=${id}`);
+      console.log(result);
+      setProductData({
+        id: result.return.ProductId,
+        name: result.return.Name,
+        availability: result.return.Stock > 0,
+        description: result.return.Description,
+        price: result.return.Price,
+        colors: ["Red", "Blue", "Green"],
+        images: [
+          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
+          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
+          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
+          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
+        ],
+        similarProducts: [
+          {
+            id: 2,
+            name: "Similar Product 1",
+            images:
+              "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
+          },
+          { id: 3, name: "Similar Product 2" },
+        ],
+      })
+    };
+
+
+
+    fetchProductData();
+  }, [id]);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
-  };
-
-  const handleSizeChange = (size) => {
-    setSelectedSize(size);
   };
 
   const handleQuantityChange = (quantity) => {
     setQuantity(quantity);
   };
 
-  const handleAddToWishList = () => {
-    console.log("Product added to wish list:", {
-      productId: productData.id,
-      selectedColor,
-      selectedSize,
-      selectedQuantity,
-    });
-  };
-
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     console.log("Product added to cart:", {
       productId: productData.id,
       selectedColor,
-      selectedSize,
       selectedQuantity,
     });
+
+    await APIRequest("post", "ProductOrder/add", {
+      ProductId: productData.id,
+      Quantity: selectedQuantity,
+    });
+
+    window.location.href = "/cart";
   };
 
   return (
@@ -81,17 +108,12 @@ const ProductPage = () => {
             name={productData.name}
             availability={productData.availability}
             price={productData.price}
-            brand={productData.brand}
             colors={productData.colors}
-            sizes={productData.sizes}
             description={productData.description}
             selectedColor={selectedColor}
-            selectedSize={selectedSize}
             onColorChange={handleColorChange}
-            onSizeChange={handleSizeChange}
             onQuantityChange={handleQuantityChange}
             onAddToCart={handleAddToCart}
-            onAddToWish={handleAddToWishList}
           />
         </div>
       </div>

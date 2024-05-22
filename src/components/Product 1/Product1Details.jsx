@@ -7,19 +7,15 @@ const ProductDetails = ({
   name,
   availability,
   price,
-  brand,
   colors,
-  sizes,
   description,
   selectedColor,
-  selectedSize,
   onColorChange,
-  onSizeChange,
   onQuantityChange,
   onAddToCart,
-  onAddToWish,
 }) => {
   const [quantity, setQuantity] = useState(1);
+
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -38,10 +34,7 @@ const ProductDetails = ({
     onAddToCart();
   };
 
-  const handleAddToWishClick = () => {
-    // Call the parent component function with the selected color, size, and quantity
-    onAddToWish();
-  };
+
   return (
     <div className="product-details">
       <h1>{name}</h1>
@@ -53,7 +46,6 @@ const ProductDetails = ({
           {availability ? "In Stock" : "Expired"}
         </span>
       </p>
-      <p>Brand: {brand}</p>
       <p>Price: ${price}</p>
 
       <div className="color-options">
@@ -67,20 +59,6 @@ const ProductDetails = ({
             style={{ backgroundColor: color }}
             onClick={() => onColorChange(color)} // Call onColorChange with the selected color
           ></div>
-        ))}
-      </div>
-
-      <div className="size-options">
-        <p>Available Sizes:</p>
-        {sizes.map((size) => (
-          <div
-            key={size}
-            className={`size-option ${selectedSize === size ? "selected" : ""}`}
-            onClick={() => onSizeChange(size)} // Call onSizeChange with the selected size
-          >
-            {size}
-            <div className="color-slide"></div>
-          </div>
         ))}
       </div>
 
@@ -106,10 +84,6 @@ const ProductDetails = ({
         <button className="add-to-cart-button" onClick={handleAddToCartClick}>
           <BiShoppingBag className="button-icon" />
           Add to Cart
-        </button>
-        <button className="wishlist-button" onClick={handleAddToWishClick}>
-          <AiOutlineHeart className="button-icon" />
-          Wishlist
         </button>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const UpdateUserModal = ({ user, updateUser, onClose }) => {
   const [formData, setFormData] = useState({
-    name: user.name,
+    Name: user.name,
     lastname: user.lastname,
     email: user.email,
     role: user.role,

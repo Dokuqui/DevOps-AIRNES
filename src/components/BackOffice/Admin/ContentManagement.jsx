@@ -1,83 +1,84 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FooterBack from "./FooterBack";
 import Sidebar from "./SideBar";
+import { APIRequest } from "../../../helper";
 
 const ContentManagement = () => {
-  // const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  // // Fetch products from the database on component mount
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  const fetchProducts = async () => {
+    try {
+      const response = await APIRequest("GET", "Products");
+      if (!response.success) {
+        throw new Error("Failed to fetch products");
+      }
+      setProducts(response.return.map((product) => ({
+        ProductId: product.ProductId,
+        Name: product.Name,
+        Categories: product.Categories.map((category) => category.CategoryId),
+        Description: product.Description,
+        Price: product.Price,
+        Stock: product.Stock,
+        Color: product.Color,
+        Images: product.Images,
+      })));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // // Function to fetch products from the database
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("API_ENDPOINT/products");
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     setProducts(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const fetchCategories = async () => {
+    try {
+      const response = await APIRequest("GET", "Categories");
 
-  // // Function to handle product deletion
-  // const handleDelete = async (productId) => {
-  //   try {
-  //     const response = await fetch(`API_ENDPOINT/products/${productId}`, {
-  //       method: "DELETE",
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Failed to delete product");
-  //     }
-  //     fetchProducts();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      if (!response.success) {
+        throw new Error("Failed to fetch categories");
+      }
 
-  const [products, setProducts] = useState([
-    { id: 1, name: "Product 1", description: "Description of Product 1" },
-    { id: 2, name: "Product 2", description: "Description of Product 2" },
-    { id: 3, name: "Product 3", description: "Description of Product 3" },
-  ]);
+      setCategories(response.categories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, []);
 
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [createFormData, setCreateFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    brand: "",
-    color: "",
-    size: "",
-    quantity: "",
-    images: [],
+    Name: "",
+    Categories: [],
+    Description: "",
+    Price: "",
+    Quantity: "",
+    Color: "",
+    Images: [],
   });
   const [updateFormData, setUpdateFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    brand: "",
-    color: "",
-    size: "",
-    quantity: "",
-    images: [],
+    Name: "",
+    Categories: [],
+    Description: "",
+    Price: "",
+    Quantity: "",
+    Color: "",
+    Images: [],
   });
 
-  const handleProductSelection = (productId, name, category) => {
+  const handleProductSelection = (productId, data) => {
     setSelectedProductId(productId);
-    setUpdateFormData({ name, category });
+    console.log(data);
+    setUpdateFormData(data);
   };
 
-  const handleDelete = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
+  const handleDelete = async (productId) => {
+    // setProducts(products.filter((product) => product.ProductId !== productId));
+    await APIRequest("delete", `Products/${productId}`);
+    await fetchProducts();
   };
 
   const handleCreate = () => {
@@ -102,44 +103,79 @@ const ContentManagement = () => {
     });
   };
 
+  const handleCategoryChange = (e) => {
+    const options = e.target.options;
+    let value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setCreateFormData({
+      ...createFormData,
+      Categories: value,
+    });
+
+    setUpdateFormData({
+      ...updateFormData,
+      Categories: value,
+    });
+  };
+
   const handleImageChange = (e) => {
     const imageFiles = Array.from(e.target.files);
 
     setCreateFormData((prevFormData) => ({
       ...prevFormData,
-      images: [...prevFormData.images, ...imageFiles],
+      Images: [...prevFormData.Images, ...imageFiles],
     }));
+
 
     setUpdateFormData((prevFormData) => ({
       ...prevFormData,
-      image: [...prevFormData.images, ...imageFiles],
+      Images: imageFiles,
     }));
   };
 
-  const handleCreateSubmit = () => {
-    const newProduct = {
-      id: products.length + 1,
-      name: createFormData.name,
-      category: createFormData.category,
-      description: createFormData.description,
-      price: createFormData.price,
-      brand: createFormData.brand,
-      color: createFormData.color,
-      size: createFormData.size,
-      quantity: createFormData.quantity,
-      images: createFormData.images,
-    };
-    setProducts([...products, newProduct]);
+  const handleCreateSubmit = async () => {
+
+    await APIRequest("POST", `Products`, {
+      Name: createFormData.Name,
+      Description: createFormData.Description,
+      Price: createFormData.Price,
+      Stock: createFormData.Quantity,
+      Categories: createFormData.Categories,
+    });
+
+    await fetchProducts();
+    
+    // setProducts([...products, newProduct]);
     setShowCreateModal(false);
   };
 
-  const handleUpdateSubmit = () => {
-    const updatedProducts = products.map((product) =>
-      product.id === selectedProductId
-        ? { ...product, ...updateFormData }
-        : product
-    );
-    setProducts(updatedProducts);
+  const handleUpdateSubmit = async () => {
+    console.log(updateFormData);
+
+    await APIRequest("PUT", `Products/${selectedProductId}`, {
+      Name: updateFormData.Name,
+      Description: updateFormData.Description,
+      Price: updateFormData.Price,
+      Stock: updateFormData.Quantity,
+      Categories: updateFormData.Categories,
+    });
+
+    // const updatedProducts = products.map((product) =>
+    //   product.ProductId === selectedProductId
+    //     ? { ...product, ...updateFormData }
+    //     : product
+    // );
+
+    await fetchProducts();
+
+    // console.log(updatedProducts);
+    // setProducts(updatedProducts);
     setShowUpdateModal(false);
   };
 
@@ -173,18 +209,22 @@ const ContentManagement = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product.ProductId}>
                   <td
                     onClick={() => {
-                      handleProductSelection(
-                        product.id,
-                        product.name,
-                        product.category
-                      );
+                      handleProductSelection(product.ProductId,
+                        {
+                          Name: product.Name,
+                          Categories: product.Categories,
+                          Price: product.Price,
+                          Description: product.Description,
+                          Quantity: product.Stock,
+                          Color: product.Color,
+                        });
                       handleUpdate();
                     }}
                   >
-                    {product.name}
+                    {product.Name}
                   </td>
                 </tr>
               ))}
@@ -198,12 +238,12 @@ const ContentManagement = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product.ProductId}>
                   <td>
-                    {product.name}
+                    {product.Name}
                     <button
                       className="delete"
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product.ProductId)}
                     >
                       Delete
                     </button>
@@ -226,66 +266,64 @@ const ContentManagement = () => {
             <input
               type="text"
               id="createName"
-              name="name"
-              value={createFormData.name}
+              name="Name"
+              value={createFormData.Name}
               onChange={handleCreateInputChange}
             />
-            <label htmlFor="createCategory">Category:</label>
-            <input
-              type="text"
+            <label htmlFor="createCategory">Categories:</label>
+            <select
               id="createCategory"
-              name="category"
-              value={createFormData.category}
-              onChange={handleCreateInputChange}
-            />
+              name="Categories"
+              value={createFormData.Categories}
+              onChange={handleCategoryChange}
+              multiple={true}
+            >
+              {categories.map((Categories) => (
+                <option key={Categories.CategoryId} value={Categories.CategoryId}>
+                  {Categories.Name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="createDescription">Description:</label>
             <input
               type="text"
               id="createDescription"
-              name="description"
-              value={createFormData.description}
+              name="Description"
+              value={createFormData.Description}
               onChange={handleCreateInputChange}
             />
             <label htmlFor="createPrice">Price:</label>
             <input
               type="text"
               id="createPrice"
-              name="price"
-              value={createFormData.price}
-              onChange={handleCreateInputChange}
-            />
-            <label htmlFor="createBrand">Brand:</label>
-            <input
-              type="text"
-              id="createBrand"
-              name="brand"
-              value={createFormData.brand}
-              onChange={handleCreateInputChange}
-            />
-            <label htmlFor="createSize">Size:</label>
-            <input
-              type="text"
-              id="createSize"
-              name="size"
-              value={createFormData.size}
+              name="Price"
+              value={createFormData.Price}
               onChange={handleCreateInputChange}
             />
             <label htmlFor="createQuantity">Quantity:</label>
             <input
               type="text"
               id="createQuantity"
-              name="quantity"
-              value={createFormData.quantity}
+              name="Quantity"
+              value={createFormData.Quantity}
+              onChange={handleCreateInputChange}
+            />
+            <label htmlFor="createColor">Color:</label>
+            <input
+              type="text"
+              id="createColor"
+              name="Color"
+              value={createFormData.Color}
               onChange={handleCreateInputChange}
             />
             <label htmlFor="createImages">Image:</label>
             <input
               type="file"
               id="createImages"
-              name="images"
+              name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
-              multiple // Allow add multiple images
+              multiple={true} // Allow add multiple images
             />
             <button onClick={handleCreateSubmit}>Submit</button>
           </div>
@@ -303,63 +341,61 @@ const ContentManagement = () => {
             <input
               type="text"
               id="updateName"
-              name="name"
-              value={updateFormData.name}
+              name="Name"
+              value={updateFormData.Name}
               onChange={handleUpdateInputChange}
             />
-            <label htmlFor="updateCategory">Category:</label>
-            <input
-              type="text"
+            <label htmlFor="updateCategory">Categories:</label>
+            <select
               id="updateCategory"
-              name="category"
-              value={updateFormData.category}
-              onChange={handleUpdateInputChange}
-            />
+              name="Categories"
+              value={updateFormData.Categories}
+              onChange={handleCategoryChange}
+              multiple={true}
+            >
+              {categories.map((Categories) => (
+                <option key={Categories.CategoryId} value={Categories.CategoryId}>
+                  {Categories.Name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="updateDescription">Description:</label>
             <input
               type="text"
               id="updateDescription"
-              name="description"
-              value={updateFormData.description}
+              name="Description"
+              value={updateFormData.Description}
               onChange={handleUpdateInputChange}
             />
             <label htmlFor="updatePrice">Price:</label>
             <input
               type="text"
               id="updatePrice"
-              name="price"
-              value={updateFormData.price}
-              onChange={handleUpdateInputChange}
-            />
-            <label htmlFor="updateBrand">Brand:</label>
-            <input
-              type="text"
-              id="updateBrand"
-              name="brand"
-              value={updateFormData.brand}
-              onChange={handleUpdateInputChange}
-            />
-            <label htmlFor="updateSize">Size:</label>
-            <input
-              type="text"
-              id="updateSize"
-              name="size"
-              value={updateFormData.size}
+              name="Price"
+              value={updateFormData.Price}
               onChange={handleUpdateInputChange}
             />
             <label htmlFor="updateQuantity">Quantity:</label>
             <input
               type="text"
               id="updateQuantity"
-              name="quantity"
-              value={updateFormData.quantity}
+              name="Quantity"
+              value={updateFormData.Quantity}
+              onChange={handleUpdateInputChange}
+            />
+            <label htmlFor="updateColor">Color:</label>
+            <input
+              type="text"
+              id="updateColor"
+              name="Color"
+              value={updateFormData.Color}
               onChange={handleUpdateInputChange}
             />
             <label htmlFor="updateImages">Image:</label>
             <input
               type="file"
               id="updateImages"
-              name="images"
+              name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
             />
