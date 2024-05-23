@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsBasket3, BsHeart, BsHeartFill, BsLink, BsSearch } from "react-icons/bs";
 import "../../styles/categorySection.scss";
 import Rate from "./Rate";
-import { APIRequest } from "../../helper";
+import { APIRequest, API_URL } from "../../helper";
 
 const CategorySection = () => {
     const [sectionsList, setSectionsList] = useState([]);
@@ -31,12 +31,14 @@ const CategorySection = () => {
             }
 
             for (let j = 0; j < 3; j++) {
+                let product = result.return[i].Products[j];
                 let products = {
-                    id: result.return[i].Products[j].ProductId,
-                    title: result.return[i].Products[j].Name,
-                    image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
-                    rate: result.return[i].Products[j].Rate,
-                    price: result.return[i].Products[j].Price,
+                    id: product.ProductId,
+                    title: product.Name,
+                    // image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                    image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
+                    rate: product.Rate,
+                    price: product.Price,
                     isFavorite: false
                 };
 

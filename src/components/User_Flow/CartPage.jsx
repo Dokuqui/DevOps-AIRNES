@@ -41,7 +41,7 @@ const CartPage = () => {
         let newProducts = products_result.return.map((product) => ({
             id: product.Product.ProductId,
             name: product.Product.Name,
-            image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+            image: product.Product.Pictures?.[0]?.Link ? `${API_URL}/${product.Product.Pictures[0].Link}` : "/image/placeholder.webp",
             price: product.Product.Price,
             quantity: product.Quantity,
             isFavorite: false
@@ -102,7 +102,7 @@ const CartPage = () => {
                                 <div className="product-body">
                                     <div className="info">
                                         <div className="product-header">
-                                            <p className="product-name">{product.name}</p>
+                                            <p className="product-name" onClick={() => window.location.href = `/product/${product.id}`}>{product.name}</p>
                                             <button className="product-delete" onClick={() => handleDeleteClick(product)}><BsTrash3Fill/></button>
                                         </div>
                                         <p className="price">{product.price}€</p>

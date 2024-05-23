@@ -4,7 +4,7 @@ import Caroussel from './Carroussel';
 import ProductCards from './ProductCards'
 import Footer from '../Static/Footer';
 import CategorySection from './CategorySection';
-import { APIRequest } from '../../helper';
+import { APIRequest, API_URL } from '../../helper';
 
 const HomePage = () => {
     const [categories, setCategories] = useState([]);
@@ -33,7 +33,8 @@ const HomePage = () => {
             let randomProduct = randomCategory.Products[Math.floor(Math.random() * randomCategory.Products.length)];
 
             newProducts.push({
-                image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",
+                // image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",
+                image: randomProduct.Pictures?.[0]?.Link ? `${API_URL}/${randomProduct.Pictures[0].Link}` : "/image/placeholder.webp",
                 name: randomProduct.Name,
                 redirection: `product/${randomProduct.ProductId}`
             });

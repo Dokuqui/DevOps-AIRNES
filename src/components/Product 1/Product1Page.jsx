@@ -7,7 +7,7 @@ import SimilarProductsContainer from "./Similar";
 
 import "../../styles/first_product.scss";
 import { useParams } from "react-router-dom";
-import { APIRequest } from "../../helper";
+import { APIRequest, API_URL } from "../../helper";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -50,12 +50,7 @@ const ProductPage = () => {
         description: result.return.Description,
         price: result.return.Price,
         colors: ["Red", "Blue", "Green"],
-        images: [
-          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
-          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
-          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
-          "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
-        ],
+        images: result.return.Pictures.map((picture) => `${API_URL}/${picture.Link}`),
         similarProducts: [
           {
             id: 2,

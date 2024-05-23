@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MdFirstPage, MdLastPage, MdChevronRight, MdChevronLeft } from "react-icons/md";
 import Rate from "../Home/Rate";
-import { APIRequest } from "../../helper";
+import { APIRequest, API_URL } from "../../helper";
 
 const CategoryProductPage = () => {
     const { id } = useParams();
@@ -26,7 +26,8 @@ const CategoryProductPage = () => {
             id: product.ProductId,
             title: product.Name,
             description: product.Description,
-            image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+            // image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+            image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
             rate: product.Rate,
             price: product.Price,
             quantity: product.Stock,

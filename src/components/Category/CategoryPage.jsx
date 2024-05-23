@@ -79,7 +79,7 @@ const CategoryPage = () => {
   return (
     <div>
       <Header />
-      <Box />
+      {/* <Box /> */}
       <h2 className="category-title">Category Page</h2>
       <FilterButton onClick={handleOpenFilterModal} />
       <div className="category-sub">

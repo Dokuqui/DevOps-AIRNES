@@ -49,7 +49,7 @@ const App = () => {
         <Route path="/reinstall" element={<ReinstalPage />} />
         <Route path="/new_password" element={<NewPasswordPage />} />
         {/* back_office */}
-        {user ? <Route path="/admin/*" element={<AdminPage />} /> : <Route path="/admin/*" element={<LoginPage />} />}
+        {user && user.RoleId === 2 ? <Route path="/admin/*" element={<AdminPage />} /> : <Route path="/admin/*" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet" element={<UserPage />} /> : <Route path="/my-cabinet" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet/update-password" element={<UpdatePassword />} /> : <Route path="/my-cabinet/update-password" element={<LoginPage />} />}
         {/* static-pages */}

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import FooterBack from "./FooterBack";
 import Sidebar from "./SideBar";
-import { APIRequest } from "../../../helper";
+import { APIRequest, API_URL } from "../../../helper";
 
 const ContentManagement = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const fetchProducts = async () => {
     try {
@@ -31,11 +33,9 @@ const ContentManagement = () => {
   const fetchCategories = async () => {
     try {
       const response = await APIRequest("GET", "Categories");
-
       if (!response.success) {
         throw new Error("Failed to fetch categories");
       }
-
       setCategories(response.categories);
     } catch (error) {
       console.error(error);
@@ -71,12 +71,10 @@ const ContentManagement = () => {
 
   const handleProductSelection = (productId, data) => {
     setSelectedProductId(productId);
-    console.log(data);
     setUpdateFormData(data);
   };
 
   const handleDelete = async (productId) => {
-    // setProducts(products.filter((product) => product.ProductId !== productId));
     await APIRequest("delete", `Products/${productId}`);
     await fetchProducts();
   };
@@ -132,51 +130,78 @@ const ContentManagement = () => {
       Images: [...prevFormData.Images, ...imageFiles],
     }));
 
-
     setUpdateFormData((prevFormData) => ({
       ...prevFormData,
       Images: imageFiles,
     }));
   };
 
-  const handleCreateSubmit = async () => {
-
-    await APIRequest("POST", `Products`, {
-      Name: createFormData.Name,
-      Description: createFormData.Description,
-      Price: createFormData.Price,
-      Stock: createFormData.Quantity,
-      Categories: createFormData.Categories,
+  const uploadImages = async (images) => {
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append("Images", image);
     });
 
-    await fetchProducts();
-    
-    // setProducts([...products, newProduct]);
-    setShowCreateModal(false);
+    try {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Failed to upload images");
+      }
+
+      setUploadProgress(0);
+
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const handleCreateSubmit = async () => {
+    const imageUploadResponse = await uploadImages(createFormData.Images);
+
+    if (imageUploadResponse) {
+      await APIRequest("POST", `Products`, {
+        Name: createFormData.Name,
+        Description: createFormData.Description,
+        Price: createFormData.Price,
+        Stock: createFormData.Quantity,
+        Categories: createFormData.Categories,
+        Pictures: imageUploadResponse.images.map((image) => image.Link), // Adjust this based on your API response
+      });
+
+      await fetchProducts();
+      setShowCreateModal(false);
+    }
   };
 
   const handleUpdateSubmit = async () => {
-    console.log(updateFormData);
+    const imageUploadResponse = await uploadImages(updateFormData.Images);
 
-    await APIRequest("PUT", `Products/${selectedProductId}`, {
-      Name: updateFormData.Name,
-      Description: updateFormData.Description,
-      Price: updateFormData.Price,
-      Stock: updateFormData.Quantity,
-      Categories: updateFormData.Categories,
-    });
+    if (imageUploadResponse) {
+      await APIRequest("PUT", `Products/${selectedProductId}`, {
+        Name: updateFormData.Name,
+        Description: updateFormData.Description,
+        Price: updateFormData.Price,
+        Stock: updateFormData.Quantity,
+        Categories: updateFormData.Categories,
+        Pictures: imageUploadResponse.images.map((image) => image.Link), // Adjust this based on your API response
+      });
 
-    // const updatedProducts = products.map((product) =>
-    //   product.ProductId === selectedProductId
-    //     ? { ...product, ...updateFormData }
-    //     : product
-    // );
-
-    await fetchProducts();
-
-    // console.log(updatedProducts);
-    // setProducts(updatedProducts);
-    setShowUpdateModal(false);
+      await fetchProducts();
+      setShowUpdateModal(false);
+    }
   };
 
   return (
@@ -212,15 +237,14 @@ const ContentManagement = () => {
                 <tr key={product.ProductId}>
                   <td
                     onClick={() => {
-                      handleProductSelection(product.ProductId,
-                        {
-                          Name: product.Name,
-                          Categories: product.Categories,
-                          Price: product.Price,
-                          Description: product.Description,
-                          Quantity: product.Stock,
-                          Color: product.Color,
-                        });
+                      handleProductSelection(product.ProductId, {
+                        Name: product.Name,
+                        Categories: product.Categories,
+                        Price: product.Price,
+                        Description: product.Description,
+                        Quantity: product.Stock,
+                        Color: product.Color,
+                      });
                       handleUpdate();
                     }}
                   >
@@ -278,9 +302,9 @@ const ContentManagement = () => {
               onChange={handleCategoryChange}
               multiple={true}
             >
-              {categories.map((Categories) => (
-                <option key={Categories.CategoryId} value={Categories.CategoryId}>
-                  {Categories.Name}
+              {categories.map((category) => (
+                <option key={category.CategoryId} value={category.CategoryId}>
+                  {category.Name}
                 </option>
               ))}
             </select>
@@ -323,8 +347,14 @@ const ContentManagement = () => {
               name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
-              multiple={true} // Allow add multiple images
+              multiple={true}
             />
+            {uploadProgress > 0 && (
+              <div>
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
             <button onClick={handleCreateSubmit}>Submit</button>
           </div>
         </div>
@@ -353,9 +383,9 @@ const ContentManagement = () => {
               onChange={handleCategoryChange}
               multiple={true}
             >
-              {categories.map((Categories) => (
-                <option key={Categories.CategoryId} value={Categories.CategoryId}>
-                  {Categories.Name}
+              {categories.map((category) => (
+                <option key={category.CategoryId} value={category.CategoryId}>
+                  {category.Name}
                 </option>
               ))}
             </select>
@@ -398,7 +428,14 @@ const ContentManagement = () => {
               name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
+              multiple={true}
             />
+            {uploadProgress > 0 && (
+              <div>
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
             <button onClick={handleUpdateSubmit}>Submit</button>
           </div>
         </div>
