@@ -64,6 +64,11 @@ const Sidebar = ({ logout }) => {
                   Content Management
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/categories" onClick={showSidebar}>
+                  Category Management
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>

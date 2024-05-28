@@ -318,7 +318,7 @@ const ContentManagement = () => {
             />
             <label htmlFor="createPrice">Price:</label>
             <input
-              type="text"
+              type="number"
               id="createPrice"
               name="Price"
               value={createFormData.Price}
@@ -399,7 +399,7 @@ const ContentManagement = () => {
             />
             <label htmlFor="updatePrice">Price:</label>
             <input
-              type="text"
+              type="number"
               id="updatePrice"
               name="Price"
               value={updateFormData.Price}

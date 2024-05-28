@@ -27,6 +27,7 @@ const CategoryPage = () => {
       subcategories: room.Categories.map((category) => ({
         id: category.CategoryId,
         name: category.Name,
+        image: category.Pictures?.[0]?.Link || "/image/placeholder.webp",
       })),
     }));
 

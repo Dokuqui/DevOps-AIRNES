@@ -20,18 +20,28 @@ import Checkout_Completed from "./User_Flow/Checkout_Completed";
 import CategoryProductPage from "./Category/CategoryProductPage";
 import { getUserInfo } from "../helper";
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import LoadingScreen from "./LoadingScreen";
+
+const stripePromise = loadStripe('pk_test_51PGFLzBeMEfwR1Dpa38IhbXDUYkG7gw62u9JdcwnN3KUUYeCjyhlBVQtiLm5SbIKSwyMj36mJSujKJAjC4PMkbMO00qn5R5Eil');
+
+
 const App = () => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       var userInfo = await getUserInfo();
       setUser(userInfo);
+      setIsLoading(false);
     };
     fetchUserInfo();
   }, []);
 
   return (
+    <LoadingScreen isLoading={isLoading}>
     <Router>
       <Routes>
         {/* base_product */}
@@ -42,7 +52,7 @@ const App = () => {
         {/* user_flow */}
         {user ? <Route path="/cart" element={<CartPage />} /> : <Route path="/cart" element={<LoginPage />} />}
         <Route path="/checkout" element={<Checkout_Delivery />} />
-        <Route path="/checkout/payment" element={<Checkout_Payment />} />
+        <Route path="/checkout/payment" element={<Elements stripe={stripePromise}> <Checkout_Payment /> </Elements>} />
         <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
@@ -58,6 +68,7 @@ const App = () => {
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </Router>
+    </LoadingScreen>
   );
 }
 

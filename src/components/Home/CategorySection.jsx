@@ -72,6 +72,8 @@ const CategorySection = () => {
             ProductId: item.id,
             Quantity: 1
         });
+
+        window.location.href = "/cart";
     };
 
     const handleViewAllCategory = (category) => {

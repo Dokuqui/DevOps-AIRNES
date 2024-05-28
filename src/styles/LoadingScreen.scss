@@ -1,0 +1,49 @@
+// LoadingScreen.scss
+
+$primary-color: white;
+$secondary-color: grey;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  &__spinner {
+    border: 8px solid $secondary-color;
+    border-top: 8px solid $primary-color;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+  }
+}
+
+.content {
+  opacity: 0;
+  animation: fade-in 1s forwards;
+}

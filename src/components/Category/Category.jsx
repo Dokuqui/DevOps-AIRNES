@@ -12,7 +12,7 @@ const CategoryBox = ({ subcategory, filtered }) => {
   }
 
   return (
-    <div className="subcategory-card">
+    <div className="subcategory-card" style={{backgroundImage: `url(${subcategory.image})`, backgroundSize: "cover"}}>
       {/* <img src={subcategory.image} alt={subcategory.name} /> */}
       <div className="curtain-overlay">
         <h4>{subcategory.name}</h4>

@@ -2,28 +2,13 @@ import React, { useEffect, useState } from "react";
 import Header from "../Static/Header";
 import Footer from "../Static/Footer";
 import "../../styles/checkout.scss";
-import { APIRequest } from "../../helper"; // Adjust the import according to your project's structure
+import { APIRequest, API_URL } from "../../helper"; // Adjust the import according to your project's structure
+import LoadingScreen from "../LoadingScreen";
 
 const Checkout_Delivery = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",
-      name: "INY VINTAGE CHAIR",
-      price: Math.floor(Math.random() * 100),
-      quantity: Math.floor(Math.random() * 10),
-      isFavorite: Math.random() > 0.5
-    },
-    {
-      id: 2,
-      image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
-      name: "LARGE TERRACOTA VASE",
-      price: Math.floor(Math.random() * 100),
-      quantity: Math.floor(Math.random() * 10),
-      isFavorite: Math.random() > 0.5
-    }
-  ]);
-
+  var [isLoading, setIsLoading] = useState(true);
+  var [products, setProducts] = useState([]);
+  var [order, setOrder] = useState([]);
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState('');
   const [addressFields, setAddressFields] = useState({
@@ -33,11 +18,37 @@ const Checkout_Delivery = () => {
     address2: '',
     city: '',
     zip: '',
-    country: ''
+    country: '',
+    region: '',
+    phone: '' // Added phone number field
   });
   const [saveAddress, setSaveAddress] = useState(false);
 
   useEffect(() => {
+    const fetchOrders = async () => {
+      let result = await APIRequest("get", "Orders/Current");
+
+      await setOrder(result.data);
+
+      let products_result = await APIRequest("get", `ProductOrder?OrderId=${result.data.OrderId}`);
+      console.log(products_result);
+
+      let newProducts = products_result.return.map((product) => ({
+          id: product.Product.ProductId,
+          price: product.Product.Price,
+          quantity: product.Quantity,
+      }));
+
+      setProducts(newProducts);
+      
+      if (result.data.AddressId) {
+        console.log("AddressId", result.data.AddressId);
+        handleSavedAddressSelect({ target: { value: result.data.AddressId } });
+      };
+
+      setIsLoading(false);
+    };
+
     const fetchSavedAddresses = async () => {
       try {
         const result = await APIRequest("get", "Address"); // Adjust the endpoint as necessary
@@ -49,14 +60,19 @@ const Checkout_Delivery = () => {
           address2: address.Address2,
           city: address.City,
           zip: address.ZipCode,
-          country: address.Country
+          country: address.Country,
+          region: address.Region, // Include region in the saved addresses
+          phone: address.Phone // Include phone number in the saved addresses
         })));
 
+        
+  
       } catch (error) {
         console.error("Failed to fetch saved addresses:", error);
       }
     };
 
+    fetchOrders();
     fetchSavedAddresses();
   }, []);
 
@@ -82,7 +98,9 @@ const Checkout_Delivery = () => {
           address2: selectedAddress.address2,
           city: selectedAddress.city,
           zip: selectedAddress.zip,
-          country: selectedAddress.country
+          country: selectedAddress.country,
+          region: selectedAddress.region, // Set the region field when address is selected
+          phone: selectedAddress.phone // Set the phone number field when address is selected
         });
       }
     } else {
@@ -93,8 +111,41 @@ const Checkout_Delivery = () => {
         address2: '',
         city: '',
         zip: '',
-        country: ''
+        country: '',
+        region: '', // Reset the region field when no address is selected
+        phone: '' // Reset the phone number field when no address is selected
       });
+    }
+  };
+
+  const handleContinueToPayment = async () => {
+    try {
+      let addressId = selectedAddressId;
+      if (!addressId) {
+        const result = await APIRequest("post", "Address", {
+          Firstname: addressFields.firstname,
+          Lastname: addressFields.lastname,
+          Address1: addressFields.address1,
+          Address2: addressFields.address2,
+          City: addressFields.city,
+          ZipCode: addressFields.zip,
+          Country: addressFields.country,
+          Region: addressFields.region, // Include region in the request payload
+          Phone: addressFields.phone // Include phone number in the request payload
+        });
+
+        addressId = result.return.AddressId;
+      }
+
+      await APIRequest("post", "Orders/SetAddress", {
+        OrderId: order.OrderId,
+        AddressId: addressId
+      });
+
+
+      window.location.href = "/checkout/payment";
+    } catch (error) {
+      console.error("Failed to continue to payment:", error);
     }
   };
 
@@ -105,6 +156,7 @@ const Checkout_Delivery = () => {
   return (
     <div>
       <Header />
+      <LoadingScreen isLoading={isLoading}>
       <div className="checkoutsection">
         <h1 className="title">Checkout</h1>
 
@@ -142,6 +194,7 @@ const Checkout_Delivery = () => {
               value={addressFields.firstname}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="lastname_input">Lastname</label>
@@ -154,6 +207,7 @@ const Checkout_Delivery = () => {
               value={addressFields.lastname}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="address1_input">Address</label>
@@ -166,6 +220,7 @@ const Checkout_Delivery = () => {
               value={addressFields.address1}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="address2_input">Address 2</label>
@@ -177,6 +232,7 @@ const Checkout_Delivery = () => {
               placeholder="Address 2"
               value={addressFields.address2}
               onChange={handleAddressChange}
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="city_input">City</label>
@@ -189,6 +245,7 @@ const Checkout_Delivery = () => {
               value={addressFields.city}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="zip_input">Zip</label>
@@ -201,6 +258,7 @@ const Checkout_Delivery = () => {
               value={addressFields.zip}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
 
             <label htmlFor="country_input">Country</label>
@@ -213,6 +271,33 @@ const Checkout_Delivery = () => {
               value={addressFields.country}
               onChange={handleAddressChange}
               required
+              disabled={!!selectedAddressId} // Disable input if address is selected
+            />
+
+            <label htmlFor="region_input">Region</label>
+            <input
+              className="input"
+              type="text"
+              id="region_input"
+              name="region"
+              placeholder="Region"
+              value={addressFields.region}
+              onChange={handleAddressChange}
+              required
+              disabled={!!selectedAddressId} // Disable input if address is selected
+            />
+
+            <label htmlFor="phone_input">Phone</label> {/* Added phone input */}
+            <input
+              className="input"
+              type="text"
+              id="phone_input"
+              name="phone"
+              placeholder="Phone"
+              value={addressFields.phone}
+              onChange={handleAddressChange}
+              required
+              disabled={!!selectedAddressId} // Disable input if address is selected
             />
           </div>
 
@@ -229,13 +314,14 @@ const Checkout_Delivery = () => {
             <button
               disabled={products.length === 0}
               className="checkout"
-              onClick={() => window.location.href = "/checkout/payment"}
+              onClick={handleContinueToPayment}
             >
               Continue to payment
             </button>
           </div>
         </div>
       </div>
+      </LoadingScreen>
       <Footer />
     </div>
   );
