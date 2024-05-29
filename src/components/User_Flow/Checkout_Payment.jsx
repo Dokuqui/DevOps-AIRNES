@@ -33,14 +33,7 @@ const Checkout_Payment = () => {
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout session
-    const response = await APIRequest("post", "create-checkout-session", {
-      products: products.map((product) => ({
-        id: product.id,
-        price: product.price,
-        quantity: product.quantity,
-        name: product.name,
-      })),
-    });
+    const response = await APIRequest("post", "create-checkout-session");
 
     const sessionId = response.id;
 

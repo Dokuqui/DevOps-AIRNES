@@ -10,6 +10,7 @@ const CategorySection = () => {
 
     const fetchCategories = async () => {
         let result = await APIRequest("get", `ProductCategory`);
+        let result_categories = await APIRequest("get", `Categories`);
         
         let newSectionsList = [];
 
@@ -17,11 +18,16 @@ const CategorySection = () => {
             if (!result.return[i]) {
                 break;
             }
+
+            let category = result_categories.categories.find(category => category.CategoryId === result.return[i].CategoryId);
+            
             let section = [{
                 id: result.return[i].CategoryId,
                 title: result.return[i].Name,
                 description: result.return[i].Description,
-                image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                // image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+                // image: result.return[i].Pictures?.[0]?.Link ? `${API_URL}/${result.return[i].Pictures[0].Link}` : "/image/placeholder.webp",
+                image: category.Pictures?.[0]?.Link ? `${API_URL}/${category.Pictures[0].Link}` : "/image/placeholder.webp",
                 url: `/category/${result.return[i].CategoryId}`,
                 isHeader: true
             }];
@@ -36,7 +42,7 @@ const CategorySection = () => {
                     id: product.ProductId,
                     title: product.Name,
                     // image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
-                    image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
+                    image: product?.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
                     rate: product.Rate,
                     price: product.Price,
                     isFavorite: false

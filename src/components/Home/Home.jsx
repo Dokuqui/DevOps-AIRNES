@@ -29,7 +29,8 @@ const HomePage = () => {
         // Take 1 random products from 2 categories randomly
         var newProducts = [];
         for (let i = 0; i < 2; i++) {
-            let randomCategory = result.return[Math.floor(Math.random() * result.return.length)];
+            let filteredCategories = result.return.filter(cat => cat.Products.length > 0);
+            let randomCategory = filteredCategories[Math.floor(Math.random() * filteredCategories.length)];
             let randomProduct = randomCategory.Products[Math.floor(Math.random() * randomCategory.Products.length)];
 
             newProducts.push({

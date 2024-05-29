@@ -23,7 +23,7 @@ const ContentManagement = () => {
         Price: product.Price,
         Stock: product.Stock,
         Color: product.Color,
-        Images: product.Images,
+        Images: product.Pictures,
       })));
     } catch (error) {
       console.error(error);
@@ -68,10 +68,12 @@ const ContentManagement = () => {
     Color: "",
     Images: [],
   });
+  const [existingImages, setExistingImages] = useState([]);
 
   const handleProductSelection = (productId, data) => {
     setSelectedProductId(productId);
     setUpdateFormData(data);
+    setExistingImages(data.Images.map((image) => image.Link));
   };
 
   const handleDelete = async (productId) => {
@@ -132,7 +134,7 @@ const ContentManagement = () => {
 
     setUpdateFormData((prevFormData) => ({
       ...prevFormData,
-      Images: imageFiles,
+      Images: [...prevFormData.Images, ...imageFiles],
     }));
   };
 
@@ -158,8 +160,6 @@ const ContentManagement = () => {
       }
 
       setUploadProgress(0);
-
-      console.log(response.data);
 
       return response.data;
     } catch (error) {
@@ -187,21 +187,35 @@ const ContentManagement = () => {
   };
 
   const handleUpdateSubmit = async () => {
-    const imageUploadResponse = await uploadImages(updateFormData.Images);
+    let newImageLinks = existingImages;
+    const newImages = updateFormData.Images.filter(
+      (img) => !existingImages.some((existingImg) => existingImg.name === img.name)
+    );
 
-    if (imageUploadResponse) {
-      await APIRequest("PUT", `Products/${selectedProductId}`, {
-        Name: updateFormData.Name,
-        Description: updateFormData.Description,
-        Price: updateFormData.Price,
-        Stock: updateFormData.Quantity,
-        Categories: updateFormData.Categories,
-        Pictures: imageUploadResponse.images.map((image) => image.Link), // Adjust this based on your API response
-      });
-
-      await fetchProducts();
-      setShowUpdateModal(false);
+    if (newImages.length > 0) {
+      const imageUploadResponse = await uploadImages(newImages);
+      if (imageUploadResponse) {
+        newImageLinks = [...newImageLinks, ...imageUploadResponse.images.map((image) => image.Link)]; // Adjust this based on your API response
+      }
     }
+
+    await APIRequest("PUT", `Products/${selectedProductId}`, {
+      Name: updateFormData.Name,
+      Description: updateFormData.Description,
+      Price: updateFormData.Price,
+      Stock: updateFormData.Quantity,
+      Categories: updateFormData.Categories,
+      Pictures: newImageLinks,
+    });
+
+    await fetchProducts();
+    setShowUpdateModal(false);
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...existingImages];
+    updatedImages.splice(index, 1);
+    setExistingImages(updatedImages);
   };
 
   return (
@@ -244,6 +258,7 @@ const ContentManagement = () => {
                         Description: product.Description,
                         Quantity: product.Stock,
                         Color: product.Color,
+                        Images: product.Images,
                       });
                       handleUpdate();
                     }}
@@ -430,6 +445,34 @@ const ContentManagement = () => {
               onChange={handleImageChange}
               multiple={true}
             />
+            {existingImages.length > 0 && (
+              <div>
+                <p>Existing Images:</p>
+                {existingImages.map((image, index) => (
+                  <div key={index} style={{ position: "relative", display: "inline-block", margin: "5px" }}>
+                    <img src={`${API_URL}/${image}`} alt="product" style={{ width: "100px" }} />
+                    <button
+                      onClick={() => handleDeleteImage(index)}
+                      style={{
+                        position: "absolute",
+                        bottom: "5px",
+                        right: "5px",
+                        background: "grey",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "20px",
+                        height: "20px",
+                        cursor: "pointer",
+                        padding: "0",
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
             {uploadProgress > 0 && (
               <div>
                 <progress value={uploadProgress} max="100" />

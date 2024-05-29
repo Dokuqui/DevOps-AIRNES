@@ -12,7 +12,9 @@ const CategoryManagement = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [categoryForm, setCategoryForm] = useState({ Name: "", Description: "", Images: [] });
+  const [categoryForm, setCategoryForm] = useState({ Name: "", Description: "", Pictures: [], Rooms: [] })
+  const [rooms, setRooms] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
 
   const getNextId = () => {
     const maxId = Math.max(...categories.map((category) => category.CategoryId));
@@ -20,13 +22,15 @@ const CategoryManagement = () => {
   };
 
   const handleAddCategory = () => {
-    setCategoryForm({ Name: "", Description: "", Images: [] });
+    setCategoryForm({ Name: "", Description: "", Pictures: [], Rooms: [] });
     setShowAddModal(true);
   };
 
   const handleUpdateCategory = (category) => {
+    console.log(category);
     setSelectedCategory(category);
-    setCategoryForm({ Name: category.Name, Description: category.Description, Images: category.Images || [] });
+    setCategoryForm({ Name: category.Name, Description: category.Description, Pictures: category.Pictures || [], Rooms: category.Rooms.map(room => room.RoomId) });
+    setExistingImages(category.Pictures.map((image) => image.Link));
     setShowUpdateModal(true);
   };
 
@@ -66,10 +70,10 @@ const CategoryManagement = () => {
     // const newCategory = { ...category, CategoryId: getNextId() };
     // setCategories([...categories, newCategory]);
     // setShowAddModal(false);
-    const imageUploadResponse = await uploadImages(category.Images);
-    
+    const imageUploadResponse = await uploadImages(category.Pictures);
+
     if (imageUploadResponse) {
-      const newCategory = { ...category, Images: imageUploadResponse };
+      const newCategory = { ...category, Pictures: imageUploadResponse.images.map((image) => image.Link) };
       const response = await APIRequest("POST", "Categories", newCategory);
       if (response.success) {
         fetchCategories();
@@ -78,32 +82,40 @@ const CategoryManagement = () => {
         console.error(response.message);
       }
     }
-    
+
   };
 
   const updateCategory = async (updatedCategory) => {
-    // setCategories(
-    //   categories.map((category) => (category.CategoryId === updatedCategory.CategoryId ? updatedCategory : category))
-    // );
-    // setShowUpdateModal(false);
-    const imageUploadResponse = await uploadImages(updatedCategory.Images);
+    let newImageLinks = existingImages;
+    const newImages = categoryForm.Pictures.filter(
+      (img) => !existingImages.some((existingImg) => existingImg.name === img.name)
+    );
 
-    console.log(imageUploadResponse);
-
-    if (imageUploadResponse) {
-      const updatedCategoryWithImages = { ...updatedCategory, Images: imageUploadResponse };
-      const response = APIRequest("PUT", `Categories/${updatedCategory.CategoryId}`, updatedCategoryWithImages);
-      if (response.success) {
-        fetchCategories();
-        setShowUpdateModal(false);
-      } else {
-        console.error(response.message);
+    if (newImages.length > 0) {
+      const imageUploadResponse = await uploadImages(newImages);
+      if (imageUploadResponse) {
+        newImageLinks = [imageUploadResponse.images.map((image) => image.Link)]; // Adjust this based on your API response
       }
+    }
+  
+    // Update category with or without new image links
+    const response = await APIRequest("PUT", `Categories/${updatedCategory.CategoryId}`, {
+      ...updatedCategory,
+      Pictures: newImageLinks,
+    });
+    if (response.success) {
+      fetchCategories();
+      setShowUpdateModal(false);
+    } else {
+      console.error(response.message);
     }
   };
 
-  const deleteCategory = () => {
-    setCategories(categories.filter((category) => category.CategoryId !== selectedCategory.CategoryId));
+  const deleteCategory = async () => {
+    await APIRequest("DELETE", `Categories/${selectedCategory.CategoryId}`);
+
+    fetchCategories();
+
     setSelectedCategory(null);
     setShowDeleteModal(false);
   };
@@ -111,10 +123,26 @@ const CategoryManagement = () => {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     if (name === "Images") {
-      setCategoryForm({ ...categoryForm, Images: [...categoryForm.Images, value] });
+      setCategoryForm({ ...categoryForm, Pictures: [...categoryForm.Pictures, value] });
+    } else if (name === "RoomId") {
+      const selectedRooms = [...categoryForm.Rooms];
+      if (selectedRooms.includes(value)) {
+        // If already selected, remove it
+        const updatedRooms = selectedRooms.filter(roomId => roomId !== value);
+        setCategoryForm({ ...categoryForm, Rooms: updatedRooms });
+      } else {
+        // If not selected, add it
+        setCategoryForm({ ...categoryForm, Rooms: [...selectedRooms, value] });
+      }
     } else {
       setCategoryForm({ ...categoryForm, [name]: value });
     }
+  };
+
+  const handleImageChange = (e) => {
+    const imageFiles = Array.from(e.target.files);
+
+    setCategoryForm({ ...categoryForm, Pictures: imageFiles });
   };
 
   const handleFormSubmit = (e) => {
@@ -124,6 +152,20 @@ const CategoryManagement = () => {
     } else if (showUpdateModal) {
       updateCategory({ ...selectedCategory, ...categoryForm });
     }
+  };
+
+  const handleRoomsChange = (e) => {
+    const options = e.target.options;
+    let value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setCategoryForm({ ...categoryForm, Rooms: value });
+
   };
 
   const fetchCategories = async () => {
@@ -138,8 +180,21 @@ const CategoryManagement = () => {
     }
   };
 
+  const fetchRooms = async () => {
+    try {
+      const response = await APIRequest("GET", "Rooms");
+      if (!response.success) {
+        throw new Error("Failed to fetch rooms");
+      }
+      setRooms(response.return);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
+    fetchRooms();
   }, []);
 
   return (
@@ -189,7 +244,7 @@ const CategoryManagement = () => {
           <div className="modal-content">
             <h2>{showAddModal ? "Add Category" : "Update Category"}</h2>
             <form onSubmit={handleFormSubmit}>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="Name">Name</label>
               <input
                 type="text"
                 id="Name"
@@ -198,7 +253,7 @@ const CategoryManagement = () => {
                 onChange={handleFormChange}
                 required
               />
-              <label htmlFor="description">Description</label>
+              <label htmlFor="Description">Description</label>
               <textarea
                 id="Description"
                 name="Description"
@@ -206,14 +261,38 @@ const CategoryManagement = () => {
                 onChange={handleFormChange}
                 required
               ></textarea>
-              <label htmlFor="images">Images</label>
+              <label htmlFor="RoomId">Rooms</label>
+              <select
+                id="RoomId"
+                name="RoomId"
+                value={categoryForm.Rooms}
+                onChange={handleRoomsChange}
+                multiple
+                required
+              >
+                {rooms?.map((room) => (
+                  <option key={room.RoomId} value={room.RoomId}>
+                    {room.Name}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="Images">Images</label>
               <input
                 type="file"
                 id="Images"
                 name="Images"
-                onChange={handleFormChange}
-                multiple
+                onChange={handleImageChange}
               />
+              {categoryForm.Pictures.length > 0 && (
+                <div>
+                  <p>Existing Images:</p>
+                  {categoryForm.Pictures.map((image, index) => (
+                    <div key={index} style={{ position: "relative", display: "inline-block", margin: "5px" }}>
+                      <img src={`${API_URL}/${image.Link}`} alt="category" style={{ width: "100px" }} />
+                    </div>
+                  ))}
+                </div>
+              )}
               <button type="submit" className="save-btn">Save</button>
               <button type="button" className="cancel-btn" onClick={() => (showAddModal ? setShowAddModal(false) : setShowUpdateModal(false))}>Cancel</button>
             </form>
@@ -226,7 +305,7 @@ const CategoryManagement = () => {
         <div className="modal">
           <div className="modal-content">
             <h2>Confirm Delete</h2>
-            <p>Are you sure you want to delete the category "{selectedCategory.name}"?</p>
+            <p>Are you sure you want to delete the category "{selectedCategory.Name}"?</p>
             <button className="delete-btn" onClick={deleteCategory}>Delete</button>
             <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
           </div>

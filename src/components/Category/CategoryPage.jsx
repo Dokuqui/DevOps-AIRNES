@@ -6,7 +6,7 @@ import FilterModal from "../Filter/FilterModal";
 import { CategoryList } from "./CategoryList";
 import Footer from "../Static/Footer";
 import "../../styles/category.scss";
-import { APIRequest } from "../../helper";
+import { APIRequest, API_URL } from "../../helper";
 
 const CategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +27,7 @@ const CategoryPage = () => {
       subcategories: room.Categories.map((category) => ({
         id: category.CategoryId,
         name: category.Name,
-        image: category.Pictures?.[0]?.Link || "/image/placeholder.webp",
+        image: category.Pictures?.[0]?.Link ? `${API_URL}/${category.Pictures[0].Link}` : "/image/placeholder.webp"
       })),
     }));
 
