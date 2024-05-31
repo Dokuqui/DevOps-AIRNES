@@ -99,12 +99,6 @@ const CategoryProductPage = () => {
                 
 
                 <div className="main">
-                    <div className="filter">
-                        <div className="card">
-                            
-                        </div>
-                    </div>
-
                     <div className="products">
                         {products.length > 0 ? (
                             products

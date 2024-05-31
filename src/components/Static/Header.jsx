@@ -70,7 +70,7 @@ const Header = () => {
             />
           </svg>
         </button>
-        <button className="icon-button">
+        <button className="icon-button" onClick={() => { window.location.href = '/search' }}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -92,7 +92,7 @@ const Header = () => {
           <a href="/category">Category</a>
         </li>
         <li>
-          <a href="/">Product</a>
+          <a href="/search">Product</a>
         </li>
         <li>
           <a href="/about-us">About us</a>

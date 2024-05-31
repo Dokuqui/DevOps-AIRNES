@@ -8,11 +8,13 @@ import SimilarProductsContainer from "./Similar";
 import "../../styles/first_product.scss";
 import { useParams } from "react-router-dom";
 import { APIRequest, API_URL } from "../../helper";
+import LoadingScreen from "../LoadingScreen";
 
 const ProductPage = () => {
   const { id } = useParams();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedQuantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   // This part will be replaced with your data fetching logic
   const [productData, setProductData] = useState({
@@ -43,6 +45,11 @@ const ProductPage = () => {
     const fetchProductData = async () => {
       const result = await APIRequest("get", `Products?ProductId=${id}`);
       console.log(result);
+
+      if (result.return == null) {
+        window.location.href = "/404";
+      }
+      
       setProductData({
         id: result.return.ProductId,
         name: result.return.Name,
@@ -61,6 +68,8 @@ const ProductPage = () => {
           { id: 3, name: "Similar Product 2" },
         ],
       })
+
+      setIsLoading(false);
     };
 
 
@@ -94,25 +103,27 @@ const ProductPage = () => {
   return (
     <div>
       <Header />
-      <div className="product-container">
-        <div className="product-images">
-          <ProductImageGallery images={productData.images} />
+      <LoadingScreen isLoading={isLoading}>
+        <div className="product-container">
+          <div className="product-images">
+            <ProductImageGallery images={productData.images} />
+          </div>
+          <div className="product-details">
+            <ProductDetails
+              name={productData.name}
+              availability={productData.availability}
+              price={productData.price}
+              colors={productData.colors}
+              description={productData.description}
+              selectedColor={selectedColor}
+              onColorChange={handleColorChange}
+              onQuantityChange={handleQuantityChange}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
         </div>
-        <div className="product-details">
-          <ProductDetails
-            name={productData.name}
-            availability={productData.availability}
-            price={productData.price}
-            colors={productData.colors}
-            description={productData.description}
-            selectedColor={selectedColor}
-            onColorChange={handleColorChange}
-            onQuantityChange={handleQuantityChange}
-            onAddToCart={handleAddToCart}
-          />
-        </div>
-      </div>
-      <SimilarProductsContainer />
+        <SimilarProductsContainer />
+      </LoadingScreen>
       <Footer />
     </div>
   );

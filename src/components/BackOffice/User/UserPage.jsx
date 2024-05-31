@@ -4,35 +4,35 @@ import Header from '../../Static/Header';
 import Footer from '../../Static/Footer';
 import { regularUser } from '../../User_Flow/Login';
 import '../../../styles/user.scss';
-import { getUserInfo } from '../../../helper';
+import { APIRequest, getUserInfo } from '../../../helper';
 import LoadingScreen from '../../LoadingScreen';
 
-const commandHistory = [
-  {
-    id: 1,
-    product: 'Product 1',
-    price: '$49.99',
-    date: '2024-03-15',
-    status: 'Delivered',
-    description: 'lorum ipsum noga',
-  },
-  {
-    id: 2,
-    product: 'Product 2',
-    price: '$39.99',
-    date: '2024-01-15',
-    status: 'In Progress',
-    description: 'lorum ipsum noga',
-  },
-  {
-    id: 3,
-    product: 'Product 3',
-    price: '$89.99',
-    date: '2024-03-20',
-    status: 'Denied',
-    description: 'lorum ipsum noga',
-  },
-];
+// const commandHistory = [
+//   {
+//     id: 1,
+//     product: 'Product 1',
+//     price: '$49.99',
+//     date: '2024-03-15',
+//     statut: 'Delivered',
+//     description: 'lorum ipsum noga',
+//   },
+//   {
+//     id: 2,
+//     product: 'Product 2',
+//     price: '$39.99',
+//     date: '2024-01-15',
+//     statut: 'In Progress',
+//     description: 'lorum ipsum noga',
+//   },
+//   {
+//     id: 3,
+//     product: 'Product 3',
+//     price: '$89.99',
+//     date: '2024-03-20',
+//     statut: 'Denied',
+//     description: 'lorum ipsum noga',
+//   },
+// ];
 
 const UserPage = () => {
   const [userData, setUserData] = useState(regularUser);
@@ -42,6 +42,35 @@ const UserPage = () => {
     field: '',
     value: '',
   });
+  const [commandHistory, setCommandHistory] = useState([]);
+
+  const fetchOrders = async () => {
+    let result = await APIRequest('get', 'Orders');
+
+    console.log(result);
+
+    let newCommandHistory = [];
+
+    for (let i = 0; i < result.data.length; i++) {
+      let order = result.data[i];
+      let products = await APIRequest('get', `ProductOrder?OrderId=${order.OrderId}`);
+
+      let price = products.return.reduce((acc, product) => acc + (product.Product.Price * product.Quantity), 0);
+
+      newCommandHistory.push({
+        id: order.OrderId,
+        date: order.OrderDate,
+        statut: order.Statut,
+        price: price.toFixed(2),
+        articles: products.return.reduce((acc, product) => acc + product.Quantity, 0),
+      });
+    }
+
+
+
+
+    setCommandHistory(newCommandHistory.reverse());
+  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +78,7 @@ const UserPage = () => {
       setIsLoading(false);
     };
     fetchData();
+    fetchOrders();
   }, []);
 
   const handleFormSubmit = (e) => {
@@ -69,17 +99,20 @@ const UserPage = () => {
     });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Delivered':
+  const getstatutColor = (statut) => {
+    switch (statut) {
+      case 1:
         return 'green';
-      case 'In Progress':
+      case 0:
         return 'orange';
-      case 'Denied':
-        return 'red';
       default:
         return 'black';
     }
+  };
+  
+  const STATUT_TEXT = {
+    1: 'Delivered',
+    0: 'In Progress',
   };
 
   return (
@@ -102,15 +135,18 @@ const UserPage = () => {
             <Link to="/my-cabinet/update-password" className="button-link">
               Update Password
             </Link>
+            
+            <Link to="/logout" className="button-link" style={{ backgroundColor: 'red' }}>
+              Logout
+            </Link>
           </div>
           <div className="history" style={{ flex: 2 }}>
             <h3>Command History</h3>
             <ul>
               {commandHistory.map((command) => (
                 <li key={command.id}>
-                  <strong style={{ color: getStatusColor(command.status) }}>{command.status}</strong>{' '}
-                  - {command.date} - {command.product} - {command.price} - Details:{' '}
-                  {command.description}
+                  {new Date(command.date).toLocaleDateString('fr-FR')} - <strong style={{ color: getstatutColor(command.statut) }}>{STATUT_TEXT[command.statut]} </strong>
+                  - {command.price} - {command.articles} Products
                 </li>
               ))}
             </ul>

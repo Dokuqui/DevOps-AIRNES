@@ -11,8 +11,6 @@ const CategoryBox = ({ subcategory, filtered }) => {
     window.location.href = `/category/${subcategory.id}`;
   }
 
-  console.log("subcategory", subcategory);
-
   return (
     <div className="subcategory-card" style={{backgroundImage: `url(${subcategory.image})`, backgroundSize: "cover"}}>
       {/* <img src={subcategory.image} alt={subcategory.name} /> */}

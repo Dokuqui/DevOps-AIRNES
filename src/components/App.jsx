@@ -18,11 +18,14 @@ import Checkout_Delivery from "./User_Flow/Checkout_Delivery";
 import Checkout_Payment from "./User_Flow/Checkout_Payment";
 import Checkout_Completed from "./User_Flow/Checkout_Completed";
 import CategoryProductPage from "./Category/CategoryProductPage";
+import SearchPage from "./SearchPage";
+import Logout from "./User_Flow/Logout";
 import { getUserInfo } from "../helper";
-
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import LoadingScreen from "./LoadingScreen";
+
+import "../styles/base.scss"
 
 const stripePromise = loadStripe('pk_test_51PGFLzBeMEfwR1Dpa38IhbXDUYkG7gw62u9JdcwnN3KUUYeCjyhlBVQtiLm5SbIKSwyMj36mJSujKJAjC4PMkbMO00qn5R5Eil');
 
@@ -46,6 +49,7 @@ const App = () => {
       <Routes>
         {/* base_product */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/category/:id" element={<CategoryProductPage />} />
         <Route path="/product/:id" element={<Product1page />} />
@@ -55,6 +59,7 @@ const App = () => {
         <Route path="/checkout/payment" element={<Elements stripe={stripePromise}> <Checkout_Payment /> </Elements>} />
         <Route path="/order-completed" element={<Checkout_Completed />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />
         <Route path="/new_password" element={<NewPasswordPage />} />

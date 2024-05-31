@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:667";
+const API_URL = "http://167.114.113.203:5555";
 
 const getUserInfo = async () => {
     if (!localStorage.getItem("Token")) {
