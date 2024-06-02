@@ -6,7 +6,7 @@ import "../../../styles/admin.scss";
 import { APIRequest, API_URL } from "../../../helper";
 import axios from "axios";
 
-const CategoryManagement = () => {
+const MaterialsManager = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -200,10 +200,10 @@ const CategoryManagement = () => {
   return (
     <div>
       <Sidebar />
-      <div className="category-content">
+      <div className="admin-content">
         <h2>Category Management</h2>
         <button className="add-btn" onClick={handleAddCategory}>Add Category</button>
-        <table className="category-table">
+        <table className="content-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -316,4 +316,4 @@ const CategoryManagement = () => {
   );
 };
 
-export default CategoryManagement;
+export default MaterialsManager;

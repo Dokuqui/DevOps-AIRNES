@@ -7,15 +7,14 @@ const ProductDetails = ({
   name,
   availability,
   price,
-  colors,
+  materials,
   description,
-  selectedColor,
-  onColorChange,
+  selectedMaterial,
+  onMaterialChange,
   onQuantityChange,
   onAddToCart,
 }) => {
   const [quantity, setQuantity] = useState(1);
-
 
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -30,10 +29,8 @@ const ProductDetails = ({
   };
 
   const handleAddToCartClick = () => {
-    // Call the parent component function with the selected color, size, and quantity
     onAddToCart();
   };
-
 
   return (
     <div className="product-details">
@@ -48,19 +45,19 @@ const ProductDetails = ({
       </p>
       <p>Price: ${price}</p>
 
-      <div className="color-options">
-        <p>Available Colors:</p>
-        {colors.map((color) => (
-          <div
-            key={color}
-            className={`color-option ${
-              selectedColor === color ? "selected" : ""
-            }`}
-            style={{ backgroundColor: color }}
-            onClick={() => onColorChange(color)} // Call onColorChange with the selected color
-          ></div>
-        ))}
-      </div>
+      {materials.length > 0 && (
+        <select className="material-options" onChange={(e) => onMaterialChange(e.target.value)}>
+          {materials.map((material) => (
+            <option
+              key={material[0]}
+              value={material[0]}
+              selected={selectedMaterial === material[0]}
+            >
+              {material[1]}
+            </option>
+          ))}
+        </select>
+      )}
 
       <div className="product-description">
         <h2>Description:</h2>
@@ -94,16 +91,12 @@ ProductDetails.propTypes = {
   name: PropTypes.string.isRequired,
   availability: PropTypes.bool.isRequired,
   price: PropTypes.number.isRequired,
-  brand: PropTypes.string.isRequired,
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sizes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedColor: PropTypes.string,
-  selectedSize: PropTypes.string,
-  onColorChange: PropTypes.func.isRequired,
-  onSizeChange: PropTypes.func.isRequired,
+  materials: PropTypes.arrayOf(PropTypes.string).isRequired,
+  description: PropTypes.string.isRequired,
+  selectedMaterial: PropTypes.string,
+  onMaterialChange: PropTypes.func.isRequired,
   onQuantityChange: PropTypes.func.isRequired,
   onAddToCart: PropTypes.func.isRequired,
-  onAddToWish: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;

@@ -12,7 +12,7 @@ import LoadingScreen from "../LoadingScreen";
 
 const ProductPage = () => {
   const { id } = useParams();
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedMaterial, setSelectedMaterial] = useState(1);
   const [selectedQuantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +23,7 @@ const ProductPage = () => {
     availability: true,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     price: 49.99,
-    colors: ["Red", "Blue", "Green"],
+    materials: ["Leather", "Fabric", "Wood"],
     images: [
       "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
       "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
@@ -56,7 +56,7 @@ const ProductPage = () => {
         availability: result.return.Stock > 0,
         description: result.return.Description,
         price: result.return.Price,
-        colors: ["Red", "Blue", "Green"],
+        materials: [],
         images: result.return.Pictures.map((picture) => `${API_URL}/${picture.Link}`),
         similarProducts: [
           {
@@ -69,16 +69,25 @@ const ProductPage = () => {
         ],
       })
 
+      const materials = await APIRequest("get", `ProductMaterial?ProductId=${id}`);
+
+      if (materials.success) {
+        console.log(materials.return);
+        setProductData((prevData) => ({
+          ...prevData,
+          materials: materials.return.map((material) => [material.MaterialId, material.Label]),
+        }));
+      }
+
       setIsLoading(false);
     };
-
-
 
     fetchProductData();
   }, [id]);
 
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
+  const handleMaterialChange = (material) => {
+    console.log("Material changed:", Number(material));
+    setSelectedMaterial(Number(material));
   };
 
   const handleQuantityChange = (quantity) => {
@@ -88,16 +97,17 @@ const ProductPage = () => {
   const handleAddToCart = async () => {
     console.log("Product added to cart:", {
       productId: productData.id,
-      selectedColor,
+      selectedMaterial,
       selectedQuantity,
     });
 
     await APIRequest("post", "ProductOrder/add", {
       ProductId: productData.id,
       Quantity: selectedQuantity,
+      MaterialId: selectedMaterial !== 0 ? selectedMaterial : null,
     });
 
-    window.location.href = "/cart";
+    // window.location.href = "/cart";
   };
 
   return (
@@ -113,10 +123,10 @@ const ProductPage = () => {
               name={productData.name}
               availability={productData.availability}
               price={productData.price}
-              colors={productData.colors}
+              materials={productData.materials}
               description={productData.description}
-              selectedColor={selectedColor}
-              onColorChange={handleColorChange}
+              selectedMaterial={selectedMaterial}
+              onMaterialChange={handleMaterialChange}
               onQuantityChange={handleQuantityChange}
               onAddToCart={handleAddToCart}
             />

@@ -27,6 +27,7 @@ const CartPage = () => {
             image: product.Product.Pictures?.[0]?.Link ? `${API_URL}/${product.Product.Pictures[0].Link}` : "/image/placeholder.webp",
             price: product.Product.Price,
             quantity: product.Quantity,
+            material: product.MaterialId,
             isFavorite: false
         }));
 
@@ -48,7 +49,7 @@ const CartPage = () => {
     }
 
     const handleDeleteClick = async (item) => {
-        await APIRequest("delete", `ProductOrder?OrderId=${order.OrderId}&ProductId=${item.id}`);
+        await APIRequest("delete", `ProductOrder?OrderId=${order.OrderId}&ProductId=${item.id}&MaterialId=${item.material}`);
         fetchOrders();
     }
 
@@ -65,7 +66,8 @@ const CartPage = () => {
         
         await APIRequest("put", `ProductOrder`, {
             ProductId: item.id,
-            Quantity: item.quantity
+            Quantity: item.quantity,
+            MaterialId: item.material
         });
 
         fetchOrders();

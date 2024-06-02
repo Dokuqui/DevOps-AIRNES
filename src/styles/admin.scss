@@ -298,9 +298,7 @@ table {
   }
 }
 
-// Add category same as user-content (optimize)
-
-.category-content {
+.admin-content {
   padding: 15px 15px;
   flex-grow: 1;
   min-height: calc(100vh - 160px);
@@ -328,7 +326,7 @@ table {
     }
   }
 
-  .category-table {
+  .content-table {
     width: 100%;
     border-collapse: collapse;
 

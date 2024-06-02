@@ -7,6 +7,7 @@ import { APIRequest, API_URL } from "../../../helper";
 const ContentManagement = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [materials, setMaterials] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const fetchProducts = async () => {
@@ -22,7 +23,7 @@ const ContentManagement = () => {
         Description: product.Description,
         Price: product.Price,
         Stock: product.Stock,
-        Color: product.Color,
+        Materials: product.Materials.map((material) => material.MaterialId),
         Images: product.Pictures,
       })));
     } catch (error) {
@@ -42,9 +43,22 @@ const ContentManagement = () => {
     }
   };
 
+  const fetchMaterials = async () => {
+    try {
+      const response = await APIRequest("GET", "Materials");
+      if (!response.success) {
+        throw new Error("Failed to fetch materials");
+      }
+      setMaterials(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+    fetchMaterials();
   }, []);
 
   const [selectedProductId, setSelectedProductId] = useState(null);
@@ -56,7 +70,7 @@ const ContentManagement = () => {
     Description: "",
     Price: "",
     Quantity: "",
-    Color: "",
+    Materials: [],
     Images: [],
   });
   const [updateFormData, setUpdateFormData] = useState({
@@ -65,7 +79,7 @@ const ContentManagement = () => {
     Description: "",
     Price: "",
     Quantity: "",
-    Color: "",
+    Materials: [],
     Images: [],
   });
   const [existingImages, setExistingImages] = useState([]);
@@ -77,7 +91,7 @@ const ContentManagement = () => {
   };
 
   const handleDelete = async (productId) => {
-    await APIRequest("delete", `Products/${productId}`);
+    await APIRequest("DELETE", `Products/${productId}`);
     await fetchProducts();
   };
 
@@ -121,6 +135,27 @@ const ContentManagement = () => {
     setUpdateFormData({
       ...updateFormData,
       Categories: value,
+    });
+  };
+
+  const handleMaterialChange = (e) => {
+    const options = e.target.options;
+    let value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setCreateFormData({
+      ...createFormData,
+      Materials: value,
+    });
+
+    setUpdateFormData({
+      ...updateFormData,
+      Materials: value,
     });
   };
 
@@ -178,6 +213,7 @@ const ContentManagement = () => {
         Price: createFormData.Price,
         Stock: createFormData.Quantity,
         Categories: createFormData.Categories,
+        Materials: createFormData.Materials,
         Pictures: imageUploadResponse.images.map((image) => image.Link), // Adjust this based on your API response
       });
 
@@ -205,6 +241,7 @@ const ContentManagement = () => {
       Price: updateFormData.Price,
       Stock: updateFormData.Quantity,
       Categories: updateFormData.Categories,
+      Materials: updateFormData.Materials,
       Pictures: newImageLinks,
     });
 
@@ -257,7 +294,7 @@ const ContentManagement = () => {
                         Price: product.Price,
                         Description: product.Description,
                         Quantity: product.Stock,
-                        Color: product.Color,
+                        Materials: product.Materials,
                         Images: product.Images,
                       });
                       handleUpdate();
@@ -347,14 +384,20 @@ const ContentManagement = () => {
               value={createFormData.Quantity}
               onChange={handleCreateInputChange}
             />
-            <label htmlFor="createColor">Color:</label>
-            <input
-              type="text"
-              id="createColor"
-              name="Color"
-              value={createFormData.Color}
-              onChange={handleCreateInputChange}
-            />
+            <label htmlFor="createMaterials">Materials:</label>
+            <select
+              id="createMaterials"
+              name="Materials"
+              value={createFormData.Materials}
+              onChange={handleMaterialChange}
+              multiple={true}
+            >
+              {materials.filter((material) => material.MaterialId !== 1).map((material) => (
+                <option key={material.MaterialId} value={material.MaterialId}>
+                  {material.Label}
+                </option>
+              ))}
+            </select>
             <label htmlFor="createImages">Image:</label>
             <input
               type="file"
@@ -428,14 +471,20 @@ const ContentManagement = () => {
               value={updateFormData.Quantity}
               onChange={handleUpdateInputChange}
             />
-            <label htmlFor="updateColor">Color:</label>
-            <input
-              type="text"
-              id="updateColor"
-              name="Color"
-              value={updateFormData.Color}
-              onChange={handleUpdateInputChange}
-            />
+            <label htmlFor="updateMaterials">Materials:</label>
+            <select
+              id="updateMaterials"
+              name="Materials"
+              value={updateFormData.Materials}
+              onChange={handleMaterialChange}
+              multiple={true}
+            >
+              {materials.filter((material) => material.MaterialId !== 1).map((material) => (
+                <option key={material.MaterialId} value={material.MaterialId}>
+                  {material.Label}
+                </option>
+              ))}
+            </select>
             <label htmlFor="updateImages">Image:</label>
             <input
               type="file"
