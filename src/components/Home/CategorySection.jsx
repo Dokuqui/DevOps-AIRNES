@@ -45,7 +45,6 @@ const CategorySection = () => {
                     image: product?.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
                     rate: product.Rate,
                     price: product.Price,
-                    isFavorite: false
                 };
 
                 section.push(products);
@@ -60,16 +59,6 @@ const CategorySection = () => {
     useEffect(() => {
         fetchCategories();
     }, [categoryIndex]);
-
-    const handleFavoriteClick = (item) => {
-        const updatedFavorites = sectionsList.map(section =>
-            section.map(sectionItem =>
-                sectionItem.id === item.id && !item.isHeader ? { ...sectionItem, isFavorite: !sectionItem.isFavorite } : sectionItem
-            )
-        );
-        setSectionsList(updatedFavorites);
-        // Add to favorite callback ...
-    };
 
     const handleAddToCart = async (item) => {
         // Add to cart callback ...
@@ -105,10 +94,6 @@ const CategorySection = () => {
                                         <button className="item-tooltip-button" onClick={() => handleAddToCart(item)}><BsBasket3 /></button>
                                         <div className="separator"></div>
                                         <button className="item-tooltip-button" onClick={() => window.location.href = `/product/${item.id}`}><BsSearch /></button>
-
-                                        {/*<button className="item-tooltip-button" onClick={() => handleFavoriteClick(item)}>
-                                            {item.isFavorite ? <BsHeartFill color="red" /> : <BsHeart />}
-                                        </button> */}
                                     </div>
                                 </>
                             )}

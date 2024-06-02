@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Header from "../Static/Header";
 import Footer from "../Static/Footer";
 import "../../styles/checkout.scss";
-import { APIRequest, API_URL } from "../../helper"; // Adjust the import according to your project's structure
+import { APIRequest, API_URL, wait } from "../../helper"; // Adjust the import according to your project's structure
 import LoadingScreen from "../LoadingScreen";
+
 
 const Checkout_Delivery = () => {
   var [isLoading, setIsLoading] = useState(true);
@@ -24,54 +25,53 @@ const Checkout_Delivery = () => {
   });
   const [saveAddress, setSaveAddress] = useState(false);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      let result = await APIRequest("get", "Orders/Current");
+  const fetchOrders = async () => {
+    let result = await APIRequest("get", "Orders/Current");
 
-      await setOrder(result.data);
+    await setOrder(result.data);
 
-      let products_result = await APIRequest("get", `ProductOrder?OrderId=${result.data.OrderId}`);
-      console.log(products_result);
+    let products_result = await APIRequest("get", `ProductOrder?OrderId=${result.data.OrderId}`);
 
-      let newProducts = products_result.return.map((product) => ({
-          id: product.Product.ProductId,
-          price: product.Product.Price,
-          quantity: product.Quantity,
-      }));
+    let newProducts = products_result.return.map((product) => ({
+        id: product.Product.ProductId,
+        price: product.Product.Price,
+        quantity: product.Quantity,
+    }));
 
-      setProducts(newProducts);
+    setProducts(newProducts);
+    
+    if (result.data.AddressId) {
+      handleSavedAddressSelect({ target: { value: result.data.AddressId } });
+    };
+
+    setIsLoading(false);
+  };
+
+  const fetchSavedAddresses = async () => {
+    try {
+      const result = await APIRequest("get", "Address"); // Adjust the endpoint as necessary
+      setSavedAddresses(result.return.map((address) => ({
+        id: address.AddressId,
+        firstname: address.Firstname,
+        lastname: address.Lastname,
+        address1: address.Address1,
+        address2: address.Address2,
+        city: address.City,
+        zip: address.ZipCode,
+        country: address.Country,
+        region: address.Region, // Include region in the saved addresses
+        phone: address.Phone, // Include phone number in the saved addresses
+        temporary: address.Temporary
+      })));
+
       
-      if (result.data.AddressId) {
-        console.log("AddressId", result.data.AddressId);
-        handleSavedAddressSelect({ target: { value: result.data.AddressId } });
-      };
 
-      setIsLoading(false);
-    };
+    } catch (error) {
+      console.error("Failed to fetch saved addresses:", error);
+    }
+  };
 
-    const fetchSavedAddresses = async () => {
-      try {
-        const result = await APIRequest("get", "Address"); // Adjust the endpoint as necessary
-        setSavedAddresses(result.return.map((address) => ({
-          id: address.AddressId,
-          firstname: address.Firstname,
-          lastname: address.Lastname,
-          address1: address.Address1,
-          address2: address.Address2,
-          city: address.City,
-          zip: address.ZipCode,
-          country: address.Country,
-          region: address.Region, // Include region in the saved addresses
-          phone: address.Phone // Include phone number in the saved addresses
-        })));
-
-        
-  
-      } catch (error) {
-        console.error("Failed to fetch saved addresses:", error);
-      }
-    };
-
+  useEffect(() => {
     fetchOrders();
     fetchSavedAddresses();
   }, []);
@@ -84,13 +84,16 @@ const Checkout_Delivery = () => {
     }));
   };
 
-  const handleSavedAddressSelect = (e) => {
+  const handleSavedAddressSelect = async (e) => {
     const addressId = e.target.value;
-    setSelectedAddressId(addressId);
+    setSelectedAddressId(addressId);    
 
     if (addressId) {
-      const selectedAddress = savedAddresses.find(addr => addr.id === parseInt(addressId));
-      if (selectedAddress) {
+      let selectedAddress = savedAddresses.find(addr => addr.id === parseInt(addressId));
+
+      // Wait until saveddAddresses is populated
+
+      if (selectedAddress && !selectedAddress.temporary) {
         setAddressFields({
           firstname: selectedAddress.firstname,
           lastname: selectedAddress.lastname,
@@ -102,25 +105,30 @@ const Checkout_Delivery = () => {
           region: selectedAddress.region, // Set the region field when address is selected
           phone: selectedAddress.phone // Set the phone number field when address is selected
         });
+
+        return;
       }
-    } else {
-      setAddressFields({
-        firstname: '',
-        lastname: '',
-        address1: '',
-        address2: '',
-        city: '',
-        zip: '',
-        country: '',
-        region: '', // Reset the region field when no address is selected
-        phone: '' // Reset the phone number field when no address is selected
-      });
     }
+
+    setSelectedAddressId('');
+  
+    setAddressFields({
+      firstname: '',
+      lastname: '',
+      address1: '',
+      address2: '',
+      city: '',
+      zip: '',
+      country: '',
+      region: '', // Reset the region field when no address is selected
+      phone: '' // Reset the phone number field when no address is selected
+    });
   };
 
   const handleContinueToPayment = async () => {
     try {
       let addressId = selectedAddressId;
+
       if (!addressId) {
         const result = await APIRequest("post", "Address", {
           Firstname: addressFields.firstname,
@@ -131,12 +139,13 @@ const Checkout_Delivery = () => {
           ZipCode: addressFields.zip,
           Country: addressFields.country,
           Region: addressFields.region, // Include region in the request payload
-          Phone: addressFields.phone // Include phone number in the request payload
+          Phone: addressFields.phone, // Include phone number in the request payload
+          Temporary: !saveAddress
         });
 
-        addressId = result.return.AddressId;
+        addressId = result.address.AddressId;
       }
-
+      
       await APIRequest("post", "Orders/SetAddress", {
         OrderId: order.OrderId,
         AddressId: addressId
@@ -165,7 +174,7 @@ const Checkout_Delivery = () => {
             <label htmlFor="saved_addresses">Select a saved address</label>
             <select id="saved_addresses" onChange={handleSavedAddressSelect} value={selectedAddressId}>
               <option value="">-- Select an address --</option>
-              {savedAddresses.map((address) => (
+              {savedAddresses.filter(address => !address.temporary).map(address => (
                 <option key={address.id} value={address.id}>
                   {address.firstname} {address.lastname}, {address.address1}, {address.city}, {address.zip}, {address.country}
                 </option>
@@ -194,7 +203,7 @@ const Checkout_Delivery = () => {
               value={addressFields.firstname}
               onChange={handleAddressChange}
               required
-              disabled={!!selectedAddressId} // Disable input if address is selected
+              disabled={!!selectedAddressId}
             />
 
             <label htmlFor="lastname_input">Lastname</label>

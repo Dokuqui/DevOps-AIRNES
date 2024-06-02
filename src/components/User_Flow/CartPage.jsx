@@ -28,7 +28,6 @@ const CartPage = () => {
             price: product.Product.Price,
             quantity: product.Quantity,
             material: product.MaterialId,
-            isFavorite: false
         }));
 
         setProducts(newProducts);
@@ -40,13 +39,6 @@ const CartPage = () => {
     }, []);
 
 
-    const handleFavoriteClick = (item) => {
-        const updatedFavorites = products.map(product =>
-            product.id === item.id ? { ...product, isFavorite: !product.isFavorite } : product
-        );
-        setProducts(updatedFavorites);
-        // Add to favorite callback ...
-    }
 
     const handleDeleteClick = async (item) => {
         await APIRequest("delete", `ProductOrder?OrderId=${order.OrderId}&ProductId=${item.id}&MaterialId=${item.material}`);
@@ -97,7 +89,6 @@ const CartPage = () => {
                                         
 
                                         <div className="action">
-                                            <button className="favorite" onClick={() => handleFavoriteClick(product)}>{product.isFavorite ? <BsHeartFill color="red" /> : <BsHeart />}</button>
 
                                             <input type="number" value={product.quantity} onChange={(e) => handleQuantityChange(product, e.target.value)} onBlur={(e) => handleQuantityUnfocus(product)} />
                                         </div>

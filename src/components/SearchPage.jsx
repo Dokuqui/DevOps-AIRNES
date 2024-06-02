@@ -11,8 +11,10 @@ const SearchPage = () => {
     const [filterOpen, setFilterOpen] = useState(false);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [materials, setMaterials] = useState([]);
 
     const fetchProducts = async () => {
+        setProducts([]);
         const response = await APIRequest("GET", "Products");
 
         if (response.success) {
@@ -28,9 +30,18 @@ const SearchPage = () => {
         }
     }
 
+    const fetchMaterials = async () => {
+        const response = await APIRequest("GET", "Materials");
+
+        if (response.success) {
+            setMaterials(response.data.filter((material) => material.MaterialId !== 1));
+        }
+    }
+
     useEffect(() => {
         fetchProducts();
         fetchCategories();
+        fetchMaterials();
     }, []);
 
     const toggleFilter = () => {
@@ -51,7 +62,9 @@ const SearchPage = () => {
             }
         });
         setSearchParams(params);
+        fetchProducts();
     };
+
 
     return (
         <>
@@ -69,30 +82,49 @@ const SearchPage = () => {
                         <div className="price-range">
                             <label>
                                 Prix min€
-                                <input className="input" type="number" placeholder="1100" onChange={(e) => updateSearchParams({ minPrice: e.target.value })} value={searchParams.get("minPrice") || ""} />
+                                <input className="input" type="number" placeholder="0" onChange={(e) => updateSearchParams({ minPrice: e.target.value })} value={searchParams.get("minPrice") || ""} onWheel={(e) => e.target.blur()} />
                             </label>
                             <label>
                                 Prix max€
-                                <input className="input" type="number" placeholder="1250" onChange={(e) => updateSearchParams({ maxPrice: e.target.value })} value={searchParams.get("maxPrice") || ""} />
+                                <input className="input" type="number" placeholder="1250" onChange={(e) => updateSearchParams({ maxPrice: e.target.value })} value={searchParams.get("maxPrice") || ""} onWheel={(e) => e.target.blur()} />
                             </label>
                         </div>
                         <div className="materials">
                             <label>Matériaux</label>
-                            <div><input type="checkbox" /> bois</div>
-                            <div><input type="checkbox" /> acier inox</div>
-                            <div><input type="checkbox" /> plastique</div>
-                            <div><input type="checkbox" /> verre</div>
-                            <div><input type="checkbox" /> cuivre</div>
-                            <div><input type="checkbox" /> aluminium</div>
+                            {materials.map((material, index) => (
+                                <div key={index} style={{ cursor: "pointer" }} onClick={() => {
+                                    let newMaterials = searchParams.get("materialId")?.split(",").map((mat) => parseInt(mat)) || [];
+                                    
+                                    if (!searchParams.get("materialId")?.split(",").includes(String(material.MaterialId))) {
+                                        newMaterials.push(material.MaterialId);
+                                    }
+                                    else {
+                                        newMaterials = newMaterials.filter((mat) => mat !== material.MaterialId);
+                                    }
+
+                                    updateSearchParams({ materialId: newMaterials.join(",") });
+                                }}><input type="checkbox" className="input" checked={searchParams.get("materialId")?.split(",").includes(String(material.MaterialId)) ?? false} /> {material.Label}</div>
+                            ))}
                         </div>
                         <div className="stock">
                             <label>Stock</label>
-                            <div><input type="checkbox" /> en stock</div>
+                            <div style={{ cursor: "pointer" }} onClick={() => updateSearchParams({ inStock: searchParams.get("inStock") ? "" : 1 })}><input type="checkbox" className="input" checked={searchParams.get("inStock")} /> En stock</div>
                         </div>
                         <div className="categories">
                             <label>Catégories</label>
                             {categories.map((category, index) => (
-                                <div key={index}><input type="checkbox" onChange={(e) => updateSearchParams({ categoryId: e.target.checked ? category.CategoryId : "" })} /> {category.Name}</div>
+                                <div key={index} style={{ cursor: "pointer" }} onClick={() => {
+                                    let newCategories = searchParams.get("categoryId")?.split(",").map((cat) => parseInt(cat)) || [];
+                                    
+                                    if (!searchParams.get("categoryId")?.split(",").includes(String(category.CategoryId))) {
+                                        newCategories.push(category.CategoryId);
+                                    }
+                                    else {
+                                        newCategories = newCategories.filter((cat) => cat !== category.CategoryId);
+                                    }
+
+                                    updateSearchParams({ categoryId: newCategories.join(",") });
+                                }}><input type="checkbox" className="input" checked={searchParams.get("categoryId")?.split(",").includes(String(category.CategoryId)) ?? false} /> {category.Name}</div>
                             ))}
                         </div>
                     </div>
@@ -111,6 +143,24 @@ const SearchPage = () => {
 
                         if (searchParams.has("maxPrice")) {
                             state = state && product.Price <= searchParams.get("maxPrice");
+                        }
+
+                        if (searchParams.has("categoryId")) {
+                            let categories = searchParams.get("categoryId").split(",").map((cat) => parseInt(cat));
+                            let productCategories = product.Categories.map((cat) => cat.CategoryId);
+
+                            state = state && categories.some((cat) => productCategories.includes(cat));
+                        }
+
+                        if (searchParams.has("materialId")) {
+                            let materials = searchParams.get("materialId").split(",").map((mat) => parseInt(mat));
+                            let productMaterials = product.Materials.map((mat) => mat.MaterialId);
+
+                            state = state && materials.some((mat) => productMaterials.includes(mat));
+                        }
+
+                        if (searchParams.has("inStock")) {
+                            state = state && product.Stock > 0;
                         }
 
                         return state;

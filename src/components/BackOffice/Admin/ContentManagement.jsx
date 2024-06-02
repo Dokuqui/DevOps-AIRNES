@@ -49,7 +49,7 @@ const ContentManagement = () => {
       if (!response.success) {
         throw new Error("Failed to fetch materials");
       }
-      setMaterials(response.data);
+      setMaterials(response.data.filter((material) => material.MaterialId !== 1));
     } catch (error) {
       console.error(error);
     }
@@ -392,7 +392,7 @@ const ContentManagement = () => {
               onChange={handleMaterialChange}
               multiple={true}
             >
-              {materials.filter((material) => material.MaterialId !== 1).map((material) => (
+              {materials.map((material) => (
                 <option key={material.MaterialId} value={material.MaterialId}>
                   {material.Label}
                 </option>
@@ -479,7 +479,7 @@ const ContentManagement = () => {
               onChange={handleMaterialChange}
               multiple={true}
             >
-              {materials.filter((material) => material.MaterialId !== 1).map((material) => (
+              {materials.map((material) => (
                 <option key={material.MaterialId} value={material.MaterialId}>
                   {material.Label}
                 </option>

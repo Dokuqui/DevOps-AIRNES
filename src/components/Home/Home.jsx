@@ -62,6 +62,9 @@ const HomePage = () => {
                     image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.static-rmg.be%2Fa%2Fview%2Fq75%2Fw%2Fh%2F2429827%2Ftouch-noir-jpg.jpg&f=1&nofb=1&ipt=b9888f93e9c7d2d73582f9b2d7a0d279fb8a97f1671e91b9ad3825373dd43525&ipo=images"
                 }
             ]} />
+
+            <h3 style={{maxWidth: "400px", margin: "auto", marginTop: "20px", textAlign: "center"}}>Venant des hautes terres d'écosses nos meubles sont immortels</h3>
+
             {/* <ProductCards products={[
                 {
                     image: "https://img.vntg.com/large/15189795055032/vintage-lounge-chair-1960s.jpg",

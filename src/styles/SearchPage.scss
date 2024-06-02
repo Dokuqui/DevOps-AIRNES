@@ -28,6 +28,12 @@
   .filter-panel {
     padding: 10px;
     background-color: #f0f0f0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out;
 
     .reset,
     .close {
@@ -39,7 +45,6 @@
     .close {
       margin-left: 10px;
     }
-
 
     .price-range,
     .materials,
@@ -59,7 +64,7 @@
       }
 
       input[type="number"] {
-        width: calc(100% - 20px);
+        width: calc(100% - 40px);
         font-size: 14px;
       }
     }
@@ -121,6 +126,16 @@
 
 @media (min-width: 768px) {
   .product-search {
+    .filter-panel {
+      position: fixed;
+      width: 300px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: translateX(0);
+      margin-left: calc(100% - 300px);
+    }
+
     .search-results {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(285px, 400px));

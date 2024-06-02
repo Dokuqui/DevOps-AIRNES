@@ -86,5 +86,6 @@ const APIRequest = async (method, url, data) => {
     }
 }
 
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-export { getUserInfo, login, APIRequest, API_URL};
+export { getUserInfo, login, APIRequest, API_URL, wait };
