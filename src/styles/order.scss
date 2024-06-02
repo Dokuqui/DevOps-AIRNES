@@ -1,0 +1,169 @@
+.order-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+
+    margin-bottom: 50px;
+
+    & > .order {
+        display: flex;
+        width: 90%;
+        
+        gap: 20px;
+
+        & > .products {
+            // border: 1px solid #ddd;
+            // border-radius: 5px;
+            // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 0.6;
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            
+
+            & > .product {
+                display: flex;
+
+                & > .product-image {
+                    // background-color: #000000;
+                    width: 128px;
+                    height: 128px;
+                    // border-radius: 5px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+
+                & > .product-body {
+                    display: flex;
+                    flex-direction: column;
+                    // background-color: #00000033;
+                    margin-left: 20px;
+                    flex: 1;
+                    padding: 10px;
+
+                    & > .info {
+                        flex: 1;
+
+                        & > .product-header {
+                            display: flex;
+                            justify-content: space-between;
+
+                            & > .product-name {
+                                font-weight: 600;
+                                margin: 0px 0;
+
+                                &:hover {
+                                    cursor: pointer;
+                                }
+                            }
+
+                            & > .product-delete {
+                                width: 31px;
+                                height: 31px;
+                                background-color: transparent;
+                                border: solid 1px #000000;
+                                color: #000000;
+                                padding: 0;
+                                font-family: 'Roboto', sans-serif;
+                                font-weight: 500;
+                                font-size: 17px;
+                                transition: background-color 200ms;
+                                text-transform: uppercase;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+
+                                &:hover {
+                                    cursor: pointer;
+                                    background-color: #000000;
+                                    color: white;
+                                    transition: background-color 200ms;
+                                }
+                            }
+                        }
+    
+                        & > .price {
+                            font-size: 18px;
+                            font-weight: 700;
+                            margin: 15px 0 15px 0;
+                        }
+                        
+    
+                    }
+                    
+                    
+                    // & > .action // bottom of the product
+                    & > .action {
+                        display: flex;
+                        gap: 10px;
+
+                        & > input {
+                            width: 45px;
+                            border-radius: 0;
+                            border: solid 1px #000000;
+                            padding: 7px;
+
+                            &:focus {
+                                outline-width: 0;
+                            }
+                        }
+
+                        & > button {
+                            width: 31px;
+                            background-color: transparent;
+                            border: solid 1px #000000;
+                            color: #000000;
+                            padding: 0;
+                            font-family: 'Roboto', sans-serif;
+                            font-weight: 700;
+                            font-size: 13px;
+                            transition: background-color 200ms;
+                            text-transform: uppercase;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: #000000;
+                                color: white;
+                                transition: background-color 200ms;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        & > .info {
+            flex: 0.4;
+            & > .separator {
+                height: 2px;
+                background-color: #000;
+                margin: 20px 0;
+            }
+
+            & .bold {
+                font-size: 16px;
+                font-weight: bold;
+                font-style: normal;
+                text-transform: uppercase;
+            }
+
+            & > .price {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            & > p {
+                margin: 5px 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+}

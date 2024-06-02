@@ -20,6 +20,8 @@ import Checkout_Completed from "./User_Flow/Checkout_Completed";
 import CategoryProductPage from "./Category/CategoryProductPage";
 import SearchPage from "./SearchPage";
 import Logout from "./User_Flow/Logout";
+import OrdersPage from "./User_Flow/OrdersPage";
+import OrderPage from "./User_Flow/OrderPage";
 import { getUserInfo } from "../helper";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -67,6 +69,9 @@ const App = () => {
         {user && user.RoleId === 2 ? <Route path="/admin/*" element={<AdminPage />} /> : <Route path="/admin/*" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet" element={<UserPage />} /> : <Route path="/my-cabinet" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet/update-password" element={<UpdatePassword />} /> : <Route path="/my-cabinet/update-password" element={<LoginPage />} />}
+        {user ? <Route path="/orders" element={<OrdersPage />} /> : <Route path="/orders" element={<LoginPage />} />}
+        {user ? <Route path="/orders/:id" element={<OrderPage />} /> : <Route path="/orders/:id" element={<LoginPage />} />}
+
         {/* static-pages */}
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about-us" element={<AboutPage />} />

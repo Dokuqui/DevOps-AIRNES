@@ -68,30 +68,11 @@ import "../../styles/category.scss";
 
 
 const CategoryList = ({
-  itemsPerPage,
-  currentPage,
-  onPageChange,
-  filterCriteria,
   categories,
 }) => {
-  const [filteredCategories, setFilteredCategories] = useState([]);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedCategories = filterCriteria
-    ? filteredCategories.slice(startIndex, endIndex)
-    : categories.slice(startIndex, endIndex);
-
-  useEffect(() => {
-    const filtered = filterCriteria
-      ? categories.filter((category) => category.name === filterCriteria)
-      : categories;
-
-    setFilteredCategories(filtered);
-  }, [filterCriteria]);
-
   return (
     <div>
-      {displayedCategories.map((category) => (
+      {categories.map((category) => (
         <div key={category.id} className="category-name">
           <h3>{category.name}</h3>
           <div className="category-list">
@@ -101,11 +82,6 @@ const CategoryList = ({
           </div>
         </div>
       ))}
-      <Pagination
-        totalPages={Math.ceil(filteredCategories.length / itemsPerPage)}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-      />
     </div>
   );
 };
