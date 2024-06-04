@@ -6,6 +6,10 @@
 
     margin-bottom: 50px;
 
+    & > .title {
+        margin: 20px;
+    }
+
     & > .order {
         display: flex;
         width: 90%;

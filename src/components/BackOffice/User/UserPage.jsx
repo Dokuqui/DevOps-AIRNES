@@ -42,35 +42,7 @@ const UserPage = () => {
     field: '',
     value: '',
   });
-  const [commandHistory, setCommandHistory] = useState([]);
 
-  const fetchOrders = async () => {
-    let result = await APIRequest('get', 'Orders');
-
-    console.log(result);
-
-    let newCommandHistory = [];
-
-    for (let i = 0; i < result.data.length; i++) {
-      let order = result.data[i];
-      let products = await APIRequest('get', `ProductOrder?OrderId=${order.OrderId}`);
-
-      let price = products.return.reduce((acc, product) => acc + (product.Product.Price * product.Quantity), 0);
-
-      newCommandHistory.push({
-        id: order.OrderId,
-        date: order.OrderDate,
-        statut: order.Statut,
-        price: price.toFixed(2),
-        articles: products.return.reduce((acc, product) => acc + product.Quantity, 0),
-      });
-    }
-
-
-
-
-    setCommandHistory(newCommandHistory.reverse());
-  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +50,6 @@ const UserPage = () => {
       setIsLoading(false);
     };
     fetchData();
-    fetchOrders();
   }, []);
 
   const handleFormSubmit = (e) => {
@@ -97,22 +68,6 @@ const UserPage = () => {
       ...modalContent,
       value: e.target.value,
     });
-  };
-
-  const getstatutColor = (statut) => {
-    switch (statut) {
-      case 1:
-        return 'green';
-      case 0:
-        return 'orange';
-      default:
-        return 'black';
-    }
-  };
-  
-  const STATUT_TEXT = {
-    1: 'Delivered',
-    0: 'In Progress',
   };
 
   return (
@@ -140,17 +95,7 @@ const UserPage = () => {
               Logout
             </Link>
           </div>
-          <div className="history" style={{ flex: 2 }}>
-            <h3>Command History</h3>
-            <ul>
-              {commandHistory.map((command) => (
-                <li key={command.id}>
-                  {new Date(command.date).toLocaleDateString('fr-FR')} - <strong style={{ color: getstatutColor(command.statut) }}>{STATUT_TEXT[command.statut]} </strong>
-                  - {command.price} - {command.articles} Products
-                </li>
-              ))}
-            </ul>
-          </div>
+          
           {/* Modal for updating personal info */}
           {showModal && (
             <div className="modal-backdrop" onClick={() => setShowModal(false)}>

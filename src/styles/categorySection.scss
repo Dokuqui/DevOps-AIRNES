@@ -1,3 +1,5 @@
+$breakpoint-phone: 768px;
+
 .categorySection {
     padding: 0px 20px;
     display: flex;
@@ -13,6 +15,8 @@
         width: 100%;
         padding: 10px 0px;
         gap: 10px;
+
+        overflow-x: auto;
 
         &>.item {
             flex: 1;
@@ -40,9 +44,16 @@
 
             &>.title {
                 text-transform: uppercase;
-                font-size: 28px;
                 font-weight: 700;
                 margin-bottom: 0px;
+                
+                // Scale the title to fit the container
+                font-size: 1.5vw;
+                // font-size: 28px;
+
+                @media (max-width: $breakpoint-phone) {
+                    font-size: 4vw;                    
+                }
             }
 
             &>.description {

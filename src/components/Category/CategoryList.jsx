@@ -71,7 +71,7 @@ const CategoryList = ({
   categories,
 }) => {
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {categories.map((category) => (
         <div key={category.id} className="category-name">
           <h3>{category.name}</h3>

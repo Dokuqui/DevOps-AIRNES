@@ -68,7 +68,7 @@ const OrderPage = () => {
             <Header />
             <LoadingScreen isLoading={isLoading}>
                 <div className="order-page">
-                    <h1>Commande #{order.OrderId} - {new Date(order.OrderDate).toLocaleDateString()} - {STATUT_TEXT[order.Statut]}</h1>
+                    <h1 className="title">Commande #{order.OrderId} - {new Date(order.OrderDate).toLocaleDateString()} - {STATUT_TEXT[order.Statut]}</h1>
 
                     <div className="order">
 

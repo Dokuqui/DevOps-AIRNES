@@ -236,10 +236,12 @@ $breakpoint-small: 480px;
   }
 
   @media (max-width: $breakpoint-phone) {
+    display: flex;
+    flex-direction: column;
+
     .main-image-container img {
       width: 100%;
       height: auto;
-      margin-top: 30vh;
     }
 
     .thumbnail-container {

@@ -71,7 +71,7 @@ const OrdersPage = () => {
                         <>
                             <div key={year} className="year-indicator"><h2>{year}</h2><div className="bar"></div> </div>
 
-                            {orders.filter((order) => new Date(order.OrderDate).getFullYear() === year).sort((a, b) => a.Statut - b.Statut).map((order) => (
+                            {orders.filter((order) => new Date(order.OrderDate).getFullYear() === year).reverse().sort((a, b) => a.Statut - b.Statut).map((order) => (
                                 <div key={order.OrderId} className="order" onClick={() => {
                                     window.location.href = order.Statut === 1 ? `/orders/${order.OrderId}` : `/cart`;
                                 }}>
