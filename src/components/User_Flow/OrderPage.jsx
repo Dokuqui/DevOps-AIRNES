@@ -17,8 +17,11 @@ const OrderPage = () => {
     const fetchOrder = async () => {
         const order_result = await APIRequest("GET", "Orders?OrderId=" + id);
 
+
         if (order_result.success && order_result.data.length > 0 && order_result.data[0].Statut != 0) {
-            let products_result = await APIRequest("get", `ProductOrder?OrderId=${order_result.data[0].OrderId}`);
+            const order = order_result.data[0];
+
+            let products_result = await APIRequest("get", `ProductOrder?OrderId=${order.OrderId}`);
             console.log(products_result);
 
 
@@ -26,7 +29,7 @@ const OrderPage = () => {
                 id: product.Product.ProductId,
                 name: product.Product.Name,
                 image: product.Product.Pictures?.[0]?.Link ? `${API_URL}/${product.Product.Pictures[0].Link}` : "/image/placeholder.webp",
-                price: product.Product.Price,
+                price: product.Product.Price.toFixed(2),
                 quantity: product.Quantity,
                 material: product.MaterialId,
             }));
@@ -34,11 +37,11 @@ const OrderPage = () => {
             setProducts(newProducts);
 
             setOrder({
-                ...order_result.data[0],
-                Total: newProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0),
+                ...order,
+                Total: newProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0).toFixed(2),
             });
 
-            let address_result = await APIRequest("GET", "Address?AddressId=" + order_result.data[0].AddressId);
+            let address_result = await APIRequest("GET", "Address?AddressId=" + order.AddressId);
 
             setAddress(address_result.return[0]);
 
@@ -102,12 +105,12 @@ const OrderPage = () => {
                             </div>
                             <div className="separator"></div>
                             <h2 className="bold">Adresse de livraison</h2>
-                            <p>{address.Firstname} {address.Lastname}</p>
-                            <p>{address.Address1}</p>
-                            { address.Address2 && <p>{address.Address2}</p> }
-                            <p>{address.ZipCode} {address.City}</p>
-                            <p>{address.Country}</p>
-                            <p>{address.Phone}</p>
+                            <p>{address?.Firstname} {address?.Lastname}</p>
+                            <p>{address?.Address1}</p>
+                            { address?.Address2 && <p>{address?.Address2}</p> }
+                            <p>{address?.ZipCode} {address?.City}</p>
+                            <p>{address?.Country}</p>
+                            <p>{address?.Phone}</p>
 
                         </div>
                     </div>

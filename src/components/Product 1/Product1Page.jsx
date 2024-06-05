@@ -49,6 +49,8 @@ const ProductPage = () => {
       if (result.return == null) {
         window.location.href = "/404";
       }
+
+      const product_categories = await APIRequest("get", `ProductCategory?CategoryId=${result.return.Categories[0].CategoryId}`);
       
       setProductData({
         id: result.return.ProductId,
@@ -59,13 +61,22 @@ const ProductPage = () => {
         materials: [],
         images: result.return.Pictures.map((picture) => `${API_URL}/${picture.Link}`),
         similarProducts: [
-          {
-            id: 2,
-            name: "Similar Product 1",
-            images:
-              "https://www.decoraid.com/wp-content/uploads/2021/04/best-2021-sofa-interior-design-scaled.jpeg",
-          },
-          { id: 3, name: "Similar Product 2" },
+          // ...product_categories.return.Products.slice(0, 6).map((product) => ({
+          //   id: product.ProductId,
+          //   name: product.Name,
+          //   image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
+          //   price: product.Price,
+          // })),
+
+          ...product_categories.return.Products
+            .filter((product) => product.ProductId !== result.return.ProductId)
+            .slice(0, 6)
+          .map((product) => ({
+            id: product.ProductId,
+            name: product.Name,
+            image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
+            price: product.Price,
+          })),
         ],
       })
 
@@ -132,7 +143,7 @@ const ProductPage = () => {
             />
           </div>
         </div>
-        <SimilarProductsContainer />
+        <SimilarProductsContainer products={productData.similarProducts} />
       </LoadingScreen>
       <Footer />
     </div>

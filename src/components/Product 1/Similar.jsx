@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { FaArrowAltCircleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const SimilarProductItem = ({ product }) => {
-  const handleProductClick = (productId) => {
-    console.log(`Navigating to product details for product ${productId}`);
-  };
 
   return (
     <div className="similar-product-item">
@@ -15,16 +13,12 @@ const SimilarProductItem = ({ product }) => {
         <div className="popup">
           <h3>{product.name}</h3>
           <p>Price: ${product.price}</p>
-          <div
-            className="view-details"
-            onClick={() => {
-              handleProductClick(product.id);
-              console.log("View details clicked for product:", product.id);
-            }}
-          >
-            <FaArrowAltCircleRight className="arrow-icon" />
-            <span>View</span>
-          </div>
+          <Link to={`/product/${product.id}`} style={{ textDecoration: "none", color: "black" }}>
+            <div className="view-details">
+              <FaArrowAltCircleRight className="arrow-icon" />
+              <span>View</span>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
@@ -127,9 +121,9 @@ const dummyProducts = [
   },
 ];
 
-const SimilarProductsContainer = () => {
+const SimilarProductsContainer = ({ products }) => {
   // You can replace dummyProducts with your actual product data
-  return <SimilarProducts products={dummyProducts} />;
+  return <SimilarProducts products={products || dummyProducts} />;
 };
 
 export default SimilarProductsContainer;

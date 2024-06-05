@@ -20,7 +20,7 @@ const OrdersPage = () => {
 
                 setOrders((prevOrders) => [...prevOrders, {
                     ...order,
-                    Total: price,
+                    Total: price.toFixed(2),
                     Articles: products.return.reduce((acc, product) => acc + product.Quantity, 0),
                 }]);
 
@@ -71,7 +71,12 @@ const OrdersPage = () => {
                         <>
                             <div key={year} className="year-indicator"><h2>{year}</h2><div className="bar"></div> </div>
 
-                            {orders.filter((order) => new Date(order.OrderDate).getFullYear() === year).reverse().sort((a, b) => a.Statut - b.Statut).map((order) => (
+                            {orders
+                                .filter((order) => new Date(order.OrderDate).getFullYear() === year)
+                                .reverse()
+                                .sort((a, b) => a.Statut - b.Statut)
+                                .sort((a, b) => b.OrderId - a.OrderId)
+                            .map((order) => (
                                 <div key={order.OrderId} className="order" onClick={() => {
                                     window.location.href = order.Statut === 1 ? `/orders/${order.OrderId}` : `/cart`;
                                 }}>

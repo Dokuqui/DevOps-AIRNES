@@ -46,6 +46,8 @@ const ProductDetails = ({
       <p>Price: ${price}</p>
 
       {materials.length > 0 && (
+        <>
+        <p></p>
         <select className="material-options" onChange={(e) => onMaterialChange(e.target.value)}>
           {materials.map((material) => (
             <option
@@ -57,6 +59,7 @@ const ProductDetails = ({
             </option>
           ))}
         </select>
+        </>
       )}
 
       <div className="product-description">
