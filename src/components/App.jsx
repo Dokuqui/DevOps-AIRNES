@@ -64,7 +64,7 @@ const App = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/reinstall" element={<ReinstalPage />} />
-        <Route path="/new_password" element={<NewPasswordPage />} />
+        <Route path="/reset-password" element={<NewPasswordPage />} />
         {/* back_office */}
         {user && user.RoleId === 2 ? <Route path="/admin/*" element={<AdminPage />} /> : <Route path="/admin/*" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet" element={<UserPage />} /> : <Route path="/my-cabinet" element={<LoginPage />} />}

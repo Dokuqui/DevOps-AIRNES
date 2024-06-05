@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+  import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../Static/Header';
 import Footer from '../../Static/Footer';
@@ -6,6 +6,7 @@ import { regularUser } from '../../User_Flow/Login';
 import '../../../styles/user.scss';
 import { APIRequest, getUserInfo } from '../../../helper';
 import LoadingScreen from '../../LoadingScreen';
+import validator from 'validator';
 
 // const commandHistory = [
 //   {
@@ -36,6 +37,7 @@ import LoadingScreen from '../../LoadingScreen';
 
 const UserPage = () => {
   const [userData, setUserData] = useState(regularUser);
+  const [newUserData, setNewUserData] = useState(regularUser);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [modalContent, setModalContent] = useState({
@@ -46,19 +48,33 @@ const UserPage = () => {
   
   useEffect(() => {
     const fetchData = async () => {
-      await setUserData(await getUserInfo());
+      const user = await getUserInfo();
+      await setUserData(user);
+      await setNewUserData(user);
       setIsLoading(false);
     };
     fetchData();
   }, []);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      [modalContent.field]: modalContent.value,
-    }));
+    if (!validator.isEmail(newUserData.Mail)) {
+      alert('Email invalid');
+      return;
+    }
+
+    const response = await APIRequest('put', `Users`, {
+      Firstname: newUserData.FirstName,
+      Lastname: newUserData.LastName,
+      Mail: newUserData.Mail,
+    });
+
+    if (response.success) {
+      alert('User info updated');
+
+      setUserData(newUserData);
+    }
 
     setShowModal(false);
   };
@@ -102,23 +118,32 @@ const UserPage = () => {
               <div className="modal" style={{ zIndex: 999 }}>
                 <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                   <form onSubmit={handleFormSubmit}>
-                    <h2>Update {modalContent.field}</h2>
-                    <label>
+                    {/* <h2>Update {modalContent.field}</h2> */}
+                    {/* <label>
                       Select field to update:
                       <select
                         value={modalContent.field}
                         onChange={(e) => setModalContent({ ...modalContent, field: e.target.value })}
                       >
-                        <option value="name">Name</option>
-                        <option value="lastname">Last Name</option>
-                        <option value="email">Email</option>
+                        <option value="Firstname">Name</option>
+                        <option value="Lastname">Last Name</option>
+                        <option value="Mail">Email</option>
                       </select>
                     </label>
                     <label>
                       New {modalContent.field}:
                       <input type="text" value={modalContent.value} onChange={handleInputChange} />
-                    </label>
-                    <button type="submit">Update</button>
+                    </label> */}
+                      <label htmlFor="name">Prénom:</label>
+                      <input type="text" id="name" name="name" value={newUserData?.FirstName} onChange={(e) => setNewUserData({ ...newUserData, FirstName: e.target.value })} />
+
+                      <label htmlFor="lastname">Nom:</label>
+                      <input type="text" id="lastname" name="lastname" value={newUserData?.LastName} onChange={(e) => setNewUserData({ ...newUserData, LastName: e.target.value })} />
+
+                      <label htmlFor="email">Email:</label>
+                      <input type="email" id="email" name="email" value={newUserData?.Mail} onChange={(e) => setNewUserData({ ...userData, Mail: e.target.value })} />
+                      
+                      <input type="submit" value="Submit" />
                   </form>
                 </div>
               </div>

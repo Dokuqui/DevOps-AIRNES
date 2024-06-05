@@ -22,8 +22,6 @@ const OrderPage = () => {
             const order = order_result.data[0];
 
             let products_result = await APIRequest("get", `ProductOrder?OrderId=${order.OrderId}`);
-            console.log(products_result);
-
 
             let newProducts = products_result.return.map((product) => ({
                 id: product.Product.ProductId,

@@ -1,38 +1,44 @@
 import React, { useState } from "react";
 import SuccessPopup from "../../User_Flow/SuccessPopUp";
+import validator from "validator";
 import "../../../styles/login.scss";
+import { APIRequest } from "../../../helper";
 
 const UpdatePassword = () => {
+  const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setPasswordError("");
     setConfirmPasswordError("");
     setShowSuccessPopup(false);
 
-    if (!password) {
-      setPasswordError("Password is required");
-    } else if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters long");
-    }
-
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please confirm your password");
-    } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Passwords do not match");
-    }
-
-    if (!passwordError && !confirmPasswordError && password.length >= 6) {
-      setShowSuccessPopup(true);
-      console.log(
-        "You have successfully set new password!"
+    if (!validator.isStrongPassword(password)) {
+      setPasswordError(
+        "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
       );
     }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Les mots de passe ne correspondent pas");
+    }
+
+    if (passwordError || confirmPasswordError) {
+      return;
+    }
+
+    // Call API to update password
+    await APIRequest("PUT", "Users", {
+      CurrentPassword: currentPassword,
+      Password: password,
+    });
+
+    window.location.href = "/my-cabinet";
   };
 
   return (
@@ -43,6 +49,15 @@ const UpdatePassword = () => {
       </p>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
+          <label htmlFor="currentPassword">Current Password:</label>
+          <input
+            type="password"
+            id="currentPassword"
+            name="currentPassword"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            required
+          />
           <label htmlFor="password">Create New Password:</label>
           <input
             type="password"
