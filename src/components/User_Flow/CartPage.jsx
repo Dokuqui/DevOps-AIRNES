@@ -20,6 +20,8 @@ const CartPage = () => {
         let products_result = await APIRequest("get", `ProductOrder?OrderId=${result.data.OrderId}`);
         console.log(products_result);
 
+        let materials_result = await APIRequest("get", "Materials");
+
 
         let newProducts = products_result.return.map((product) => ({
             id: product.Product.ProductId,
@@ -27,7 +29,7 @@ const CartPage = () => {
             image: product.Product.Pictures?.[0]?.Link ? `${API_URL}/${product.Product.Pictures[0].Link}` : "/image/placeholder.webp",
             price: product.Product.Price,
             quantity: product.Quantity,
-            material: product.MaterialId,
+            material: materials_result.data.find(material => material.MaterialId === product.MaterialId)
         }));
 
         setProducts(newProducts);
@@ -46,8 +48,9 @@ const CartPage = () => {
     }
 
     const handleQuantityChange = (item, quantity) => {
+        console.log(item.id, item.material);
         const updatedProducts = products.map(product =>
-            product.id === item.id ? { ...product, quantity: quantity } : product
+            (product.id === item.id && product.material === item.material) ? { ...product, quantity: quantity } : product
         );
         setProducts(updatedProducts);
     }
@@ -81,7 +84,10 @@ const CartPage = () => {
                                     <div className="product-body">
                                         <div className="info">
                                             <div className="product-header">
-                                                <p className="product-name" onClick={() => window.location.href = `/product/${product.id}`}>{product.name}</p>
+                                                <p className="product-name" onClick={() => window.location.href = `/product/${product.id}`}>
+                                                    {product.name}
+                                                    {product.material.MaterialId != 1 && <span className="material"> ({product.material.Label})</span>}
+                                                </p>
                                                 <button className="product-delete" onClick={() => handleDeleteClick(product)}><BsTrash3Fill/></button>
                                             </div>
                                             <p className="price">{product.price}€</p>

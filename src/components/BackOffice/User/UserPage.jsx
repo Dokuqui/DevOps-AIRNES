@@ -102,6 +102,9 @@ const UserPage = () => {
             <div className="button-cont">
               <button onClick={() => setShowModal(true)}>Update Info</button>
             </div>
+            <Link to="/orders" className="button-link">
+              Orders
+            </Link>
             {/* Button to navigate to change password page */}
             <Link to="/my-cabinet/update-password" className="button-link">
               Update Password

@@ -43,11 +43,11 @@ const ProductDetails = ({
           {availability ? "In Stock" : "Expired"}
         </span>
       </p>
-      <p>Price: ${price}</p>
+      <p>Price: {price} €</p>
 
       {materials.length > 0 && (
         <>
-        <p></p>
+        <p>Materials: </p>
         <select className="material-options" onChange={(e) => onMaterialChange(e.target.value)}>
           {materials.map((material) => (
             <option

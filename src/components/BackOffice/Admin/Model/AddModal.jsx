@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const AddUserModal = ({ addUser, onClose }) => {
+const AddUserModal = ({ addUser, roles, onClose }) => {
   const [formData, setFormData] = useState({
-    id: "",
-    Name: "",
-    lastname: "",
-    email: "",
-    role: "",
+    Firstname: "",
+    Lastname: "",
+    Mail: "",
+    Password: "",
+    RoleId: "",
   });
 
   const handleChange = (e) => {
@@ -15,11 +15,12 @@ const AddUserModal = ({ addUser, onClose }) => {
       ...prevData,
       [name]: value,
     }));
+
+    console.log(formData);
   };
 
   const handleSubmit = () => {
     addUser(formData);
-    onClose();
   };
 
   return (
@@ -28,19 +29,19 @@ const AddUserModal = ({ addUser, onClose }) => {
         &times;
       </span>
       <h3>Add User</h3>
-      <label htmlFor="name">Name:</label>
+      <label htmlFor="name">First Name:</label>
       <input
         type="text"
         id="name"
-        name="name"
-        value={formData.name}
+        name="Firstname"
+        value={formData.firstname}
         onChange={handleChange}
       />
       <label htmlFor="lastname">Last Name:</label>
       <input
         type="text"
         id="lastname"
-        name="lastname"
+        name="Lastname"
         value={formData.lastname}
         onChange={handleChange}
       />
@@ -48,18 +49,42 @@ const AddUserModal = ({ addUser, onClose }) => {
       <input
         type="email"
         id="email"
-        name="email"
+        name="Mail"
         value={formData.email}
         onChange={handleChange}
       />
-      <label htmlFor="role">Role:</label>
+
+      <label htmlFor="password">Password:</label>
       <input
+        type="password"
+        id="password"
+        name="Password"
+        value={formData.password}
+        onChange={handleChange}
+      />
+
+      <label htmlFor="role">Role:</label>
+      {/* <input
         type="text"
         id="role"
         name="role"
         value={formData.role}
         onChange={handleChange}
-      />
+      /> */}
+      <select
+        id="role"
+        name="RoleId"
+        value={formData.role}
+        onChange={handleChange}
+        style={{ marginBottom: "10px" }}
+      >
+        {roles.map((role) => (
+          <option key={role.RoleId} value={role.RoleId}>
+            {role.Label}
+          </option>
+        ))}
+      </select>
+
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );

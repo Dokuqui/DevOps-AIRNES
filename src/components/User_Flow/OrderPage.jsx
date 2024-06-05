@@ -23,13 +23,16 @@ const OrderPage = () => {
 
             let products_result = await APIRequest("get", `ProductOrder?OrderId=${order.OrderId}`);
 
+            let materials_result = await APIRequest("get", "Materials");
+
+
             let newProducts = products_result.return.map((product) => ({
                 id: product.Product.ProductId,
                 name: product.Product.Name,
                 image: product.Product.Pictures?.[0]?.Link ? `${API_URL}/${product.Product.Pictures[0].Link}` : "/image/placeholder.webp",
                 price: product.Product.Price.toFixed(2),
                 quantity: product.Quantity,
-                material: product.MaterialId,
+                material: materials_result.data.find(material => material.MaterialId === product.MaterialId)
             }));
 
             setProducts(newProducts);
@@ -81,7 +84,10 @@ const OrderPage = () => {
                                     <div className="product-body">
                                         <div className="info">
                                             <div className="product-header">
-                                                <p className="product-name" onClick={() => window.location.href = `/product/${product.id}`}>{product.name}</p>
+                                                <p className="product-name" onClick={() => window.location.href = `/product/${product.id}`}>
+                                                    {product.name}
+                                                    {product.material.MaterialId != 1 && <span className="material"> ({product.material.Label})</span>}
+                                                </p>
                                             </div>
                                             <p className="price">{product.price}€</p>
                                         </div>

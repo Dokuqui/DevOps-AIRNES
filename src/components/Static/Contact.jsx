@@ -17,6 +17,7 @@ const ContactPage = () => {
 
     const onSubmit = async (data) => {
         try {
+            console.log(process.env);
             setDisabled(true);
             await emailjs.send(
                 process.env.REACT_APP_SERVICE_ID,

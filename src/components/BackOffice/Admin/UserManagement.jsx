@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FooterBack from "./FooterBack";
 import Sidebar from "./SideBar";
 import AddUserModal from "./Model/AddModal";
@@ -6,6 +6,8 @@ import UpdateUserModal from "./Model/UpdateModal";
 import DeleteUserModal from "./Model/DeleteModal";
 import "../../../styles/modal_admin.scss";
 import "../../../styles/admin.scss";
+import { APIRequest } from "../../../helper";
+import validator from "validator";
 
 export const initialUser = [
   {
@@ -33,6 +35,7 @@ export const initialUser = [
 
 const UserManagement = () => {
   const [users, setUsers] = useState(initialUser);
+  const [roles, setRoles] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -57,22 +60,58 @@ const UserManagement = () => {
     setShowDeleteModal(true);
   };
 
-  const addUser = (user) => {
-    const newUser = { ...user, id: getNextId() };
-    setUsers([...users, newUser]);
+  const addUser = async (user) => {
+    // const newUser = { ...user, id: getNextId() };
+    // setUsers([...users, newUser]);
+
+    if (!validator.isEmail(user.Mail)) {
+      alert("Invalid email");
+      return;
+    }
+    
+    if (!validator.isStrongPassword(user.Password)) {
+      alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character");
+      return;
+    }
+
+    await APIRequest("POST", "Users", user);
+    await fetchUsers();
+    setShowAddModal(false)
   };
 
-  const updateUser = (updatedUser) => {
-    setUsers(
-      users.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-    );
+  const updateUser = async (updatedUser) => {
+    await APIRequest("PUT", "Users", updatedUser);
+    fetchUsers();
   };
 
-  const deleteUser = () => {
-    setUsers(users.filter((user) => user.id !== selectedUser.id));
+  const deleteUser = async () => {
+    await APIRequest("DELETE", `Users/${selectedUser.UserId}`);
+    await fetchUsers();
     setSelectedUser(null);
     setShowDeleteModal(false);
   };
+
+  const fetchUsers = async () => {
+    const response = await APIRequest("GET", "Users");
+
+    if (response.success) {
+      console.log(response.return);
+      setUsers(response.return);
+    }
+  }
+
+  const fetchRoles = async () => {
+    const response = await APIRequest("GET", "Roles");
+
+    if (response.success) {
+      setRoles(response.return);
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers();
+    fetchRoles();
+  }, []);
 
   return (
     <div>
@@ -93,12 +132,12 @@ const UserManagement = () => {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.lastname}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
+              <tr key={user.UserId}>
+                <td>{user.UserId}</td>
+                <td>{user.Firstname}</td>
+                <td>{user.Lastname}</td>
+                <td>{user.Mail}</td>
+                <td>{user.RoleId}</td>
                 <td>
                   <button
                     className="update-btn"
@@ -123,6 +162,7 @@ const UserManagement = () => {
         <div className="modal">
           <AddUserModal
             addUser={addUser}
+            roles={roles}
             onClose={() => setShowAddModal(false)}
           />
         </div>
@@ -133,6 +173,7 @@ const UserManagement = () => {
         <div className="modal">
           <UpdateUserModal
             user={selectedUser}
+            roles={roles}
             updateUser={updateUser}
             onClose={() => setShowUpdateModal(false)}
           />
