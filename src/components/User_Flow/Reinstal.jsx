@@ -23,6 +23,7 @@ const Reinstal = () => {
     // Call API to send email
     await APIRequest("POST", "Users/ForgotPassword", { Mail: email });
     
+    setShowSuccessPopup(true);
   };
 
   return (
