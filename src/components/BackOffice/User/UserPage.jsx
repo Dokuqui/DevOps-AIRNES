@@ -91,28 +91,40 @@ const UserPage = () => {
       <Header />
       <LoadingScreen isLoading={isLoading}>
         <h2>Welcome Back, {userData?.FirstName} {userData?.LastName}</h2>
-        <div className="box_back" style={{ display: 'flex' }}>
-          <div className="personal_info" style={{ flex: 1 }}>
+        <div className="box_back" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="personal_info">
             <h3>Personal Information</h3>
             
             <p>Name: {userData?.FirstName}</p>
             <p>Last Name: {userData?.LastName}</p>
             <p>Email: {userData?.Mail}</p>
             {/* Button to open modal for updating personal info */}
-            <div className="button-cont">
-              <button onClick={() => setShowModal(true)}>Update Info</button>
-            </div>
-            <Link to="/orders" className="button-link">
-              Orders
-            </Link>
-            {/* Button to navigate to change password page */}
-            <Link to="/my-cabinet/update-password" className="button-link">
-              Update Password
-            </Link>
             
-            <Link to="/logout" className="button-link" style={{ backgroundColor: 'red' }}>
-              Logout
-            </Link>
+            <div className='btn-group'>
+              <div className='separator'></div>
+
+              {/* <Link to="/orders" className="btn">
+                Orders
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/orders'}>Orders</button>
+
+              <button className='btn' onClick={() => window.location.href = '/addresses'}>Addresses</button>
+
+              {/* separator */}
+              <div className='separator'></div>
+              <button className='btn' onClick={() => setShowModal(true)}>Update Info</button>
+              
+              {/* Button to navigate to change password page */}
+              {/* <Link to="/my-cabinet/update-password" className="btn">
+                Update Password
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/my-cabinet/update-password'}>Update Password</button>
+              
+              {/* <Link to="/logout" className="btn">
+                Logout
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/logout'}>Logout</button>
+            </div>
           </div>
           
           {/* Modal for updating personal info */}

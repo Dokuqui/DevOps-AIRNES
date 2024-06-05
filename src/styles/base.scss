@@ -6,6 +6,7 @@
     font-family: 'Roboto', sans-serif;
     transition: background-color 200ms;
     text-transform: uppercase;
+    text-decoration: none;
 
     &:disabled {
       background-color: #00000033;
@@ -75,4 +76,38 @@ p.error-message {
   margin-top: 5px;
   font-size: 0.8rem;
   font-family: 'Lato', sans-serif;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+  }
+
+  span {
+    padding: 0 10px;
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+select {
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 0;
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+  appearance: none;
+  background-size: 15px;
+
+  &:focus {
+    outline: none;
+  }
 }

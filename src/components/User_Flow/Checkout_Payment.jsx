@@ -37,6 +37,8 @@ const Checkout_Payment = () => {
 
     const sessionId = response.id;
 
+    console.log(sessionId);
+
     // Redirect to the Stripe hosted checkout page
     const result = await stripe.redirectToCheckout({
       sessionId: sessionId,

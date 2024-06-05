@@ -28,6 +28,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import LoadingScreen from "./LoadingScreen";
 
 import "../styles/base.scss"
+import AddressesPage from "./BackOffice/User/AddressesPage";
 
 const stripePromise = loadStripe('pk_test_51PGFLzBeMEfwR1Dpa38IhbXDUYkG7gw62u9JdcwnN3KUUYeCjyhlBVQtiLm5SbIKSwyMj36mJSujKJAjC4PMkbMO00qn5R5Eil');
 
@@ -70,6 +71,7 @@ const App = () => {
         {user ? <Route path="/my-cabinet" element={<UserPage />} /> : <Route path="/my-cabinet" element={<LoginPage />} />}
         {user ? <Route path="/my-cabinet/update-password" element={<UpdatePassword />} /> : <Route path="/my-cabinet/update-password" element={<LoginPage />} />}
         {user ? <Route path="/orders" element={<OrdersPage />} /> : <Route path="/orders" element={<LoginPage />} />}
+        {user ? <Route path="/addresses" element={<AddressesPage />} /> : <Route path="/addresses" element={<LoginPage />} />}
         {user ? <Route path="/orders/:id" element={<OrderPage />} /> : <Route path="/orders/:id" element={<LoginPage />} />}
 
         {/* static-pages */}
