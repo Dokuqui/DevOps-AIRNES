@@ -73,7 +73,7 @@ const CartPage = () => {
             <Header />
             <LoadingScreen isLoading={isLoading}>
                 <div className="cartsection">
-                    <h1 className="title">Panier</h1>
+                    <h1 className="title">Cart</h1>
 
                     <div className="cart">
                         <div className="products">
@@ -109,7 +109,7 @@ const CartPage = () => {
                                 <h2><span className="price">{(products.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2))} €</span></h2>
                             </div>
                             
-                            <button disabled={products.length === 0} className="checkout" onClick={() => window.location.href = "/checkout"}>Passer commande</button>
+                            <button disabled={products.length === 0} className="checkout" onClick={() => window.location.href = "/checkout"}>Checkout</button>
                         </div>
                     </div>
                 </div>

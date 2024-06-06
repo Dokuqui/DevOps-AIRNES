@@ -73,24 +73,24 @@ const SearchPage = () => {
             <div className="product-search">
                 <div className="search-bar">
                     <input className="input" type="text" placeholder="Table basse!" onChange={(e) => updateSearchParams({ q: e.target.value }) } value={searchParams.get("q") || ""} />
-                    <button className="btn" onClick={toggleFilter}>Filtrer</button>
+                    <button className="btn" onClick={toggleFilter}>Filter</button>
                 </div>
                 {filterOpen && (
                     <div className="filter-panel">
-                        <button className="btn reset" onClick={handleReset}>Réinitialiser</button>
-                        <button className="btn close" onClick={toggleFilter}>Fermer</button>
+                        <button className="btn reset" onClick={handleReset}>Reset</button>
+                        <button className="btn close" onClick={toggleFilter}>Close</button>
                         <div className="price-range">
                             <label>
-                                Prix min€
+                                Min price €
                                 <input className="input" type="number" placeholder="0" onChange={(e) => updateSearchParams({ minPrice: e.target.value })} value={searchParams.get("minPrice") || ""} onWheel={(e) => e.target.blur()} />
                             </label>
                             <label>
-                                Prix max€
+                                Max price €
                                 <input className="input" type="number" placeholder="1250" onChange={(e) => updateSearchParams({ maxPrice: e.target.value })} value={searchParams.get("maxPrice") || ""} onWheel={(e) => e.target.blur()} />
                             </label>
                         </div>
                         <div className="materials">
-                            <label>Matériaux</label>
+                            <label>Materials</label>
                             {materials.map((material, index) => (
                                 <div key={index} style={{ cursor: "pointer" }} onClick={() => {
                                     let newMaterials = searchParams.get("materialId")?.split(",").map((mat) => parseInt(mat)) || [];
@@ -108,10 +108,10 @@ const SearchPage = () => {
                         </div>
                         <div className="stock">
                             <label>Stock</label>
-                            <div style={{ cursor: "pointer" }} onClick={() => updateSearchParams({ inStock: searchParams.get("inStock") ? "" : 1 })}><input type="checkbox" className="input" checked={searchParams.get("inStock")} /> En stock</div>
+                            <div style={{ cursor: "pointer" }} onClick={() => updateSearchParams({ inStock: searchParams.get("inStock") ? "" : 1 })}><input type="checkbox" className="input" checked={searchParams.get("inStock")} /> In stock</div>
                         </div>
                         <div className="categories">
-                            <label>Catégories</label>
+                            <label>Categories</label>
                             {categories.map((category, index) => (
                                 <div key={index} style={{ cursor: "pointer" }} onClick={() => {
                                     let newCategories = searchParams.get("categoryId")?.split(",").map((cat) => parseInt(cat)) || [];

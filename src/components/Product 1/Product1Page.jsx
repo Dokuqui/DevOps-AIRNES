@@ -4,10 +4,9 @@ import Footer from "../Static/Footer";
 import ProductDetails from "./Product1Details";
 import ProductImageGallery from "./ProductImageGallery_1";
 import SimilarProductsContainer from "./Similar";
-
 import "../../styles/first_product.scss";
 import { useParams } from "react-router-dom";
-import { APIRequest, API_URL } from "../../helper";
+import { APIRequest, API_URL, wait } from "../../helper";
 import LoadingScreen from "../LoadingScreen";
 
 const ProductPage = () => {
@@ -106,6 +105,20 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = async () => {
+
+    setTimeout(async () => {
+      let addCart = document.querySelector("#addToCart");
+      let oldBackgroundColor = addCart.style.backgroundColor;
+      let oldColor = addCart.style.color;
+      addCart.style.backgroundColor = "green";
+      addCart.style.color = "white";
+      await wait(100);
+      addCart.style.backgroundColor = oldBackgroundColor;
+      addCart.style.color = oldColor;
+    }, 0);
+
+
+
     console.log("Product added to cart:", {
       productId: productData.id,
       selectedMaterial,

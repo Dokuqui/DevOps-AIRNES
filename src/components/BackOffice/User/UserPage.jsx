@@ -95,7 +95,7 @@ const UserPage = () => {
           <div className="personal_info">
             <h3>Personal Information</h3>
             
-            <p>Name: {userData?.FirstName}</p>
+            <p>First Name: {userData?.FirstName}</p>
             <p>Last Name: {userData?.LastName}</p>
             <p>Email: {userData?.Mail}</p>
             {/* Button to open modal for updating personal info */}

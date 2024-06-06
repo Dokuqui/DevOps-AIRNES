@@ -109,7 +109,7 @@ const CategoryProductPage = () => {
                                     <p className="title">{product.title}</p>
                                     {/* <Rate rate={product.rate} /> */}
                                     <p className="price">{product.price}€</p>
-                                    { product.quantity <= 0 ? <p style={{color: "red"}}>Rupture de stock</p> : <></> }
+                                    { product.quantity <= 0 ? <p style={{color: "red"}}>Out of stock</p> : <></> }
                                 </div>
                             ))
                         ) : (

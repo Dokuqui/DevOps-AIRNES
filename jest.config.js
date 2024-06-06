@@ -1,12 +1,14 @@
+// jest.config.js
 module.exports = {
-    setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-    transform: {
-      '^.+\.[jt]sx?$': 'babel-jest',
-    },
-    transformIgnorePatterns: [
-      'node_modules/(?!(axios)/)', // Include 'axios' or any other package using ES6 syntax
-    ],
-    moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    },
+  transformIgnorePatterns: [
+    // Remove axios and canvasJs
+    "node_modules/(?!axios)/", // add axios to the list of modules to be transformed
+    
+  ],
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest", // use babel-jest for transforming files
+  },
+  moduleNameMapper: {
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy", // mock out CSS imports
+  },
 };

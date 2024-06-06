@@ -29,6 +29,7 @@ import LoadingScreen from "./LoadingScreen";
 
 import "../styles/base.scss"
 import AddressesPage from "./BackOffice/User/AddressesPage";
+import CGUPage from "./Static/CGU";
 
 const stripePromise = loadStripe('pk_test_51PGFLzBeMEfwR1Dpa38IhbXDUYkG7gw62u9JdcwnN3KUUYeCjyhlBVQtiLm5SbIKSwyMj36mJSujKJAjC4PMkbMO00qn5R5Eil');
 
@@ -77,6 +78,7 @@ const App = () => {
         {/* static-pages */}
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about-us" element={<AboutPage />} />
+        <Route path="/cgu" element={<CGUPage />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </Router>

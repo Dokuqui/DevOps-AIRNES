@@ -72,7 +72,7 @@ const OrderPage = () => {
             <Header />
             <LoadingScreen isLoading={isLoading}>
                 <div className="order-page">
-                    <h1 className="title">Commande #{order.OrderId} - {new Date(order.OrderDate).toLocaleDateString()} - {STATUT_TEXT[order.Statut]}</h1>
+                    <h1 className="title">Order #{order.OrderId} - {new Date(order.OrderDate).toLocaleDateString()} - {STATUT_TEXT[order.Statut]}</h1>
 
                     <div className="order">
 
@@ -108,7 +108,7 @@ const OrderPage = () => {
                                 <p className="bold">{order.Total} €</p>
                             </div>
                             <div className="separator"></div>
-                            <h2 className="bold">Adresse de livraison</h2>
+                            <h2 className="bold">Delivery address</h2>
                             <p>{address?.Firstname} {address?.Lastname}</p>
                             <p>{address?.Address1}</p>
                             { address?.Address2 && <p>{address?.Address2}</p> }

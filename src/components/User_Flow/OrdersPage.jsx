@@ -54,7 +54,7 @@ const OrdersPage = () => {
         <>
             <Header />
             <div className="orders-page">
-                <h1 className="title">Mes commandes</h1>
+                <h1 className="title">Orders</h1>
 
                 <div className="orders-list">
                     {/* {orders.map((order) => (
@@ -80,7 +80,7 @@ const OrdersPage = () => {
                                 <div key={order.OrderId} className="order" onClick={() => {
                                     window.location.href = order.Statut === 1 ? `/orders/${order.OrderId}` : `/cart`;
                                 }}>
-                                    <p>{new Date(order.OrderDate).toLocaleDateString('fr-FR')} - {order.OrderId}</p>
+                                    <p>{new Date(order.OrderDate).toLocaleDateString('en-US')} - {order.OrderId}</p>
                                     <p style={{ color: STATUT_COLOR[order.Statut] }}>{STATUT_TEXT[order.Statut]}</p>
                                     <p>{order.Articles} articles</p>
                                     <p>{order.Total} €</p>

@@ -40,7 +40,7 @@ const ProductDetails = ({
         <span
           className={`availability-${availability ? "in-stock" : "expired"}`}
         >
-          {availability ? "In Stock" : "Expired"}
+          {availability ? "In Stock" : "Out of Stock"}
         </span>
       </p>
       <p>Price: {price} €</p>
@@ -81,7 +81,7 @@ const ProductDetails = ({
       </div>
 
       <div className="action-buttons">
-        <button className="add-to-cart-button" onClick={handleAddToCartClick}>
+        <button id="addToCart" className="btn" onClick={handleAddToCartClick} {...(availability ? {} : { disabled: true })}>
           <BiShoppingBag className="button-icon" />
           Add to Cart
         </button>

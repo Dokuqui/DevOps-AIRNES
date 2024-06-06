@@ -27,29 +27,29 @@ const Registration = () => {
     setShowSuccessPopup(false);
 
     if (!email) {
-      setEmailError("L'email est requis");
+      setEmailError("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Adresse email invalide");
+      setEmailError("Email address is invalid");
     }
 
     if (!password) {
-      setPasswordError("Le mot de passe est requis");
+      setPasswordError("Password is required");
     } else if (password.length < 6) {
-      setPasswordError("Le mot de passe doit contenir au moins 6 caractères");
+      setPasswordError("Password must be at least 6 characters long");
     }
 
     if (!confirmPassword) {
-      setConfirmPasswordError("Veuillez confirmer votre mot de passe");
+      setConfirmPasswordError("Please confirm your password");
     } else if (confirmPassword !== password) {
-      setConfirmPasswordError("Les mots de passe ne correspondent pas");
+      setConfirmPasswordError("Passwords do not match");
     }
 
     if (!firstname) {
-      setFirstnameError("Le prénom est requis");
+      setFirstnameError("Firstname is required");
     }
 
     if (!lastname) {
-      setLastnameError("Le nom est requis");
+      setLastnameError("Lastname is required");
     }
 
     if (!emailError && !passwordError && !confirmPasswordError && !firstnameError && !lastnameError && password.length >= 6) {
@@ -75,10 +75,10 @@ const Registration = () => {
 
   return (
     <div className="registration-container">
-      <h2>Inscription</h2>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="firstname">Prénom:</label>
+          <label htmlFor="firstname">Firstname:</label>
           <input
             type="text"
             id="firstname"
@@ -90,7 +90,7 @@ const Registration = () => {
           {firstnameError && <p className="error-message">{firstnameError}</p>}
         </div>
         <div className="input-group">
-          <label htmlFor="lastname">Nom:</label>
+          <label htmlFor="lastname">Lastname:</label>
           <input
             type="text"
             id="lastname"
@@ -114,7 +114,7 @@ const Registration = () => {
           {emailError && <p className="error-message">{emailError}</p>}
         </div>
         <div className="input-group">
-          <label htmlFor="password">Créer un mot de passe:</label>
+          <label htmlFor="password">Create a password:</label>
           <input
             type="password"
             id="password"
@@ -126,7 +126,7 @@ const Registration = () => {
           {passwordError && <p className="error-message">{passwordError}</p>}
         </div>
         <div className="input-group">
-          <label htmlFor="confirm-password">Confirmer le mot de passe:</label>
+          <label htmlFor="confirm-password">Confirm your password:</label>
           <input
             type="password"
             id="confirm-password"
@@ -140,17 +140,17 @@ const Registration = () => {
           )}
         </div>
         <button type="submit" className="register-button">
-          S'inscrire
+          Register
         </button>
       </form>
       <p className="GoTo">
-        Vous avez déjà un compte ? <Link to="/login">Aller à la connexion</Link>
+        Already have an account ? <Link to="/login">Login</Link>
       </p>
 
       {showSuccessPopup && (
         <SuccessPopup
-          message="Inscription réussie !"
-          buttonText="Page de connexion"
+          message="Registration successful"
+          buttonText="Login page"
           onClose={() => {
             setShowSuccessPopup(false);
             window.location.href = "/";
