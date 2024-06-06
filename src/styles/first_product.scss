@@ -203,43 +203,16 @@ $breakpoint-small: 480px;
       .button-icon {
         margin-right: 8px;
       }
-
-      .add-to-cart-button,
-      .wishlist-button {
-        display: inline-block;
-        align-items: center;
-        justify-content: center;
-        background-color: #ecb159;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-        text-decoration: none;
-
-        &:hover {
-          background-color: #c6a969;
-        }
-      }
-
-      .wishlist-button {
-        background-color: #ffb0b0;
-        margin-left: 10px;
-
-        &:hover {
-          background-color: #f50057;
-        }
-      }
     }
   }
 
   @media (max-width: $breakpoint-phone) {
+    display: flex;
+    flex-direction: column;
+
     .main-image-container img {
       width: 100%;
       height: auto;
-      margin-top: 30vh;
     }
 
     .thumbnail-container {

@@ -1,30 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import SuccessPopup from "./SuccessPopUp";
+import validator from "validator";
 import "../../styles/login.scss";
+import { APIRequest } from "../../helper";
 
 const Reinstal = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailError("");
     setShowSuccessPopup(false);
 
-    if (!email) {
-      setEmailError("Email is required");
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Invalid email address");
+    if (!validator.isEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
     }
 
-    if (!emailError) {
-      setShowSuccessPopup(true);
-      console.log(
-        "You have send email successfully, please check your email inbox!"
-      );
-    }
+    // Call API to send email
+    await APIRequest("POST", "Users/ForgotPassword", { Mail: email });
+    
+    setShowSuccessPopup(true);
   };
 
   return (

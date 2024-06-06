@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SuccessPopup from "./SuccessPopUp";
 import "../../styles/login.scss";
+// Import helper.js with the alias "helper"
+import { login } from "../../helper";
 
 export const adminUser = {
   email: "admin@example.com",
@@ -19,18 +21,23 @@ export const regularUser = {
 };
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("a@a.com");
+  const [password, setPassword] = useState("Root@123456");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const navigate = useNavigate();
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  var user;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
     setShowSuccessPopup(false);
+    setShowErrorPopup(false);
+    setError("");
 
     if (!email) {
       setEmailError("Email is required");
@@ -44,33 +51,54 @@ const Login = () => {
       setPasswordError("Password must be at least 6 characters long");
     }
 
-    // Check if the provided email and password match the admin user data
-    if (
-      (email === adminUser.email &&
-        password === adminUser.password &&
-        adminUser.role === "admin") ||
-      (email === regularUser.email &&
-        password === regularUser.password &&
-        regularUser.role === "user")
-    ) {
-      // Perform actions for successful login
-      const userData = {
-        email: email,
-        isLoggedIn: true,
-        role: email === adminUser.email ? "admin" : "user",
-      };
-      localStorage.setItem("userData", JSON.stringify(userData));
+    var loginInfo = await login(email, password);
+    console.log(loginInfo);
 
-      // Redirect based on user role
-      if (userData.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/my-cabinet");
-      }
-
-      setShowSuccessPopup(true);
-      console.log("Login successful");
+    if (!loginInfo) {
+      setError("Internal server error");
+      setShowErrorPopup(true);
+      return;
     }
+
+    if (!loginInfo.success) {
+      setError(loginInfo.return);
+      setShowErrorPopup(true);
+      return;
+    }
+
+
+    localStorage.setItem("Token", loginInfo.return.Token);
+    window.location.href = "/";
+
+
+
+    // // Check if the provided email and password match the admin user data
+    // if (
+    //   (email === adminUser.email &&
+    //     password === adminUser.password &&
+    //     adminUser.role === "admin") ||
+    //   (email === regularUser.email &&
+    //     password === regularUser.password &&
+    //     regularUser.role === "user")
+    // ) {
+    //   // Perform actions for successful login
+    //   const userData = {
+    //     email: email,
+    //     isLoggedIn: true,
+    //     role: email === adminUser.email ? "admin" : "user",
+    //   };
+    //   localStorage.setItem("userData", JSON.stringify(userData));
+
+    //   // Redirect based on user role
+    //   if (userData.role === "admin") {
+    //     navigate("/admin");
+    //   } else {
+    //     navigate("/my-cabinet");
+    //   }
+
+    //   setShowSuccessPopup(true);
+    //   console.log("Login successful");
+    // }
   };
 
   return (
@@ -117,6 +145,13 @@ const Login = () => {
           message="Login successful!"
           buttonText="Home Page"
           onClose={() => setShowSuccessPopup(false)}
+        />
+      )}
+      {showErrorPopup && (
+        <SuccessPopup
+          message={error}
+          buttonText="Close"
+          onClose={() => setShowErrorPopup(false)}
         />
       )}
     </div>

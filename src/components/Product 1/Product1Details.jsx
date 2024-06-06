@@ -7,17 +7,12 @@ const ProductDetails = ({
   name,
   availability,
   price,
-  brand,
-  colors,
-  sizes,
+  materials,
   description,
-  selectedColor,
-  selectedSize,
-  onColorChange,
-  onSizeChange,
+  selectedMaterial,
+  onMaterialChange,
   onQuantityChange,
   onAddToCart,
-  onAddToWish,
 }) => {
   const [quantity, setQuantity] = useState(1);
 
@@ -34,14 +29,9 @@ const ProductDetails = ({
   };
 
   const handleAddToCartClick = () => {
-    // Call the parent component function with the selected color, size, and quantity
     onAddToCart();
   };
 
-  const handleAddToWishClick = () => {
-    // Call the parent component function with the selected color, size, and quantity
-    onAddToWish();
-  };
   return (
     <div className="product-details">
       <h1>{name}</h1>
@@ -50,39 +40,27 @@ const ProductDetails = ({
         <span
           className={`availability-${availability ? "in-stock" : "expired"}`}
         >
-          {availability ? "In Stock" : "Expired"}
+          {availability ? "In Stock" : "Out of Stock"}
         </span>
       </p>
-      <p>Brand: {brand}</p>
-      <p>Price: ${price}</p>
+      <p>Price: {price} €</p>
 
-      <div className="color-options">
-        <p>Available Colors:</p>
-        {colors.map((color) => (
-          <div
-            key={color}
-            className={`color-option ${
-              selectedColor === color ? "selected" : ""
-            }`}
-            style={{ backgroundColor: color }}
-            onClick={() => onColorChange(color)} // Call onColorChange with the selected color
-          ></div>
-        ))}
-      </div>
-
-      <div className="size-options">
-        <p>Available Sizes:</p>
-        {sizes.map((size) => (
-          <div
-            key={size}
-            className={`size-option ${selectedSize === size ? "selected" : ""}`}
-            onClick={() => onSizeChange(size)} // Call onSizeChange with the selected size
-          >
-            {size}
-            <div className="color-slide"></div>
-          </div>
-        ))}
-      </div>
+      {materials.length > 0 && (
+        <>
+        <p>Materials: </p>
+        <select className="material-options" onChange={(e) => onMaterialChange(e.target.value)}>
+          {materials.map((material) => (
+            <option
+              key={material[0]}
+              value={material[0]}
+              selected={selectedMaterial === material[0]}
+            >
+              {material[1]}
+            </option>
+          ))}
+        </select>
+        </>
+      )}
 
       <div className="product-description">
         <h2>Description:</h2>
@@ -103,13 +81,9 @@ const ProductDetails = ({
       </div>
 
       <div className="action-buttons">
-        <button className="add-to-cart-button" onClick={handleAddToCartClick}>
+        <button id="addToCart" className="btn" onClick={handleAddToCartClick} {...(availability ? {} : { disabled: true })}>
           <BiShoppingBag className="button-icon" />
           Add to Cart
-        </button>
-        <button className="wishlist-button" onClick={handleAddToWishClick}>
-          <AiOutlineHeart className="button-icon" />
-          Wishlist
         </button>
       </div>
     </div>
@@ -120,16 +94,12 @@ ProductDetails.propTypes = {
   name: PropTypes.string.isRequired,
   availability: PropTypes.bool.isRequired,
   price: PropTypes.number.isRequired,
-  brand: PropTypes.string.isRequired,
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sizes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedColor: PropTypes.string,
-  selectedSize: PropTypes.string,
-  onColorChange: PropTypes.func.isRequired,
-  onSizeChange: PropTypes.func.isRequired,
+  materials: PropTypes.arrayOf(PropTypes.string).isRequired,
+  description: PropTypes.string.isRequired,
+  selectedMaterial: PropTypes.string,
+  onMaterialChange: PropTypes.func.isRequired,
   onQuantityChange: PropTypes.func.isRequired,
   onAddToCart: PropTypes.func.isRequired,
-  onAddToWish: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;

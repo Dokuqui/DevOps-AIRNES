@@ -2,8 +2,7 @@ import React from "react";
 
 const DeleteUserModal = ({ user, deleteUser, onClose }) => {
   const handleDelete = () => {
-    deleteUser(user.id);
-    onClose();
+    deleteUser(user.UserId);
   };
 
   return (
@@ -12,7 +11,7 @@ const DeleteUserModal = ({ user, deleteUser, onClose }) => {
         &times;
       </span>
       <h3>Delete User</h3>
-      <p>Are you sure you want to delete user {user.name}?</p>
+      <p>Are you sure you want to delete user {user.Firstname} {user.Lastname}?</p>
       <button onClick={handleDelete}>Confirm</button>
     </div>
   );

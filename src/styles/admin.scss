@@ -297,3 +297,178 @@ table {
     }
   }
 }
+
+.admin-content {
+  padding: 15px 15px;
+  flex-grow: 1;
+  min-height: calc(100vh - 160px);
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .add-btn {
+    display: inline-flex;
+    justify-content: center;
+    background-color: #318ce7;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #3e447e;
+    }
+  }
+
+  .content-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    .update-btn {
+      display: inline-flex;
+      justify-content: center;
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      margin: 4px 2px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #7cea6d;
+      }
+    }
+
+    .delete-btn {
+      display: inline-flex;
+      justify-content: center;
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 8px;
+      margin: 4px 2px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ef7a7a;
+      }
+    }
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-top: 10px;
+      }
+
+      input,
+      textarea {
+        margin-top: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .save-btn,
+      .cancel-btn {
+        margin-top: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .save-btn {
+        background: #28a745;
+        color: white;
+      }
+
+      .cancel-btn {
+        background: #dc3545;
+        color: white;
+      }
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background: #6c757d;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+}

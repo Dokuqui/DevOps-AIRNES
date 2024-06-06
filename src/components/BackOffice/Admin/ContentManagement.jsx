@@ -1,83 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import FooterBack from "./FooterBack";
 import Sidebar from "./SideBar";
+import { APIRequest, API_URL } from "../../../helper";
 
 const ContentManagement = () => {
-  // const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-  // // Fetch products from the database on component mount
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  const fetchProducts = async () => {
+    try {
+      const response = await APIRequest("GET", "Products");
+      if (!response.success) {
+        throw new Error("Failed to fetch products");
+      }
+      setProducts(response.return.map((product) => ({
+        ProductId: product.ProductId,
+        Name: product.Name,
+        Categories: product.Categories.map((category) => category.CategoryId),
+        Description: product.Description,
+        Price: product.Price,
+        Stock: product.Stock,
+        Materials: product.Materials.map((material) => material.MaterialId),
+        Images: product.Pictures,
+      })));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // // Function to fetch products from the database
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("API_ENDPOINT/products");
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     setProducts(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const fetchCategories = async () => {
+    try {
+      const response = await APIRequest("GET", "Categories");
+      if (!response.success) {
+        throw new Error("Failed to fetch categories");
+      }
+      setCategories(response.categories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // // Function to handle product deletion
-  // const handleDelete = async (productId) => {
-  //   try {
-  //     const response = await fetch(`API_ENDPOINT/products/${productId}`, {
-  //       method: "DELETE",
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Failed to delete product");
-  //     }
-  //     fetchProducts();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const fetchMaterials = async () => {
+    try {
+      const response = await APIRequest("GET", "Materials");
+      if (!response.success) {
+        throw new Error("Failed to fetch materials");
+      }
+      setMaterials(response.data.filter((material) => material.MaterialId !== 1));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const [products, setProducts] = useState([
-    { id: 1, name: "Product 1", description: "Description of Product 1" },
-    { id: 2, name: "Product 2", description: "Description of Product 2" },
-    { id: 3, name: "Product 3", description: "Description of Product 3" },
-  ]);
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+    fetchMaterials();
+  }, []);
 
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [createFormData, setCreateFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    brand: "",
-    color: "",
-    size: "",
-    quantity: "",
-    images: [],
+    Name: "",
+    Categories: [],
+    Description: "",
+    Price: "",
+    Quantity: "",
+    Materials: [],
+    Images: [],
   });
   const [updateFormData, setUpdateFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    brand: "",
-    color: "",
-    size: "",
-    quantity: "",
-    images: [],
+    Name: "",
+    Categories: [],
+    Description: "",
+    Price: "",
+    Quantity: "",
+    Materials: [],
+    Images: [],
   });
+  const [existingImages, setExistingImages] = useState([]);
 
-  const handleProductSelection = (productId, name, category) => {
+  const handleProductSelection = (productId, data) => {
     setSelectedProductId(productId);
-    setUpdateFormData({ name, category });
+    setUpdateFormData(data);
+    setExistingImages(data.Images.map((image) => image.Link));
   };
 
-  const handleDelete = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
+  const handleDelete = async (productId) => {
+    await APIRequest("DELETE", `Products/${productId}`);
+    await fetchProducts();
   };
 
   const handleCreate = () => {
@@ -102,45 +117,142 @@ const ContentManagement = () => {
     });
   };
 
+  const handleCategoryChange = (e) => {
+    const options = e.target.options;
+    let value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setCreateFormData({
+      ...createFormData,
+      Categories: value,
+    });
+
+    setUpdateFormData({
+      ...updateFormData,
+      Categories: value,
+    });
+  };
+
+  const handleMaterialChange = (e) => {
+    const options = e.target.options;
+    let value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setCreateFormData({
+      ...createFormData,
+      Materials: value,
+    });
+
+    setUpdateFormData({
+      ...updateFormData,
+      Materials: value,
+    });
+  };
+
   const handleImageChange = (e) => {
     const imageFiles = Array.from(e.target.files);
 
     setCreateFormData((prevFormData) => ({
       ...prevFormData,
-      images: [...prevFormData.images, ...imageFiles],
+      Images: [...prevFormData.Images, ...imageFiles],
     }));
 
     setUpdateFormData((prevFormData) => ({
       ...prevFormData,
-      image: [...prevFormData.images, ...imageFiles],
+      Images: [...prevFormData.Images, ...imageFiles],
     }));
   };
 
-  const handleCreateSubmit = () => {
-    const newProduct = {
-      id: products.length + 1,
-      name: createFormData.name,
-      category: createFormData.category,
-      description: createFormData.description,
-      price: createFormData.price,
-      brand: createFormData.brand,
-      color: createFormData.color,
-      size: createFormData.size,
-      quantity: createFormData.quantity,
-      images: createFormData.images,
-    };
-    setProducts([...products, newProduct]);
-    setShowCreateModal(false);
+  const uploadImages = async (images) => {
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append("Images", image);
+    });
+
+    try {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Failed to upload images");
+      }
+
+      setUploadProgress(0);
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 
-  const handleUpdateSubmit = () => {
-    const updatedProducts = products.map((product) =>
-      product.id === selectedProductId
-        ? { ...product, ...updateFormData }
-        : product
+  const handleCreateSubmit = async () => {
+    const imageUploadResponse = await uploadImages(createFormData.Images);
+
+    if (imageUploadResponse) {
+      await APIRequest("POST", `Products`, {
+        Name: createFormData.Name,
+        Description: createFormData.Description,
+        Price: createFormData.Price,
+        Stock: createFormData.Quantity,
+        Categories: createFormData.Categories,
+        Materials: createFormData.Materials,
+        Pictures: imageUploadResponse.images.map((image) => image.Link), // Adjust this based on your API response
+      });
+
+      await fetchProducts();
+      setShowCreateModal(false);
+    }
+  };
+
+  const handleUpdateSubmit = async () => {
+    let newImageLinks = existingImages;
+    const newImages = updateFormData.Images.filter(
+      (img) => !existingImages.some((existingImg) => existingImg.name === img.name)
     );
-    setProducts(updatedProducts);
+
+    if (newImages.length > 0) {
+      const imageUploadResponse = await uploadImages(newImages);
+      if (imageUploadResponse) {
+        newImageLinks = [...newImageLinks, ...imageUploadResponse.images.map((image) => image.Link)]; // Adjust this based on your API response
+      }
+    }
+
+    await APIRequest("PUT", `Products/${selectedProductId}`, {
+      Name: updateFormData.Name,
+      Description: updateFormData.Description,
+      Price: updateFormData.Price,
+      Stock: updateFormData.Quantity,
+      Categories: updateFormData.Categories,
+      Materials: updateFormData.Materials,
+      Pictures: newImageLinks,
+    });
+
+    await fetchProducts();
     setShowUpdateModal(false);
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...existingImages];
+    updatedImages.splice(index, 1);
+    setExistingImages(updatedImages);
   };
 
   return (
@@ -173,18 +285,22 @@ const ContentManagement = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product.ProductId}>
                   <td
                     onClick={() => {
-                      handleProductSelection(
-                        product.id,
-                        product.name,
-                        product.category
-                      );
+                      handleProductSelection(product.ProductId, {
+                        Name: product.Name,
+                        Categories: product.Categories,
+                        Price: product.Price,
+                        Description: product.Description,
+                        Quantity: product.Stock,
+                        Materials: product.Materials,
+                        Images: product.Images,
+                      });
                       handleUpdate();
                     }}
                   >
-                    {product.name}
+                    {product.Name}
                   </td>
                 </tr>
               ))}
@@ -198,12 +314,12 @@ const ContentManagement = () => {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product.ProductId}>
                   <td>
-                    {product.name}
+                    {product.Name}
                     <button
                       className="delete"
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product.ProductId)}
                     >
                       Delete
                     </button>
@@ -226,67 +342,77 @@ const ContentManagement = () => {
             <input
               type="text"
               id="createName"
-              name="name"
-              value={createFormData.name}
+              name="Name"
+              value={createFormData.Name}
               onChange={handleCreateInputChange}
             />
-            <label htmlFor="createCategory">Category:</label>
-            <input
-              type="text"
+            <label htmlFor="createCategory">Categories:</label>
+            <select
               id="createCategory"
-              name="category"
-              value={createFormData.category}
-              onChange={handleCreateInputChange}
-            />
+              name="Categories"
+              value={createFormData.Categories}
+              onChange={handleCategoryChange}
+              multiple={true}
+            >
+              {categories.map((category) => (
+                <option key={category.CategoryId} value={category.CategoryId}>
+                  {category.Name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="createDescription">Description:</label>
             <input
               type="text"
               id="createDescription"
-              name="description"
-              value={createFormData.description}
+              name="Description"
+              value={createFormData.Description}
               onChange={handleCreateInputChange}
             />
             <label htmlFor="createPrice">Price:</label>
             <input
-              type="text"
+              type="number"
               id="createPrice"
-              name="price"
-              value={createFormData.price}
-              onChange={handleCreateInputChange}
-            />
-            <label htmlFor="createBrand">Brand:</label>
-            <input
-              type="text"
-              id="createBrand"
-              name="brand"
-              value={createFormData.brand}
-              onChange={handleCreateInputChange}
-            />
-            <label htmlFor="createSize">Size:</label>
-            <input
-              type="text"
-              id="createSize"
-              name="size"
-              value={createFormData.size}
+              name="Price"
+              value={createFormData.Price}
               onChange={handleCreateInputChange}
             />
             <label htmlFor="createQuantity">Quantity:</label>
             <input
               type="text"
               id="createQuantity"
-              name="quantity"
-              value={createFormData.quantity}
+              name="Quantity"
+              value={createFormData.Quantity}
               onChange={handleCreateInputChange}
             />
+            <label htmlFor="createMaterials">Materials:</label>
+            <select
+              id="createMaterials"
+              name="Materials"
+              value={createFormData.Materials}
+              onChange={handleMaterialChange}
+              multiple={true}
+            >
+              {materials.map((material) => (
+                <option key={material.MaterialId} value={material.MaterialId}>
+                  {material.Label}
+                </option>
+              ))}
+            </select>
             <label htmlFor="createImages">Image:</label>
             <input
               type="file"
               id="createImages"
-              name="images"
+              name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
-              multiple // Allow add multiple images
+              multiple={true}
             />
+            {uploadProgress > 0 && (
+              <div>
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
             <button onClick={handleCreateSubmit}>Submit</button>
           </div>
         </div>
@@ -303,66 +429,105 @@ const ContentManagement = () => {
             <input
               type="text"
               id="updateName"
-              name="name"
-              value={updateFormData.name}
+              name="Name"
+              value={updateFormData.Name}
               onChange={handleUpdateInputChange}
             />
-            <label htmlFor="updateCategory">Category:</label>
-            <input
-              type="text"
+            <label htmlFor="updateCategory">Categories:</label>
+            <select
               id="updateCategory"
-              name="category"
-              value={updateFormData.category}
-              onChange={handleUpdateInputChange}
-            />
+              name="Categories"
+              value={updateFormData.Categories}
+              onChange={handleCategoryChange}
+              multiple={true}
+            >
+              {categories.map((category) => (
+                <option key={category.CategoryId} value={category.CategoryId}>
+                  {category.Name}
+                </option>
+              ))}
+            </select>
             <label htmlFor="updateDescription">Description:</label>
             <input
               type="text"
               id="updateDescription"
-              name="description"
-              value={updateFormData.description}
+              name="Description"
+              value={updateFormData.Description}
               onChange={handleUpdateInputChange}
             />
             <label htmlFor="updatePrice">Price:</label>
             <input
-              type="text"
+              type="number"
               id="updatePrice"
-              name="price"
-              value={updateFormData.price}
-              onChange={handleUpdateInputChange}
-            />
-            <label htmlFor="updateBrand">Brand:</label>
-            <input
-              type="text"
-              id="updateBrand"
-              name="brand"
-              value={updateFormData.brand}
-              onChange={handleUpdateInputChange}
-            />
-            <label htmlFor="updateSize">Size:</label>
-            <input
-              type="text"
-              id="updateSize"
-              name="size"
-              value={updateFormData.size}
+              name="Price"
+              value={updateFormData.Price}
               onChange={handleUpdateInputChange}
             />
             <label htmlFor="updateQuantity">Quantity:</label>
             <input
               type="text"
               id="updateQuantity"
-              name="quantity"
-              value={updateFormData.quantity}
+              name="Quantity"
+              value={updateFormData.Quantity}
               onChange={handleUpdateInputChange}
             />
+            <label htmlFor="updateMaterials">Materials:</label>
+            <select
+              id="updateMaterials"
+              name="Materials"
+              value={updateFormData.Materials}
+              onChange={handleMaterialChange}
+              multiple={true}
+            >
+              {materials.map((material) => (
+                <option key={material.MaterialId} value={material.MaterialId}>
+                  {material.Label}
+                </option>
+              ))}
+            </select>
             <label htmlFor="updateImages">Image:</label>
             <input
               type="file"
               id="updateImages"
-              name="images"
+              name="Images"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
+              multiple={true}
             />
+            {existingImages.length > 0 && (
+              <div>
+                <p>Existing Images:</p>
+                {existingImages.map((image, index) => (
+                  <div key={index} style={{ position: "relative", display: "inline-block", margin: "5px" }}>
+                    <img src={`${API_URL}/${image}`} alt="product" style={{ width: "100px" }} />
+                    <button
+                      onClick={() => handleDeleteImage(index)}
+                      style={{
+                        position: "absolute",
+                        bottom: "5px",
+                        right: "5px",
+                        background: "grey",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "20px",
+                        height: "20px",
+                        cursor: "pointer",
+                        padding: "0",
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {uploadProgress > 0 && (
+              <div>
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
             <button onClick={handleUpdateSubmit}>Submit</button>
           </div>
         </div>

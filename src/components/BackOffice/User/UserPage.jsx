@@ -1,53 +1,80 @@
-import React, { useState } from 'react';
+  import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../Static/Header';
 import Footer from '../../Static/Footer';
 import { regularUser } from '../../User_Flow/Login';
 import '../../../styles/user.scss';
+import { APIRequest, getUserInfo } from '../../../helper';
+import LoadingScreen from '../../LoadingScreen';
+import validator from 'validator';
 
-const commandHistory = [
-  {
-    id: 1,
-    product: 'Product 1',
-    price: '$49.99',
-    date: '2024-03-15',
-    status: 'Delivered',
-    description: 'lorum ipsum noga',
-  },
-  {
-    id: 2,
-    product: 'Product 2',
-    price: '$39.99',
-    date: '2024-01-15',
-    status: 'In Progress',
-    description: 'lorum ipsum noga',
-  },
-  {
-    id: 3,
-    product: 'Product 3',
-    price: '$89.99',
-    date: '2024-03-20',
-    status: 'Denied',
-    description: 'lorum ipsum noga',
-  },
-];
+// const commandHistory = [
+//   {
+//     id: 1,
+//     product: 'Product 1',
+//     price: '$49.99',
+//     date: '2024-03-15',
+//     statut: 'Delivered',
+//     description: 'lorum ipsum noga',
+//   },
+//   {
+//     id: 2,
+//     product: 'Product 2',
+//     price: '$39.99',
+//     date: '2024-01-15',
+//     statut: 'In Progress',
+//     description: 'lorum ipsum noga',
+//   },
+//   {
+//     id: 3,
+//     product: 'Product 3',
+//     price: '$89.99',
+//     date: '2024-03-20',
+//     statut: 'Denied',
+//     description: 'lorum ipsum noga',
+//   },
+// ];
 
 const UserPage = () => {
   const [userData, setUserData] = useState(regularUser);
+  const [newUserData, setNewUserData] = useState(regularUser);
   const [showModal, setShowModal] = useState(false);
-  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [modalContent, setModalContent] = useState({
     field: '',
     value: '',
   });
 
-  const handleFormSubmit = (e) => {
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getUserInfo();
+      await setUserData(user);
+      await setNewUserData(user);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      [modalContent.field]: modalContent.value,
-    }));
+    if (!validator.isEmail(newUserData.Mail)) {
+      alert('Email invalid');
+      return;
+    }
+
+    const response = await APIRequest('put', `Users`, {
+      Firstname: newUserData.FirstName,
+      Lastname: newUserData.LastName,
+      Mail: newUserData.Mail,
+    });
+
+    if (response.success) {
+      alert('User info updated');
+
+      setUserData(newUserData);
+    }
 
     setShowModal(false);
   };
@@ -59,132 +86,86 @@ const UserPage = () => {
     });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Delivered':
-        return 'green';
-      case 'In Progress':
-        return 'orange';
-      case 'Denied':
-        return 'red';
-      default:
-        return 'black';
-    }
-  };
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.src = e.target.result;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDimension = 190;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > maxDimension || height > maxDimension) {
-          if (width > height) {
-            height *= maxDimension / width;
-            width = maxDimension;
-          } else {
-            width *= maxDimension / height;
-            height = maxDimension;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        const resizedImage = canvas.toDataURL('image/jpeg');
-
-        setImage(resizedImage);
-      };
-    };
-    reader.readAsDataURL(file);
-  };
-
   return (
     <div>
       <Header />
-      <h2>Welcome Back, {userData.name}</h2>
-      <div className="box_back" style={{ display: 'flex' }}>
-        <div className="personal_info" style={{ flex: 1 }}>
-          <h3>Personal Information</h3>
-          <div className="profile-image">
-            {image ? (
-              <img src={image} alt="Profile" />
-            ) : (
-              <label htmlFor="profile-upload" className="upload-label">
-                <input
-                  type="file"
-                  id="profile-upload"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-                Upload Photo
-              </label>
-            )}
-          </div>
-          <p>Name: {userData.name}</p>
-          <p>Last Name: {userData.lastname}</p>
-          <p>Email: {userData.email}</p>
-          {/* Button to open modal for updating personal info */}
-          <div className="button-cont">
-            <button onClick={() => setShowModal(true)}>Update Info</button>
-          </div>
-          {/* Button to navigate to change password page */}
-          <Link to="/my-cabinet/update-password" className="button-link">
-            Update Password
-          </Link>
-        </div>
-        <div className="history" style={{ flex: 2 }}>
-          <h3>Command History</h3>
-          <ul>
-            {commandHistory.map((command) => (
-              <li key={command.id}>
-                <strong style={{ color: getStatusColor(command.status) }}>{command.status}</strong>{' '}
-                - {command.date} - {command.product} - {command.price} - Details:{' '}
-                {command.description}
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* Modal for updating personal info */}
-        {showModal && (
-          <div className="modal-backdrop" onClick={() => setShowModal(false)}>
-            <div className="modal" style={{ zIndex: 999 }}>
-              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <form onSubmit={handleFormSubmit}>
-                  <h2>Update {modalContent.field}</h2>
-                  <label>
-                    Select field to update:
-                    <select
-                      value={modalContent.field}
-                      onChange={(e) => setModalContent({ ...modalContent, field: e.target.value })}
-                    >
-                      <option value="name">Name</option>
-                      <option value="lastname">Last Name</option>
-                      <option value="email">Email</option>
-                    </select>
-                  </label>
-                  <label>
-                    New {modalContent.field}:
-                    <input type="text" value={modalContent.value} onChange={handleInputChange} />
-                  </label>
-                  <button type="submit">Update</button>
-                </form>
-              </div>
+      <LoadingScreen isLoading={isLoading}>
+        <h2>Welcome Back, {userData?.FirstName} {userData?.LastName}</h2>
+        <div className="box_back" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="personal_info">
+            <h3>Personal Information</h3>
+            
+            <p>First Name: {userData?.FirstName}</p>
+            <p>Last Name: {userData?.LastName}</p>
+            <p>Email: {userData?.Mail}</p>
+            {/* Button to open modal for updating personal info */}
+            
+            <div className='btn-group'>
+              <div className='separator'></div>
+
+              {/* <Link to="/orders" className="btn">
+                Orders
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/orders'}>Orders</button>
+
+              <button className='btn' onClick={() => window.location.href = '/addresses'}>Addresses</button>
+
+              {/* separator */}
+              <div className='separator'></div>
+              <button className='btn' onClick={() => setShowModal(true)}>Update Info</button>
+              
+              {/* Button to navigate to change password page */}
+              {/* <Link to="/my-cabinet/update-password" className="btn">
+                Update Password
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/my-cabinet/update-password'}>Update Password</button>
+              
+              {/* <Link to="/logout" className="btn">
+                Logout
+              </Link> */}
+              <button className='btn' onClick={() => window.location.href = '/logout'}>Logout</button>
             </div>
           </div>
-        )}
-      </div>
+          
+          {/* Modal for updating personal info */}
+          {showModal && (
+            <div className="modal-backdrop" onClick={() => setShowModal(false)}>
+              <div className="modal" style={{ zIndex: 999 }}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                  <form onSubmit={handleFormSubmit}>
+                    {/* <h2>Update {modalContent.field}</h2> */}
+                    {/* <label>
+                      Select field to update:
+                      <select
+                        value={modalContent.field}
+                        onChange={(e) => setModalContent({ ...modalContent, field: e.target.value })}
+                      >
+                        <option value="Firstname">Name</option>
+                        <option value="Lastname">Last Name</option>
+                        <option value="Mail">Email</option>
+                      </select>
+                    </label>
+                    <label>
+                      New {modalContent.field}:
+                      <input type="text" value={modalContent.value} onChange={handleInputChange} />
+                    </label> */}
+                      <label htmlFor="name">Prénom:</label>
+                      <input type="text" id="name" name="name" value={newUserData?.FirstName} onChange={(e) => setNewUserData({ ...newUserData, FirstName: e.target.value })} />
+
+                      <label htmlFor="lastname">Nom:</label>
+                      <input type="text" id="lastname" name="lastname" value={newUserData?.LastName} onChange={(e) => setNewUserData({ ...newUserData, LastName: e.target.value })} />
+
+                      <label htmlFor="email">Email:</label>
+                      <input type="email" id="email" name="email" value={newUserData?.Mail} onChange={(e) => setNewUserData({ ...userData, Mail: e.target.value })} />
+                      
+                      <input type="submit" value="Submit" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </LoadingScreen>
       <Footer />
     </div>
   );

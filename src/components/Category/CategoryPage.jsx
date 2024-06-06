@@ -3,81 +3,46 @@ import Header from "../Static/Header";
 import Box from "./Banner";
 import FilterButton from "../Filter/FilterButton";
 import FilterModal from "../Filter/FilterModal";
-import { CategoryList, categories } from "./CategoryList";
+import { CategoryList } from "./CategoryList";
 import Footer from "../Static/Footer";
 import "../../styles/category.scss";
+import { APIRequest, API_URL } from "../../helper";
 
 const CategoryPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [isFilterModalOpen, setFilterModalOpen] = useState(false);
-  const itemsPerPage = 3;
+  const [categories, setCategories] = useState([]);
 
-  const [displayedCategories, setDisplayedCategories] = useState(categories);
 
-  React.useEffect(() => {
-    setDisplayedCategories(categories);
-  }, []);
+  const fetchCategories = async () => {
+    let result = await APIRequest("get", "CategorieRoom");
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    let newCategories = result.return.map((room) => ({
+      id: room.RoomId,
+      name: room.Name,
+      subcategories: room.Categories.map((category) => ({
+        id: category.CategoryId,
+        name: category.Name,
+        image: category.Pictures?.[0]?.Link ? `${API_URL}/${category.Pictures[0].Link}` : "/image/placeholder.webp"
+      })),
+    }));
 
-  const handleApplyFilter = useCallback(() => {
-    let filteredCategories = categories;
-
-    if (selectedCategory) {
-      filteredCategories = filteredCategories.filter(
-        (category) => category.name === selectedCategory
-      );
-    }
-
-    if (selectedSubcategory) {
-      filteredCategories = filteredCategories.map((category) => ({
-        ...category,
-        subcategories: category.subcategories.filter(
-          (subcategory) => subcategory.name === selectedSubcategory
-        ),
-      }));
-    }
-
-    setDisplayedCategories(filteredCategories);
-  }, [selectedCategory, selectedSubcategory]);
-
-  const handleOpenFilterModal = () => {
-    setFilterModalOpen(true);
-  };
-
-  const handleCloseFilterModal = () => {
-    setFilterModalOpen(false);
-  };
+    setCategories(newCategories);
+  }
 
   useEffect(() => {
-    handleApplyFilter();
-  }, [selectedCategory, selectedSubcategory, handleApplyFilter]);
+    fetchCategories();
+  }, []);
+
 
   return (
     <div>
       <Header />
-      <Box />
+      {/* <Box /> */}
       <h2 className="category-title">Category Page</h2>
-      <FilterButton onClick={handleOpenFilterModal} />
       <div className="category-sub">
         <CategoryList
-          categories={displayedCategories}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          filterCriteria={selectedCategory}
+          categories={categories}
         />
       </div>
-      {isFilterModalOpen && (
-        <FilterModal
-          onClose={handleCloseFilterModal}
-          onApplyFilter={handleApplyFilter}
-        />
-      )}
       <Footer />
     </div>
   );

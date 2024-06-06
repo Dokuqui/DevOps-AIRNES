@@ -3,6 +3,7 @@ import Sidebar from "./SideBar";
 import FooterBack from "./FooterBack";
 import { initialUser } from "./UserManagement";
 import CanvasJSReact from "@canvasjs/react-charts";
+import { Link } from "react-router-dom";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -66,6 +67,11 @@ const Dashboard = () => {
         <h2>Dashboard</h2>
         <div className="statistics">
           <h3>Statistics</h3>
+
+          <Link to="https://dashboard.stripe.com/test/payments">
+            <button className="btn">Redirect to Stripe</button>
+          </Link>
+
           <table>
             <thead>
               <tr>
@@ -85,7 +91,6 @@ const Dashboard = () => {
                 <td>50</td>
                 <td>$20</td>
               </tr>
-              {/* Add more rows for additional data */}
               <tr key="3">
                 <td>Furniture</td>
                 <td>75</td>
@@ -96,7 +101,6 @@ const Dashboard = () => {
                 <td>200</td>
                 <td>$50</td>
               </tr>
-              {/* Add more rows as needed */}
             </tbody>
           </table>
         </div>

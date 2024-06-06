@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SuccessPopup from "./SuccessPopUp";
+import validator from "validator";
 import "../../styles/login.scss";
+import { useSearchParams } from "react-router-dom";
+import LoadingScreen from "../LoadingScreen";
+import { APIRequest } from "../../helper";
 
 const NewPassword = () => {
   const [password, setPassword] = useState("");
@@ -8,34 +12,58 @@ const NewPassword = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setPasswordError("");
     setConfirmPasswordError("");
     setShowSuccessPopup(false);
 
-    if (!password) {
-      setPasswordError("Password is required");
-    } else if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters long");
+    if (!validator.isStrongPassword(password)) {
+      setPasswordError(
+        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character"
+      );
     }
 
-    if (!confirmPassword) {
-      setConfirmPasswordError("Please confirm your password");
-    } else if (confirmPassword !== password) {
+    if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
     }
 
-    if (!passwordError && !confirmPasswordError && password.length >= 6) {
-      setShowSuccessPopup(true);
-      console.log(
-        "Reinstallisation passed successful, you have set new password!"
-      );
+    if (passwordError || confirmPasswordError) {
+      return;
     }
+
+    await APIRequest("POST", "Users/ResetPassword", {
+      Token: searchParams.get("token"),
+      Password: password,
+    });
+
+    setShowSuccessPopup(true);
   };
 
+
+  const checkToken = async () => {
+    console.log(searchParams.get("token"));
+
+    const response = await APIRequest("POST", `Users/CheckToken`, {
+      Token: searchParams.get("token"),
+    });
+
+    if (!response.success) {
+      window.location.href = "/404";
+      return;
+    }
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   return (
+    <LoadingScreen isLoading={isLoading}>
     <div className="new_password-container">
       <h2>Forgot Password</h2>
       <p>
@@ -83,6 +111,7 @@ const NewPassword = () => {
           />
         )}
     </div>
+    </LoadingScreen>
   );
 };
 

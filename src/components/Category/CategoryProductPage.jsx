@@ -6,32 +6,41 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MdFirstPage, MdLastPage, MdChevronRight, MdChevronLeft } from "react-icons/md";
 import Rate from "../Home/Rate";
+import { APIRequest, API_URL } from "../../helper";
 
 const CategoryProductPage = () => {
     const { id } = useParams();
     const [products, setProducts] = useState([]);
+    const [category, setCategory] = useState(null);
     
     const [searchParam, setsearchParam] = useSearchParams();
 
     const page = searchParam.get("page") > 0 ? searchParam.get("page") : 1;
     const limit = 25;
 
-    useEffect(() => {
-        var newProducts = [];
-        for (let i = 0; i < 250; i++) {
+    const fetchProducts = async () => {
+        let newProducts = [];
+        let result = await APIRequest("get", `ProductCategory?CategoryId=${id}`);
 
-            newProducts.push({
-                id: i,
-                title: `Product ${i}`,
-                image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
-                rate: Math.floor(Math.random() * 6),
-                price: Math.floor(Math.random() * 30),
-                isFavorite: Math.round(Math.random() * 0.9)
-            });
-        }
-        
+        newProducts = result.return.Products.map((product) => ({
+            id: product.ProductId,
+            title: product.Name,
+            description: product.Description,
+            // image: "https://i.etsystatic.com/13378205/r/il/f1939f/2022456760/il_fullxfull.2022456760_gtgn.jpg",
+            image: product.Pictures?.[0]?.Link ? `${API_URL}/${product.Pictures[0].Link}` : "/image/placeholder.webp",
+            rate: product.Rate,
+            price: product.Price,
+            quantity: product.Stock,
+        }));
+
         setProducts(newProducts);
-    }, []);
+        console.log(result.return);
+        setCategory(result.return);
+    }
+
+    useState(() => {
+        fetchProducts();
+    });
 
     var handleNextPage = () => {
         var newPage = 1;
@@ -84,36 +93,43 @@ const CategoryProductPage = () => {
         <div>
             <Header />
             <div className="categoryproductsection">
-                <h1 className="title">{id}</h1>
+                <h1 className="title">{category?.Name}</h1>
+                <h4 className="subtitle">{category?.Description}</h4>
+
+                
 
                 <div className="main">
-                    <div className="filter">
-                        <div className="card">
-                            
-                        </div>
-                    </div>
-
                     <div className="products">
-                        {products
-                            .slice((page - 1) * limit, (page) * limit)
-                            .map((product) => (
-                            <div key={product.id} className="product" onClick={() => window.location.href = `/product/${product.id}`}>
-                                <img src={product.image} alt={product.title} />
-                                <p className="title">{product.title}</p>
-                                <Rate rate={product.rate} />
-                                <p className="price">{product.price}€</p>
-                            </div>
-                        ))}
+                        {products.length > 0 ? (
+                            products
+                                .slice((page - 1) * limit, (page) * limit)
+                                .map((product) => (
+                                <div key={product.id} className="product" onClick={() => window.location.href = `/product/${product.id}`}>
+                                    <img src={product.image} alt={product.title} />
+                                    <p className="title">{product.title}</p>
+                                    {/* <Rate rate={product.rate} /> */}
+                                    <p className="price">{product.price}€</p>
+                                    { product.quantity <= 0 ? <p style={{color: "red"}}>Out of stock</p> : <></> }
+                                </div>
+                            ))
+                        ) : (
+                            <p>Aucun article trouvé</p>
+                        )}
                     </div>
                 </div>
 
-                <div className="pagination">
-                    <button onClick={() => handleStartPage()}><MdFirstPage/></button>
-                    {page > 1 && <button onClick={() => handlePreviousPage()}><MdChevronLeft/></button>}
-                    <p>Page {page}</p>
-                    {products.length > page * limit && <button onClick={() => handleNextPage()}><MdChevronRight/></button>}
-                    <button onClick={() => handleEndPage()}><MdLastPage/></button>
-                </div>
+                {products.length > 0 && products.length > limit ? (
+
+                    <div className="pagination">
+                        <button onClick={() => handleStartPage()}><MdFirstPage/></button>
+                        {page > 1 && <button onClick={() => handlePreviousPage()}><MdChevronLeft/></button>}
+                        <p>Page {page}</p>
+                        {products.length > page * limit && <button onClick={() => handleNextPage()}><MdChevronRight/></button>}
+                        <button onClick={() => handleEndPage()}><MdLastPage/></button>
+                    </div>
+                ) : (
+                    <></>
+                )}
 
             </div>
             <Footer />

@@ -1,0 +1,113 @@
+.btn {
+    background-color: #000000;
+    border: solid 1px #000000;
+    color: #FFFFFF;
+    padding: 7px;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 200ms;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:disabled {
+      background-color: #00000033;
+      border: solid 1px #00000033;
+      color: #FFFFFF;
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+      transition: background-color 200ms;
+      text-transform: uppercase;
+
+      &:hover {
+        cursor: not-allowed;
+        background-color: #00000033;
+        color: #FFFFFF;
+        transition: background-color 200ms;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: transparent;
+      color: black;
+      transition: background-color 200ms;
+    }
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 0;
+
+    &:focus {
+      outline: none;
+    }
+}
+
+.input[type="checkbox"] {
+  // Change the appearance of the checkbox
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  border: 1px solid #000;
+  border-radius: 0;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 0;
+
+  &:checked {
+    padding: 1px;
+    &::before {
+      content: '';
+      background-color: #000;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      position: absolute;
+    }
+  }
+}
+
+p.error-message {
+  color: #dc3545 !important;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  font-family: 'Lato', sans-serif;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+  }
+
+  span {
+    padding: 0 10px;
+    color: #000;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+select {
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 0;
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+  appearance: none;
+  background-size: 15px;
+
+  &:focus {
+    outline: none;
+  }
+}

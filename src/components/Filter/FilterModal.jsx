@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { categories } from '../Category/CategoryList';
 import FilterComponent from './FilterComponent';
 import '../../styles/category.scss';
 
-const FilterModal = ({ onClose, onApplyFilter }) => {
+const FilterModal = ({ onClose, onApplyFilter, categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 

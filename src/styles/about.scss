@@ -15,9 +15,10 @@
 
     .ceo-photo img {
       width: 250px;
-      height: 180px;
+      height: 250px;
       border-radius: 50%;
       margin-bottom: 15px;
+      object-fit: cover;
     }
   }
 
