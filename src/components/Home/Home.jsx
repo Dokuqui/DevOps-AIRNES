@@ -63,7 +63,7 @@ const HomePage = () => {
                 }
             ]} />
 
-            <h3 style={{maxWidth: "400px", margin: "auto", marginTop: "20px", textAlign: "center"}}>Venant des hautes terres d'écosses nos meubles sont immortels</h3>
+            <h3 style={{maxWidth: "400px", margin: "auto", marginTop: "20px", textAlign: "center"}}>Coming from the highlands of ecosses our furniture is immortal</h3>
 
             {/* <ProductCards products={[
                 {
