@@ -31,10 +31,10 @@ const Footer = () => {
           <h5>Documents</h5>
           <ul className="pages">
             <li>
-              <a href="/">CGU</a>
+              <a href="/cgu">CGU</a>
             </li>
             <li>
-              <a href="/">Mentions légales</a>
+              <a href="/cgu">Mentions légales</a>
             </li>
           </ul>
         </div>
