@@ -42,18 +42,24 @@ const Sidebar = ({ logout }) => {
             <ul className="sidebar-list">
               <li>
                 <Link
-                  to="/category"
+                  to="/"
                   className="nav-icon-home"
                   onClick={showSidebar}
                 >
                   <SiHomebridge /> Home
                 </Link>
               </li>
+              
               <li>
+                <Link to="https://dashboard.stripe.com/test/payments" onClick={showSidebar}>
+                  Stripe Statistics
+                </Link>
+              </li>
+              {/* <li>
                 <Link to="/admin" onClick={showSidebar}>
                   Dashboard
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/admin/users" onClick={showSidebar}>
                   User Management

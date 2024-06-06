@@ -28,7 +28,7 @@ const AdminPage = () => {
   return (
 
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<UserManagement />} />
       <Route path="/users" element={<UserManagement />} />
       <Route path="/content" element={<ContentManagement />} />
       <Route path="/categories" element={<CatergoryManager />} />

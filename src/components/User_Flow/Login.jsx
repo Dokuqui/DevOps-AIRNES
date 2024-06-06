@@ -28,7 +28,6 @@ const Login = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   var user;
 
