@@ -62,7 +62,10 @@ const Registration = () => {
       });
 
       if (!response.success) {
-        console.log(response.return);
+        // alert(response.return);
+        if (response.return.includes("Email already used")) {
+          setEmailError("Email already exists");
+        }
         return;
       }
 
