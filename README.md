@@ -14,8 +14,8 @@ This repo is dedicated for Web-site Front-End part of project.<br>
 * Babel
 <br>
 [Demo URL](http://167.114.113.203:3000)
-> [!NOTE]  
-> Bien vérifier que la redirection c'est fait en HTTP et non en HTTPS
+[!NOTE]  
+Bien vérifier que la redirection c'est fait en HTTP et non en HTTPS
 
 <hr>
 Mobile App: [Airnes_Mobile](https://github.com/Dokuqui/DevOps-AIRNES_Mobile) <br>
